@@ -1,10 +1,13 @@
 export default {
-  primary: "#fc5c65",
-  secondary: "#4ecdc4",
+  primary: "#8D8DFF",
+  secondary: "#6767BF",
   black: "#000",
   white: "#fff",
   medium: "#6e6969",
   light: "#f8f4f4",
-  dark: "#060606",
+  dark: "#414040",
+  border: "#707070",
   danger: "#ff5252",
 };
+
+// Replace medium with dark value and dark value with border, remove border
