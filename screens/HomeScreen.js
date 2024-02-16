@@ -1,35 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, ImageBackground, StyleSheet, View, Text } from "react-native";
 import colors from "../config/colors";
 import ContentContainer from "../components/ContentContainer";
 import AppTextInput from "../components/AppTextInput";
 import AppButton from "../components/AppButton";
+import Search from "../components/Search";
+import MapModal from "../components/MapModal";
 
 function HomeScreen(props) {
+  const [isModalVisible, setIsModalVisible] = useState(true);
   return (
-    <ImageBackground
-      source={require("../assets/background.jpg")}
-      style={styles.background}
-      blurRadius={0.4}
-    >
-      <View style={styles.logoContainer}>
-        <Text style={styles.title}>AppName 👨‍🦽</Text>
-        <Text style={styles.tagline}>
-          Find accessible local venues in your neighbourhood
-        </Text>
-      </View>
-      <ContentContainer style={{ padding: 20, marginHorizontal: 55 }}>
-        <Text style={styles.welcome}>Welcome! 🙋‍♀️</Text>
-        <Text>
-          New here? Check out our 'Getting Started' guide to learn how to use
-          the app.
-        </Text>
-        <Text style={styles.search}>Find a Venue</Text>
-        <AppTextInput placeholder="I'm looking for a..."></AppTextInput>
-        <AppButton title="🔎 Search" />
-      </ContentContainer>
-      <View style={styles.buttonsContainer}></View>
-    </ImageBackground>
+    <>
+      <ImageBackground
+        source={require("../assets/background.jpg")}
+        style={styles.background}
+        blurRadius={0.4}
+      >
+        <View style={styles.logoContainer}>
+          <Text style={styles.title}>AccessLocal 👨‍🦽</Text>
+          <Text style={styles.tagline}>
+            Find accessible local venues in your neighbourhood
+          </Text>
+        </View>
+        <ContentContainer style={{ padding: 20, marginHorizontal: 55 }}>
+          <Text style={styles.welcome}>Welcome! 🙋‍♀️</Text>
+          <Text>
+            New here? Check out our 'Getting Started' guide to learn how to use
+            the app.
+          </Text>
+          <Text style={styles.search}>Find a Venue</Text>
+          <Search
+            placeholder={"I'm looking for..."}
+            onSubmit={() => console.log("submitted search")}
+          />
+        </ContentContainer>
+        <View style={styles.buttonsContainer}></View>
+      </ImageBackground>
+      <MapModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+      />
+    </>
   );
 }
 
