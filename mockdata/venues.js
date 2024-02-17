@@ -50,7 +50,7 @@ export default [
   {
     id: "fg45sddf",
     name: "Lloyds Pharmacy",
-    address: "124 The mad Street Glasgow G3 8LS",
+    address: "124 The Mad Street, Glasgow G3 8LS",
     openingHours: [
       { time: "Mon - Fri", hours: "9am - 7pm" },
       { time: "Sat", hours: "9am - 10pm" },
@@ -59,7 +59,7 @@ export default [
     contact: {
       phone: "0141-334-9435",
       email: "gaelicschool@council.co.uk",
-      website: "glasgowgaelicschool.co.uk",
+      web: "glasgowgaelicschool.co.uk",
     },
     coords: { latitude: 55.8632, longitude: -4.2757 },
     type: "pharmacy",
@@ -88,7 +88,7 @@ export default [
         criteria: "quiet",
         name: "Quiet",
         reportedFor: 3,
-        reportedAgainst: 0,
+        reportedAgainst: 3,
       },
     ],
   },

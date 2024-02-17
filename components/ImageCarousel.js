@@ -52,12 +52,13 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     width: "100%",
+    marginHorizontal: 5,
     marginVertical: 20,
     justifyContent: "center",
   },
   image: {
-    height: 150,
-    width: 150,
+    height: 140,
+    width: 140,
     borderColor: colors.light,
     borderWidth: 1,
     borderRadius: 20,

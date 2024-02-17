@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Image, FlatList, Modal } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 import colors from "../config/colors";
 import AppButton from "../components/AppButton";
@@ -8,7 +9,21 @@ import AppText from "./AppText";
 import ModalAccessItem from "./ModalAccessItem";
 import capitalise from "../utility/capitalise";
 
-function MapModal({ venue, isModalVisible, setIsModalVisible }) {
+function MapModal({
+  venue,
+  isModalVisible,
+  setIsModalVisible,
+  handleStartNavigation,
+}) {
+  const navigation = useNavigation();
+
+  console.log(venue);
+
+  const handleFullInfoPress = () => {
+    setIsModalVisible(false);
+    navigation.navigate("VenueInfoScreen", { venue });
+  };
+
   const handleCloseModal = () => {
     setIsModalVisible(false);
   };
@@ -18,7 +33,7 @@ function MapModal({ venue, isModalVisible, setIsModalVisible }) {
       visible={isModalVisible}
       animationType="fade"
       transparent={true}
-      onRequestClose={handleCloseModal} // For Android back button support
+      onRequestClose={handleCloseModal}
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
@@ -68,8 +83,8 @@ function MapModal({ venue, isModalVisible, setIsModalVisible }) {
             <View style={{ flex: 1 }}></View>
           </View>
           <View style={styles.buttonsContainer}>
-            <AppButton title="📖 Full Info" />
-            <AppButton title="🗺 Directions" />
+            <AppButton title="📖 Full Info" onPress={handleFullInfoPress} />
+            <AppButton title="🗺 Directions" onPress={handleStartNavigation} />
           </View>
         </View>
       </View>

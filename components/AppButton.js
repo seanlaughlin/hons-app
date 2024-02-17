@@ -7,7 +7,7 @@ function AppButton({
   onPress,
   color = "primary",
   style,
-  borderColour = colors.secondary,
+  borderColor = colors.secondary,
 }) {
   return (
     <TouchableOpacity
@@ -15,7 +15,7 @@ function AppButton({
         styles.button,
         { backgroundColor: colors[color] },
         style,
-        { borderColor: borderColour },
+        { borderColor: borderColor },
       ]}
       onPress={onPress}
     >
