@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import { Image, ImageBackground, StyleSheet, View, Text } from "react-native";
+import { ImageBackground, StyleSheet, View, Text } from "react-native";
+
 import colors from "../config/colors";
 import ContentContainer from "../components/ContentContainer";
-import AppTextInput from "../components/AppTextInput";
-import AppButton from "../components/AppButton";
 import Search from "../components/Search";
 import MapModal from "../components/MapModal";
 
 function HomeScreen(props) {
-  const [isModalVisible, setIsModalVisible] = useState(true);
   return (
     <>
       <ImageBackground
@@ -36,10 +34,6 @@ function HomeScreen(props) {
         </ContentContainer>
         <View style={styles.buttonsContainer}></View>
       </ImageBackground>
-      <MapModal
-        isModalVisible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-      />
     </>
   );
 }

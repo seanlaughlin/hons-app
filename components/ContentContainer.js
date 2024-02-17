@@ -8,7 +8,7 @@ function ContentContainer({ children, style }) {
 const styles = StyleSheet.create({
   container: {
     borderRadius: 15,
-    backgroundColor: "rgba(255, 255, 255, 0.6)",
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
     overflow: "hidden",
     flexDirection: "column",
     alignItems: "center",

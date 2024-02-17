@@ -1,20 +1,14 @@
 import React from "react";
-import { View, StyleSheet, Image } from "react-native";
-import useLocation from "../hooks/useLocation";
-import MapMarker from "../components/MapMarker";
-import mapSettings from "../config/mapSettings";
-import colors from "../config/colors";
-import { Modal } from "react-native";
-import { useState } from "react";
-import { TouchableOpacity } from "react-native";
+import { View, StyleSheet, Image, FlatList, Modal } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import ContentContainer from "../components/ContentContainer";
-import { Text } from "react-native";
+
+import colors from "../config/colors";
 import AppButton from "../components/AppButton";
-import Card from "./Card";
+import AppText from "./AppText";
+import ModalAccessItem from "./ModalAccessItem";
+import capitalise from "../utility/capitalise";
 
 function MapModal({ venue, isModalVisible, setIsModalVisible }) {
-  console.log(venue);
   const handleCloseModal = () => {
     setIsModalVisible(false);
   };
@@ -31,31 +25,47 @@ function MapModal({ venue, isModalVisible, setIsModalVisible }) {
           <MaterialCommunityIcons
             name="close"
             style={styles.closeIcon}
-            size={20}
+            size={25}
             color={colors.medium}
             onPress={handleCloseModal}
           />
-          <Text style={styles.title}>{venue} (0.5 miles away)</Text>
-          <Text style={styles.subtitle}>School in Royston</Text>
+          <AppText style={{ fontSize: 22, fontWeight: 600 }} numberOfLines={1}>
+            {venue.name}
+          </AppText>
+          <AppText style={styles.subtitle}>
+            {capitalise(venue.type)} in Royston (0.5 miles away)
+          </AppText>
           <View style={styles.venueInfo}>
             <View
               style={{
-                width: "100%",
-                flex: 1,
-                alignItems: "center",
+                flex: 4,
+                alignItems: "flex-start",
                 rowGap: 5,
               }}
             >
-              <Image
-                style={styles.image}
-                source={require("../assets/grocers.jpg")}
-              />
-              <Text>Opening Hours</Text>
-              <Text>dsdfg</Text>
-              <Text>dsdfg</Text>
-              <Text>dsdfg</Text>
+              <Image style={styles.image} source={venue.images[0]} />
+              <AppText style={{ fontWeight: 600 }}>Opening Hours</AppText>
+              {venue.openingHours.map((item) => (
+                <AppText key={item.id}>
+                  {item.time}: {item.hours}
+                </AppText>
+              ))}
+              <AppText>Tel: {venue.contact.phone}</AppText>
             </View>
-            <View style={{ width: "100%", flex: 2 }}></View>
+            <View>
+              <FlatList
+                data={venue.accessibility.filter(
+                  (item) => item.reportedFor > 0 && item.reportedAgainst === 0
+                )}
+                renderItem={({ item }) => (
+                  <ModalAccessItem item={item} key={item.id} />
+                )}
+                keyExtractor={(item) => item.id.toString()}
+                contentContainerStyle={styles.venueAccessInfo}
+                showsVerticalScrollIndicator={true}
+              />
+            </View>
+            <View style={{ flex: 1 }}></View>
           </View>
           <View style={styles.buttonsContainer}>
             <AppButton title="📖 Full Info" />
@@ -76,17 +86,19 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   image: {
-    width: "100%",
-    height: 120,
-    borderRadius: 25,
+    width: "60%",
+    height: 130,
+    width: 130,
+    borderRadius: 8,
     borderColor: colors.medium,
     borderWidth: 1,
+    marginBottom: 10,
   },
   modalContainer: {
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
-    padding: 15,
+    padding: 20,
   },
   modalContent: {
     justifyContent: "center",
@@ -98,20 +110,17 @@ const styles = StyleSheet.create({
     shadowColor: "grey",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.7,
-  },
-  title: {
-    fontSize: 22,
-
-    color: colors.medium,
+    width: "100%",
   },
   subtitle: {
     fontSize: 15,
-    marginBottom: 15,
-    color: colors.medium,
   },
+  venueAccessInfo: { alignItems: "flex-start", rowGap: 5 },
   venueInfo: {
     flexDirection: "row",
-    height: 250,
+    marginVertical: 20,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

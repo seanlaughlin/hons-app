@@ -1,9 +1,14 @@
 import React from "react";
-import { View, StyleSheet, SafeAreaView, Text, Image } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  Text,
+  FlatList,
+  ScrollView,
+} from "react-native";
+
 import colors from "../config/colors";
 import Search from "../components/Search";
-import { ScrollView } from "react-native";
-import { FlatList } from "react-native";
 import Card from "../components/Card";
 
 const categoriesData = [
