@@ -17,8 +17,6 @@ function MapModal({
 }) {
   const navigation = useNavigation();
 
-  console.log(venue);
-
   const handleFullInfoPress = () => {
     setIsModalVisible(false);
     navigation.navigate("VenueInfoScreen", { venue });

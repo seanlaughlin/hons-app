@@ -9,10 +9,7 @@ import FindVenueScreen from "../screens/FindVenueScreen";
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = () => (
-  <Tab.Navigator
-    tabBarOptions={{ tabBarStyle: { paddingTop: 20 } }}
-    screenOptions={{ headerShown: false }}
-  >
+  <Tab.Navigator screenOptions={{ headerShown: false }}>
     <Tab.Screen
       name="Home"
       component={HomeScreen}

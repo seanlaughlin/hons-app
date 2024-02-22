@@ -9,12 +9,20 @@ function Search({ placeholder, onSubmit }) {
   return (
     <View style={styles.container}>
       <AppTextInput placeholder={placeholder}></AppTextInput>
-      <AppButton
-        title="🔎 Search"
-        onPress={onSubmit}
-        style={styles.button}
-        borderColour={colors.secondary}
-      />
+      <View style={styles.buttonContainer}>
+        <AppButton
+          title="🔎 Search"
+          onPress={onSubmit}
+          style={styles.button}
+          borderColour={colors.secondary}
+        />
+        <AppButton
+          title="⚙ Filters"
+          onPress={onSubmit}
+          style={styles.button}
+          borderColour={colors.secondary}
+        />
+      </View>
     </View>
   );
 }
@@ -23,9 +31,14 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 10,
   },
   button: {
-    width: "100%",
+    maxWidth: 150,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    columnGap: 10,
   },
 });
 

@@ -2,6 +2,7 @@ import MapView, { PROVIDER_GOOGLE, Polyline } from "react-native-maps";
 import React, { useState, useEffect, useRef } from "react";
 import { View, StyleSheet } from "react-native";
 import MapViewDirections from "react-native-maps-directions";
+import { Marker } from "react-native-maps";
 
 import useLocation from "../hooks/useLocation";
 import MapMarker from "../components/MapMarker";
@@ -14,9 +15,10 @@ import AppButton from "../components/AppButton";
 import { getBoundingRegion } from "../utility/mapUtils";
 
 function MapScreen(props) {
-  const location = useLocation();
   const mapRef = useRef(null);
+  const initLocation = useLocation();
 
+  const [location, setLocation] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isNavigationMode, setIsNavigationMode] = useState(false);
   const [modalVenue, setModalVenue] = useState({});
@@ -27,26 +29,20 @@ function MapScreen(props) {
   const [region, setRegion] = useState(null);
 
   useEffect(() => {
-    if (location) {
-      setOrigin(location);
+    if (initLocation) {
+      setLocation(initLocation);
     }
-  }, [location]);
+  }, [initLocation]);
 
   useEffect(() => {
     if (location) {
-      setOrigin(location);
-      setRegion({
-        latitude: location.latitude,
-        longitude: location.longitude,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
-      });
+      setOrigin({ latitude: location.latitude, longitude: location.longitude });
     }
   }, [location]);
 
   useEffect(() => {
     updateRegion();
-  }, [location, modalVenue]);
+  }, [modalVenue]);
 
   const updateRegion = () => {
     const newRegion = getBoundingRegion(location, modalVenue.coords);
@@ -56,9 +52,13 @@ function MapScreen(props) {
     }
   };
 
+  const updateUserLocation = (userLocation) => {
+    setLocation(userLocation);
+  };
+
   const onReady = (result) => {
     setCoordinates(result.coordinates);
-    setOrigin(location);
+    setOrigin({ latitude: location.latitude, longitude: location.longitude });
     const durationInMinutes = Math.ceil(result.legs[0].duration.value / 60);
     setDuration(durationInMinutes);
     setDistance(result.distance.toFixed(2));
@@ -107,6 +107,9 @@ function MapScreen(props) {
             nearbyPlacesAPI={"none"}
             tintColor={colors.primary}
             ref={mapRef}
+            onUserLocationChange={(event) =>
+              updateUserLocation(event.nativeEvent.coordinate)
+            }
           >
             {isNavigationMode && modalVenue && origin && modalVenue.coords && (
               <MapViewDirections
