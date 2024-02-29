@@ -26,7 +26,7 @@ export function getBoundingRegion(location, venueCoords) {
   };
 }
 
-function getDistance(location, venueCoords) {
+export function getDistance(location, venueCoords) {
   // Calculate distance between two points using Haversine formula
   const R = 6371e3; // metres
   const φ1 = (location.latitude * Math.PI) / 180; // φ, λ in radians

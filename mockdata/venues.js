@@ -3,18 +3,20 @@ export default [
     id: "ff34fre54y5",
     name: "The Gaelic School",
     address: "123 The mad Street Glasgow G3 8LS",
+    neighbourhood: "Finnieston",
     openingHours: [
       { time: "Mon - Fri", hours: "9am - 7pm" },
       { time: "Sat", hours: "9am - 10pm" },
       { time: "Sun", hours: "Closed" },
     ],
     contact: {
-      phone: "0141-334-9435",
+      phone: "0141 334 9435",
       email: "gaelicschool@council.co.uk",
       website: "glasgowgaelicschool.co.uk",
     },
     coords: { latitude: 55.86506, longitude: -4.27778 },
     type: "school",
+    category: "schools",
     images: [require("../assets/school.jpg")],
     accessibility: [
       {
@@ -51,18 +53,20 @@ export default [
     id: "fg45sddf",
     name: "Lloyds Pharmacy",
     address: "124 The Mad Street, Glasgow G3 8LS",
+    neighbourhood: "Finnieston",
     openingHours: [
       { time: "Mon - Fri", hours: "9am - 7pm" },
       { time: "Sat", hours: "9am - 10pm" },
       { time: "Sun", hours: "Closed" },
     ],
     contact: {
-      phone: "0141-334-9435",
+      phone: "0141 334 9435",
       email: "gaelicschool@council.co.uk",
       web: "glasgowgaelicschool.co.uk",
     },
     coords: { latitude: 55.8632, longitude: -4.2757 },
     type: "pharmacy",
+    category: "medical",
     images: [
       require("../assets/lloyds.jpg"),
       require("../assets/lloyds2.jpg"),

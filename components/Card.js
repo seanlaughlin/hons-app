@@ -9,10 +9,9 @@ import {
 
 import colors from "../config/colors";
 
-function Card({ title, imageUrl, onPress }) {
-  console.log(imageUrl);
+function Card({ title, imageUrl, onPress, ...others }) {
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
+    <TouchableWithoutFeedback onPress={onPress} {...others}>
       <View style={styles.card}>
         <Image style={styles.image} source={imageUrl} />
         <View style={styles.detailsContainer}>

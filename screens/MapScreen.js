@@ -1,8 +1,7 @@
 import MapView, { PROVIDER_GOOGLE, Polyline } from "react-native-maps";
 import React, { useState, useEffect, useRef } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, AccessibilityInfo } from "react-native";
 import MapViewDirections from "react-native-maps-directions";
-import { Marker } from "react-native-maps";
 
 import useLocation from "../hooks/useLocation";
 import MapMarker from "../components/MapMarker";
@@ -12,7 +11,9 @@ import MapModal from "../components/MapModal";
 import venues from "../mockdata/venues";
 import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
+
 import { getBoundingRegion } from "../utility/mapUtils";
+import { removeHtmlTags } from "../utility/removeHtmlTags";
 
 function MapScreen(props) {
   const mapRef = useRef(null);
@@ -27,6 +28,10 @@ function MapScreen(props) {
   const [distance, setDistance] = useState(null);
   const [origin, setOrigin] = useState({});
   const [region, setRegion] = useState(null);
+
+  const [directions, setDirections] = useState([]);
+  const [stepInstructions, setStepInstructions] = useState("");
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
   useEffect(() => {
     if (initLocation) {
@@ -54,6 +59,23 @@ function MapScreen(props) {
 
   const updateUserLocation = (userLocation) => {
     setLocation(userLocation);
+    if (isNavigationMode) updateCurrentStepIndex(userLocation);
+  };
+
+  const updateCurrentStepIndex = (userLocation) => {
+    let closestStepIndex = 0;
+    let minDistance = Number.MAX_VALUE;
+    for (let i = 0; i < directions.length; i++) {
+      const step = directions[i];
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestStepIndex = i;
+      }
+    }
+    setCurrentStepIndex(closestStepIndex);
+    setStepInstructions(
+      removeHtmlTags(directions[closestStepIndex].html_instructions)
+    );
   };
 
   const onReady = (result) => {
@@ -62,6 +84,10 @@ function MapScreen(props) {
     const durationInMinutes = Math.ceil(result.legs[0].duration.value / 60);
     setDuration(durationInMinutes);
     setDistance(result.distance.toFixed(2));
+    setDirections(result.legs[0].steps);
+    setStepInstructions(
+      removeHtmlTags(result.legs[0].steps[0].html_instructions)
+    );
   };
 
   const handleMarkerPress = (venue) => {
@@ -79,6 +105,10 @@ function MapScreen(props) {
     updateRegion();
     setIsModalVisible(false);
     setIsNavigationMode(true);
+    AccessibilityInfo.announceForAccessibilityWithOptions(
+      `Navigating to ${modalVenue.name}, ${distance} kilometers away.`,
+      { options: { queue: true } }
+    );
   };
 
   return (
@@ -89,6 +119,7 @@ function MapScreen(props) {
           setIsModalVisible={setIsModalVisible}
           venue={modalVenue}
           handleStartNavigation={handleStartNavigation}
+          accessibilityLabel="Overview of venue information"
         />
       )}
       <View style={styles.mapContainer}>
@@ -110,6 +141,7 @@ function MapScreen(props) {
             onUserLocationChange={(event) =>
               updateUserLocation(event.nativeEvent.coordinate)
             }
+            accessibilityLabel="Map of the local area"
           >
             {isNavigationMode && modalVenue && origin && modalVenue.coords && (
               <MapViewDirections
@@ -138,13 +170,16 @@ function MapScreen(props) {
                   isNavigationMode ? null : () => handleMarkerPress(venue)
                 }
                 key={venue.id}
+                accessibilityLabel={`${venue.type} Map Marker for ${venue.name}`}
+                accessibilityHint="Press marker to open venue information modal."
+                importantForAccessibility="yes"
               />
             ))}
           </MapView>
         )}
         {isNavigationMode && duration !== null && distance !== null && (
           <>
-            <View style={styles.durationBox}>
+            <View style={[styles.durationBox, styles.opaqueBox]}>
               <View
                 style={{
                   flexDirection: "row",
@@ -154,10 +189,27 @@ function MapScreen(props) {
                 <AppText style={{ fontSize: 20, fontWeight: 600 }}>
                   {modalVenue.name}
                 </AppText>
-                <AppText style={{ fontSize: 18 }}> ({distance} km)</AppText>
+                <AppText
+                  style={{ fontSize: 18 }}
+                  accessibilityLabel="Distance to venue"
+                >
+                  {" "}
+                  ({distance} km)
+                </AppText>
               </View>
-              <AppText style={{ fontSize: 18 }}>
+              <AppText
+                style={{ fontSize: 18 }}
+                accessibilityLabel="Duration of travel"
+              >
                 Estimate: {duration} min 🚶‍♂️ (avg)
+              </AppText>
+            </View>
+            <View style={[styles.directionsBox, styles.opaqueBox]}>
+              <AppText
+                style={{ fontSize: 15, fontWeight: 600 }}
+                accessibilityLabel="Directions"
+              >
+                {stepInstructions}
               </AppText>
             </View>
             <View style={styles.navigationButtons}>
@@ -166,12 +218,14 @@ function MapScreen(props) {
                 color="green"
                 borderColor={colors.greendark}
                 onPress={handleCancelNavigation}
+                accessibilityLabel="Confirm arrival at the venue"
               />
               <AppButton
                 title="❌ Cancel Journey"
                 color="danger"
                 borderColor={colors.dangerdark}
                 onPress={handleCancelNavigation}
+                accessibilityLabel="Cancel navigation to the venue"
               />
             </View>
           </>
@@ -188,18 +242,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   durationBox: {
-    position: "absolute",
     top: 60,
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
-    padding: 15,
-    borderRadius: 5,
-    shadowColor: colors.medium,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    elevation: 2,
-    justifyContent: "center",
-    alignItems: "center",
+  },
+  directionsBox: {
+    bottom: 160,
   },
   navigationButtons: {
     position: "absolute",
@@ -218,6 +264,19 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+  },
+  opaqueBox: {
+    position: "absolute",
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    padding: 15,
+    borderRadius: 5,
+    shadowColor: colors.medium,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 2,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

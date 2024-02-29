@@ -1,12 +1,21 @@
-import React, { useState } from "react";
-import { ImageBackground, StyleSheet, View, Text } from "react-native";
+import React, { useEffect } from "react";
+import {
+  ImageBackground,
+  StyleSheet,
+  View,
+  Text,
+  AccessibilityInfo,
+} from "react-native";
 
 import colors from "../config/colors";
 import ContentContainer from "../components/ContentContainer";
 import Search from "../components/Search";
-import MapModal from "../components/MapModal";
 
 function HomeScreen(props) {
+  useEffect(() => {
+    AccessibilityInfo.announceForAccessibility("Welcome Access Local");
+  }, []);
+
   return (
     <>
       <ImageBackground
@@ -30,9 +39,9 @@ function HomeScreen(props) {
           <Search
             placeholder={"I'm looking for..."}
             onSubmit={() => console.log("submitted search")}
+            accessibilityLabel="Venue search field"
           />
         </ContentContainer>
-        <View style={styles.buttonsContainer}></View>
       </ImageBackground>
     </>
   );
@@ -53,10 +62,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 70,
     alignItems: "center",
-  },
-  buttonsContainer: {
-    padding: 20,
-    width: "100%",
   },
   tagline: {
     fontSize: 15,

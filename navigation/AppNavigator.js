@@ -3,8 +3,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import MapNavigator from "./MapNavigator";
+import FindVenueNavigator from "./FindVenueNavigator";
 import HomeScreen from "../screens/HomeScreen";
-import FindVenueScreen from "../screens/FindVenueScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -14,16 +14,16 @@ const AppNavigator = () => (
       name="Home"
       component={HomeScreen}
       options={{
-        tabBarIcon: ({ color, size }) => (
+        tabBarIcon: ({ color }) => (
           <MaterialCommunityIcons name="home" color={color} size={30} />
         ),
       }}
     />
     <Tab.Screen
       name="Find Venue"
-      component={FindVenueScreen}
+      component={FindVenueNavigator}
       options={{
-        tabBarIcon: ({ color, size }) => (
+        tabBarIcon: ({ color }) => (
           <MaterialCommunityIcons name="store-search" color={color} size={30} />
         ),
       }}
@@ -32,7 +32,7 @@ const AppNavigator = () => (
       name="Map"
       component={MapNavigator}
       options={{
-        tabBarIcon: ({ color, size }) => (
+        tabBarIcon: ({ color }) => (
           <MaterialCommunityIcons name="map-marker" color={color} size={30} />
         ),
       }}

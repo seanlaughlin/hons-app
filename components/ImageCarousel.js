@@ -3,12 +3,16 @@ import { View, StyleSheet, ScrollView } from "react-native";
 
 import ImageWithMagnification from "./ImageWithMagnification";
 
-function ImageCarousel({ imageUris }) {
+function ImageCarousel({ imageUris, ...others }) {
   return (
     <ScrollView horizontal>
-      <View style={styles.container}>
-        {imageUris.map((uri) => (
-          <ImageWithMagnification uri={uri} />
+      <View style={styles.container} {...others}>
+        {imageUris.map((uri, index) => (
+          <ImageWithMagnification
+            uri={uri}
+            key={index}
+            accessibilityElementsHidden={true}
+          />
         ))}
       </View>
     </ScrollView>

@@ -1,12 +1,12 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 
-function AppImage({ ...props }) {
-  return <View style={styles.container} {...props}></View>;
+function AccessibilityReview(props) {
+  return <View style={styles.container}></View>;
 }
 
 const styles = StyleSheet.create({
   container: {},
 });
 
-export default AppImage;
+export default AccessibilityReview;

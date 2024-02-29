@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Image, FlatList, Modal } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -8,18 +8,29 @@ import AppButton from "../components/AppButton";
 import AppText from "./AppText";
 import ModalAccessItem from "./ModalAccessItem";
 import capitalise from "../utility/capitalise";
+import useLocation from "../hooks/useLocation";
+import { getDistance } from "../utility/mapUtils";
 
 function MapModal({
   venue,
   isModalVisible,
   setIsModalVisible,
   handleStartNavigation,
+  ...others
 }) {
+  const [distance, setDistance] = useState(0);
+
   const navigation = useNavigation();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location)
+      setDistance((getDistance(location, venue.coords) / 1000).toFixed(2));
+  }, [location]);
 
   const handleFullInfoPress = () => {
     setIsModalVisible(false);
-    navigation.navigate("VenueInfoScreen", { venue });
+    navigation.navigate("VenueInfoScreen", { venue: venue });
   };
 
   const handleCloseModal = () => {
@@ -32,6 +43,7 @@ function MapModal({
       animationType="fade"
       transparent={true}
       onRequestClose={handleCloseModal}
+      {...others}
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
@@ -41,12 +53,20 @@ function MapModal({
             size={25}
             color={colors.medium}
             onPress={handleCloseModal}
+            accessibilityLabel="Close Button"
+            accessibilityHint="Press here to close venue information modal."
+            accessibilityRole="button"
           />
-          <AppText style={{ fontSize: 22, fontWeight: 600 }} numberOfLines={1}>
+          <AppText
+            style={{ fontSize: 22, fontWeight: 600 }}
+            numberOfLines={1}
+            accessibilityRole="header"
+          >
             {venue.name}
           </AppText>
           <AppText style={styles.subtitle}>
-            {capitalise(venue.type)} in Royston (0.5 miles away)
+            {capitalise(venue.type)} in {venue.neighbourhood} ({distance} km
+            away)
           </AppText>
           <View style={styles.venueInfo}>
             <View
@@ -57,7 +77,12 @@ function MapModal({
               }}
             >
               <Image style={styles.image} source={venue.images[0]} />
-              <AppText style={{ fontWeight: 600 }}>Opening Hours</AppText>
+              <AppText
+                style={{ fontWeight: 600 }}
+                accessibilityLabel="Opening Hours"
+              >
+                Opening Hours
+              </AppText>
               {venue.openingHours.map((item) => (
                 <AppText key={item.id}>
                   {item.time}: {item.hours}
@@ -70,19 +95,28 @@ function MapModal({
                 data={venue.accessibility.filter(
                   (item) => item.reportedFor > 0 && item.reportedAgainst === 0
                 )}
-                renderItem={({ item }) => (
-                  <ModalAccessItem item={item} key={item.id} />
-                )}
+                renderItem={({ item }) => <ModalAccessItem item={item} />}
                 keyExtractor={(item) => item.id.toString()}
                 contentContainerStyle={styles.venueAccessInfo}
                 showsVerticalScrollIndicator={true}
+                style={{ maxHeight: 220 }}
+                accessibilityLabel="Venue Accessibility information"
               />
             </View>
-            <View style={{ flex: 1 }}></View>
           </View>
           <View style={styles.buttonsContainer}>
-            <AppButton title="📖 Full Info" onPress={handleFullInfoPress} />
-            <AppButton title="🗺 Directions" onPress={handleStartNavigation} />
+            <AppButton
+              title="📖 Full Info"
+              onPress={handleFullInfoPress}
+              accessibilityLabel="Full Venue Information"
+              accessibilityHint="Press to read full venue information."
+            />
+            <AppButton
+              title="🗺 Directions"
+              onPress={handleStartNavigation}
+              accessibilityLabel="Directions to Venue"
+              accessibilityHint="Press to get directions to the venue."
+            />
           </View>
         </View>
       </View>
@@ -124,6 +158,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.7,
     width: "100%",
+    maxHeight: 500,
   },
   subtitle: {
     fontSize: 15,

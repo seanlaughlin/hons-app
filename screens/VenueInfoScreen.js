@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, SafeAreaView, ScrollView, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 import colors from "../config/colors";
 import AppText from "../components/AppText";
@@ -10,24 +11,38 @@ import venueIconMapping from "../config/venueIconMapping";
 import VenueInfoAccessItem from "../components/VenueInfoAccessItem";
 import AppButton from "../components/AppButton";
 import BackButton from "../components/BackButton";
+import useLocation from "../hooks/useLocation";
+import { getDistance } from "../utility/mapUtils";
 
 function VenueInfoScreen({ route }) {
+  const [distance, setDistance] = useState(0);
   const { venue } = route.params;
+  const location = useLocation();
+
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (location)
+      setDistance((getDistance(location, venue.coords) / 1000).toFixed(2));
+  }, [location]);
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
       <BackButton />
-      <ScrollView
-        contentContainerStyle={{ height: "100%", alignItems: "center" }}
-      >
+      <ScrollView contentContainerStyle={styles.container}>
         <ScrollView
           contentContainerStyle={{
             justifyContent: "center",
             alignItems: "center",
+            flexGrow: 1,
           }}
         >
-          <AppText style={styles.title}>{venue.name}</AppText>
-          <AppText style={{ fontSize: 22 }}>
-            {capitalise(venue.type)} in Royston
+          <AppText style={styles.title} accessibilityRole="header">
+            {venue.name}
+          </AppText>
+          <AppText style={{ fontSize: 20 }}>
+            {capitalise(venue.type)} in {venue.neighbourhood} ({distance} km
+            away)
           </AppText>
           <ImageCarousel imageUris={venue.images} />
         </ScrollView>
@@ -36,7 +51,7 @@ function VenueInfoScreen({ route }) {
           <View style={{ flex: 2 }}>
             <AppText style={styles.infoHeading}>Opening Hours</AppText>
             {venue.openingHours.map((item) => (
-              <AppText>
+              <AppText style={{ marginBottom: 5 }}>
                 {item.time}: {item.hours}
               </AppText>
             ))}
@@ -48,17 +63,30 @@ function VenueInfoScreen({ route }) {
                 <MaterialCommunityIcons
                   name={venueIconMapping[key]}
                   style={{ marginRight: 10 }}
+                  accessibilityElementsHidden={true}
                 />
-                <AppText>
+                <AppText style={{ marginBottom: 5 }}>
                   {capitalise(key)} : {value}
                 </AppText>
               </View>
             ))}
           </View>
         </View>
-        <View style={styles.venueAccess}>
+        <View
+          style={styles.venueAccess}
+          accessibilityLabel="Accessibility Information"
+        >
           {venue.accessibility.map((item) => (
-            <VenueInfoAccessItem item={item} key={item.id} />
+            <VenueInfoAccessItem
+              item={item}
+              key={item.id}
+              onPress={() =>
+                navigation.navigate("AccessibilityReviewsScreen", {
+                  venue: venue,
+                  accessibilityItem: item,
+                })
+              }
+            />
           ))}
         </View>
         <View style={styles.reviewBox}>
@@ -82,14 +110,14 @@ function VenueInfoScreen({ route }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
     justifyContent: "center",
     alignItems: "center",
+    paddingTop: 45,
   },
   infoHeading: {
     fontSize: 16,
     fontWeight: 600,
-    marginBottom: 5,
+    marginBottom: 8,
   },
   reviewBox: {
     paddingHorizontal: 20,
@@ -106,6 +134,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     marginBottom: 15,
+    borderBottomColor: colors.lightgrey,
+    borderBottomWidth: 1,
   },
   venueInfo: {
     flexDirection: "row",

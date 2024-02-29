@@ -11,7 +11,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 
-function ImageWithMagnification({ uri }) {
+function ImageWithMagnification({ uri, ...others }) {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleImagePress = (uri) => {
@@ -24,7 +24,11 @@ function ImageWithMagnification({ uri }) {
 
   return (
     <>
-      <TouchableOpacity key={uri} onPress={() => handleImagePress(uri)}>
+      <TouchableOpacity
+        key={uri}
+        onPress={() => handleImagePress(uri)}
+        {...others}
+      >
         <ImageBackground source={uri} style={styles.image}>
           <View style={styles.imageMagnification}>
             <MaterialCommunityIcons

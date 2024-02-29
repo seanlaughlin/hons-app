@@ -8,6 +8,7 @@ function AppButton({
   color = "primary",
   style,
   borderColor = colors.secondary,
+  ...others
 }) {
   return (
     <TouchableOpacity
@@ -18,6 +19,8 @@ function AppButton({
         { borderColor: borderColor },
       ]}
       onPress={onPress}
+      {...others}
+      accessibilityRole="button"
     >
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>

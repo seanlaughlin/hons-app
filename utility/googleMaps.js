@@ -1,7 +1,5 @@
 import { directions } from "@googlemaps/google-maps-services-js";
 
-// No need to create a client, use the directions function directly
-
 export async function getDirections(origin, destination) {
   try {
     const response = await directions({
