@@ -5,6 +5,7 @@ import AppText from "../components/AppText";
 import reviews from "../mockdata/reviews";
 import BackButton from "../components/BackButton";
 import colors from "../config/colors";
+import AccessibilityReview from "../components/AccessibilityReview";
 
 function AccessibilityReviewsScreen({ route }) {
   const { venue, accessibilityItem } = route.params;
@@ -39,7 +40,7 @@ function AccessibilityReviewsScreen({ route }) {
         <AppText style={{ fontSize: 20 }}></AppText>
         {accessibilityReviews.length > 0 ? (
           accessibilityReviews.map((review, index) => (
-            <AppText key={index}>{review.comments}</AppText>
+            <AccessibilityReview review={review} key={index} />
           ))
         ) : (
           <AppText>No reviews to display.</AppText>
@@ -54,6 +55,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingTop: 45,
+    width: "100%",
+    paddingHorizontal: 10,
   },
   title: {
     fontSize: 30,

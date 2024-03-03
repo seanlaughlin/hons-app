@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, SafeAreaView, Text, FlatList, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 

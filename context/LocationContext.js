@@ -1,4 +1,5 @@
 import React from "react";
+
 import { useLocation } from "../hooks/useLocation";
 
 const LocationContext = React.createContext();

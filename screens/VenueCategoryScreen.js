@@ -10,15 +10,13 @@ import BackButton from "../components/BackButton";
 import useLocation from "../hooks/useLocation";
 import AppButton from "../components/AppButton";
 
+// Refactor to venue results screen to be used with search
 function VenueCategoryScreen(props) {
   const { category } = props.route.params;
   const catVenues = venues.filter((venue) => venue.category === category);
 
   const location = useLocation();
 
-  const handlePress = () => {
-    console.log("pressed");
-  };
   return (
     <SafeAreaView style={styles.container}>
       <BackButton />
@@ -27,12 +25,7 @@ function VenueCategoryScreen(props) {
         {catVenues.length > 0 ? (
           catVenues.map((venue) => {
             return (
-              <VenueListItem
-                venue={venue}
-                key={venue.id}
-                onPress={handlePress}
-                location={location}
-              />
+              <VenueListItem venue={venue} key={venue.id} location={location} />
             );
           })
         ) : (
@@ -57,6 +50,7 @@ const styles = StyleSheet.create({
   resultBox: {
     borderTopColor: colors.border,
     borderTopWidth: 1,
+    width: "95%",
   },
   title: {
     fontSize: 30,

@@ -6,6 +6,7 @@ export default [
       {
         reviewId: 1,
         user: "BigJim",
+        date: new Date(),
         for: true,
         comments: "No automatic doors, but owner leaves doors open usually.",
         image: [],
@@ -21,13 +22,16 @@ export default [
       {
         reviewId: 1,
         user: "PurpleDuck221",
+        date: new Date(),
         for: true,
-        comments: "Staff are patient and friendly.",
+        comments:
+          "Staff are patient and friendly. Staff are patient and friendly.Staff are patient and friendly.Staff are patient and friendly.Staff are patient and friendly.Staff are patient and friendly.",
         image: [],
       },
       {
         reviewId: 2,
         user: "BigJim",
+        date: new Date(),
         for: true,
         comments: "Good",
         image: [],

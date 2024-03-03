@@ -8,20 +8,36 @@ import { getDistance } from "../utility/mapUtils";
 import capitalise from "../utility/capitalise";
 import accessibilityIconMapping from "../config/accessibilityIconMapping";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { TouchableWithoutFeedback } from "react-native";
 
-function VenueListItem({ venue, onPress, location, ...others }) {
-  console.log(venue);
+function VenueListItem({ venue, location, ...others }) {
+  const navigation = useNavigation();
+
+  const handleVenuePress = () => {
+    navigation.navigate("VenueInfoScreen", { venue: venue });
+  };
   return (
-    <View style={styles.container} onPress={onPress} {...others}>
-      <Image source={venue.images[0]} style={styles.image} />
-      <View>
-        <AppText style={styles.name}>{venue.name}</AppText>
-        <AppText style={{ fontWeight: 600 }}>{capitalise(venue.type)}</AppText>
-        {location && (
-          <AppText>
-            {(getDistance(location, venue.coords) / 1000).toFixed(2)} km
+    <View style={styles.container} {...others}>
+      <View
+        style={{ flexDirection: "row", alignItems: "center", columnGap: 5 }}
+      >
+        <Image
+          source={venue.images[0]}
+          style={styles.image}
+          accessibilityElementsHidden={true}
+        />
+        <View>
+          <AppText style={styles.name}>{venue.name}</AppText>
+          <AppText style={{ fontWeight: 600 }}>
+            {capitalise(venue.type)}
           </AppText>
-        )}
+          {location && (
+            <AppText>
+              {(getDistance(location, venue.coords) / 1000).toFixed(2)} km
+            </AppText>
+          )}
+        </View>
       </View>
       {venue.accessibility.map((access) => {
         if (access.reportedFor > access.reportedAgainst)
@@ -30,14 +46,19 @@ function VenueListItem({ venue, onPress, location, ...others }) {
               name={accessibilityIconMapping[access.criteria]}
               size={28}
               color={colors.green}
+              accessibilityLabel={access.name}
             />
           );
       })}
-      <MaterialCommunityIcons
-        name="chevron-right"
-        size={40}
-        color={colors.medium}
-      />
+      <TouchableWithoutFeedback onPress={handleVenuePress}>
+        <MaterialCommunityIcons
+          name="chevron-right"
+          size={40}
+          color={colors.medium}
+          accessibilityLabel="Go to venue information"
+          accessibilityRole="button"
+        />
+      </TouchableWithoutFeedback>
     </View>
   );
 }
@@ -46,7 +67,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     columnGap: 10,
-    width: "95%",
     borderBottomColor: colors.border,
     borderBottomWidth: 1,
     alignItems: "center",

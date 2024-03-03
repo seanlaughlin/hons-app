@@ -11,7 +11,11 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 
-function ImageWithMagnification({ uri, ...others }) {
+function ImageWithMagnification({
+  uri,
+  disableMagnification = false,
+  ...others
+}) {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleImagePress = (uri) => {
