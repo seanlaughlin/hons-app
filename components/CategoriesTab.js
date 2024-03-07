@@ -15,7 +15,7 @@ const CategoriesTab = () => {
   return (
     <View style={{ flex: 1 }}>
       <SelectableList
-        name="accessibilities"
+        name="categories"
         data={allCategories.data}
         title="categories"
       />

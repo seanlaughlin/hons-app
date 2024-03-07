@@ -1,32 +1,28 @@
+// SearchFilterModal.js
+
 import React from "react";
-import {
-  StyleSheet,
-  Modal,
-  SafeAreaView,
-  useWindowDimensions,
-} from "react-native";
+import { Modal, SafeAreaView, useWindowDimensions } from "react-native";
 import AppText from "./AppText";
 import { Formik } from "formik";
 import { TabView, TabBar } from "react-native-tab-view";
-
 import CloseButton from "./CloseButton";
 import colors from "../config/colors";
 import AppButton from "./AppButton";
-
 import AccessTab from "./AccessTab";
 import DistanceTab from "./DistanceTab";
 import CategoriesTab from "./CategoriesTab";
-
-import { useSelectedAccessibilities } from "../context/SelectedAccessibilitiesContext";
-
-import { useSelectedCategories } from "../context/SelectedCategoriesContext";
+import { useFilterContext } from "../context/FilterContext";
 
 function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
-  const { selectedAccessibilities, setSelectedAccessibilities } =
-    useSelectedAccessibilities();
+  const {
+    selectedAccessibilities,
+    setSelectedAccessibilities,
+    selectedCategories,
+    setSelectedCategories,
+  } = useFilterContext();
 
-  const { selectedCategories, setSelectedCategories } = useSelectedCategories();
-
+  console.log("selected categories", selectedCategories);
+  console.log("selected accessibilities", selectedAccessibilities);
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
@@ -53,9 +49,9 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
   };
 
   const handleSubmit = (values) => {
+    console.log(values);
     setSelectedAccessibilities(values.accessibilities);
     setSelectedCategories(values.categories);
-    console.log("submit values", values);
     handleCloseModal();
   };
 
@@ -65,14 +61,8 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
       onRequestClose={handleCloseModal}
       animationType="slide"
       {...others}
-      style={styles.container}
     >
-      <SafeAreaView
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-        }}
-      >
+      <SafeAreaView style={{ flexDirection: "row", justifyContent: "center" }}>
         <CloseButton action={handleCloseModal} />
         <AppText style={{ fontSize: 35, color: colors.primary }}>
           Search Filters
@@ -80,8 +70,8 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
       </SafeAreaView>
       <Formik
         initialValues={{
-          accessibilities: selectedAccessibilities,
-          categories: selectedCategories,
+          accessibilities: selectedAccessibilities || [],
+          categories: selectedCategories || [],
         }}
         onSubmit={handleSubmit}
       >
@@ -119,13 +109,5 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    width: "100%",
-  },
-});
 
 export default SearchFilterModal;

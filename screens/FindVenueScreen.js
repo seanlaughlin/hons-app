@@ -18,8 +18,7 @@ function FindVenueScreen(props) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await getCategoriesApi.request();
-        setCategories(getCategoriesApi.data);
+        await getCategoriesApi.request();
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -47,7 +46,7 @@ function FindVenueScreen(props) {
           accessibilityLabel="Venue search field"
         />
         <FlatList
-          data={categories}
+          data={getCategoriesApi.data}
           keyExtractor={(category) => category.name}
           numColumns={2}
           accessibilityLabel="Venue categories"

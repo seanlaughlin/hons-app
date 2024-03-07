@@ -3,17 +3,15 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import navigationTheme from "./navigation/navigationTheme";
 import AppNavigator from "./navigation/AppNavigator";
-import { SelectedCategoriesProvider } from "./context/SelectedCategoriesContext";
-import { SelectedAccessibilitiesProvider } from "./context/SelectedAccessibilitiesContext";
+import { FilterContextProvider } from "./context/FilterContext";
+import { VenueContextProvider } from "./context/VenueContext";
 
 export default function App() {
   return (
-    <SelectedCategoriesProvider>
-      <SelectedAccessibilitiesProvider>
-        <NavigationContainer theme={navigationTheme}>
-          <AppNavigator />
-        </NavigationContainer>
-      </SelectedAccessibilitiesProvider>
-    </SelectedCategoriesProvider>
+    <FilterContextProvider>
+      <NavigationContainer theme={navigationTheme}>
+        <AppNavigator />
+      </NavigationContainer>
+    </FilterContextProvider>
   );
 }

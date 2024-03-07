@@ -9,6 +9,7 @@ import capitalise from "../utility/capitalise";
 import BackButton from "../components/BackButton";
 import useLocation from "../hooks/useLocation";
 import AppButton from "../components/AppButton";
+import FiltersButton from "../components/FiltersButton";
 
 // Refactor to venue results screen to be used with search
 function VenueCategoryScreen(props) {
@@ -32,7 +33,7 @@ function VenueCategoryScreen(props) {
           <AppText>No venues to display.</AppText>
         )}
       </View>
-      <AppButton title="⚙ Filters" style={styles.filterButton} />
+      <FiltersButton style={styles.filterButton} />
     </SafeAreaView>
   );
 }

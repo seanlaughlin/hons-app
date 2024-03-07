@@ -9,14 +9,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 const SelectableList = ({ name, data, iconMapping, title }) => {
   const { setFieldValue, values } = useFormikContext();
 
-  //Problem
-  const listData = values[title];
-
-  console.log("selectable list data", data);
-  console.log("formik values", listData);
-
   const handlePress = (item) => {
-    const selectedItems = values[name] || {};
+    const selectedItems = { ...values[name] }; // Copy the current selected items object
+
+    // Get the selected items for the current tab title or initialize as an empty array
     const selectedItemsForTab = selectedItems[title] || [];
 
     const index = selectedItemsForTab.findIndex(
@@ -32,6 +28,7 @@ const SelectableList = ({ name, data, iconMapping, title }) => {
       );
     }
 
+    // Update the formik values with the updated selected items for the current tab title
     setFieldValue(name, { ...selectedItems, [title]: updatedItems });
   };
 
