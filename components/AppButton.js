@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 import colors from "../config/colors";
 
+//Unsure about button border, off for now
 function AppButton({
   title,
   onPress,
@@ -17,6 +18,7 @@ function AppButton({
         { backgroundColor: colors[color] },
         style,
         { borderColor: borderColor },
+        { borderWidth: 0 },
       ]}
       onPress={onPress}
       {...others}

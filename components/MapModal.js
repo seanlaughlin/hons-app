@@ -91,7 +91,8 @@ function MapModal({
               <AppText>Tel: {venue.contact.phone}</AppText>
             </View>
             <View>
-              <FlatList
+              {/* Amend to work with accessibility api*/}
+              {/* <FlatList
                 data={venue.accessibility.filter(
                   (item) => item.reportedFor > 0 && item.reportedAgainst === 0
                 )}
@@ -101,7 +102,7 @@ function MapModal({
                 showsVerticalScrollIndicator={true}
                 style={{ maxHeight: 220 }}
                 accessibilityLabel="Venue Accessibility information"
-              />
+              /> */}
             </View>
           </View>
           <View style={styles.buttonsContainer}>

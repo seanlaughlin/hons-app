@@ -1,77 +1,32 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   StyleSheet,
   Modal,
   SafeAreaView,
   useWindowDimensions,
-  View,
 } from "react-native";
-import Slider from "@react-native-community/slider";
 import AppText from "./AppText";
 import { Formik } from "formik";
-import SelectableList from "./SelectableList";
-import accessibleCategories from "../mockdata/accessibleCategories";
-import accessibilityIconMapping from "../config/accessibilityIconMapping";
-import categories from "../mockdata/categories";
-import { TabView, SceneMap, TabBar } from "react-native-tab-view";
+import { TabView, TabBar } from "react-native-tab-view";
 
 import CloseButton from "./CloseButton";
 import colors from "../config/colors";
 import AppButton from "./AppButton";
 
-const AccessTab = () => (
-  <View style={{ flex: 1 }}>
-    <SelectableList
-      name="accessibilities"
-      data={accessibleCategories}
-      iconMapping={accessibilityIconMapping}
-      title="Access"
-    />
-  </View>
-);
-const DistanceLocationTab = () => (
-  <>
-    <AppText style={{ fontSize: 20 }}>
-      I want to arrive at my destination in...
-    </AppText>
-    <View style={{ flexDirection: "row", alignItems: "center", columnGap: 5 }}>
-      <AppText>&lt; 5 min</AppText>
-      <Slider
-        style={{ width: 250, height: 50 }}
-        minimumValue={0}
-        maximumValue={60}
-        minimumTrackTintColor={colors.primary}
-        maximumTrackTintColor={colors.medium}
-      />
-      <AppText>Any time</AppText>
-    </View>
-  </>
-);
+import AccessTab from "./AccessTab";
+import DistanceTab from "./DistanceTab";
+import CategoriesTab from "./CategoriesTab";
 
-const CategoryTab = () => (
-  <View style={{ flex: 1 }}>
-    <SelectableList
-      name="accessibilities"
-      data={categories}
-      title="Venue Categories"
-    />
-  </View>
-);
+import { useSelectedAccessibilities } from "../context/SelectedAccessibilitiesContext";
 
-const renderScene = ({ route, props }) => {
-  switch (route.key) {
-    case "access":
-      return <AccessTab {...props} />;
-    case "distance":
-      return <DistanceLocationTab {...props} />;
-    case "categories":
-      return <CategoryTab {...props} />;
-    default:
-      return null;
-  }
-};
+import { useSelectedCategories } from "../context/SelectedCategoriesContext";
 
 function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
+  const { selectedAccessibilities, setSelectedAccessibilities } =
+    useSelectedAccessibilities();
+
+  const { selectedCategories, setSelectedCategories } = useSelectedCategories();
+
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
@@ -80,12 +35,27 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
     { key: "categories", title: "Categories" },
   ]);
 
+  const renderScene = ({ route, props }) => {
+    switch (route.key) {
+      case "access":
+        return <AccessTab {...props} />;
+      case "distance":
+        return <DistanceTab {...props} />;
+      case "categories":
+        return <CategoriesTab {...props} />;
+      default:
+        return null;
+    }
+  };
+
   const handleCloseModal = () => {
     setIsModalVisible(false);
   };
 
   const handleSubmit = (values) => {
-    console.log("Filter submit", values);
+    setSelectedAccessibilities(values.accessibilities);
+    setSelectedCategories(values.categories);
+    console.log("submit values", values);
     handleCloseModal();
   };
 
@@ -110,8 +80,8 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
       </SafeAreaView>
       <Formik
         initialValues={{
-          accessibilities: [...accessibleCategories],
-          categories: [...categories],
+          accessibilities: selectedAccessibilities,
+          categories: selectedCategories,
         }}
         onSubmit={handleSubmit}
       >

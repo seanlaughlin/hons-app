@@ -13,7 +13,7 @@ function Card({ title, imageUrl, onPress, ...others }) {
   return (
     <TouchableWithoutFeedback onPress={onPress} {...others}>
       <View style={styles.card}>
-        <Image style={styles.image} source={imageUrl} />
+        <Image style={styles.image} source={{ uri: imageUrl }} />
         <View style={styles.detailsContainer}>
           <Text style={styles.title} numberOfLines={1}>
             {title}

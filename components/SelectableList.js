@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, StyleSheet, View, TouchableOpacity } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import { useFormikContext } from "formik";
 import SelectableItem from "./SelectableItem";
 import colors from "../config/colors";
@@ -9,45 +9,44 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 const SelectableList = ({ name, data, iconMapping, title }) => {
   const { setFieldValue, values } = useFormikContext();
 
-  const handlePress = (item) => {
-    const selectedItems = values[name] || [];
-    const index = selectedItems.indexOf(item);
-    let updatedItems;
+  //Problem
+  const listData = values[title];
 
+  console.log("selectable list data", data);
+  console.log("formik values", listData);
+
+  const handlePress = (item) => {
+    const selectedItems = values[name] || {};
+    const selectedItemsForTab = selectedItems[title] || [];
+
+    const index = selectedItemsForTab.findIndex(
+      (selectedItem) => selectedItem.name === item.name
+    );
+
+    let updatedItems;
     if (index === -1) {
-      updatedItems = [...selectedItems, item];
+      updatedItems = [...selectedItemsForTab, item];
     } else {
-      selectedItems.splice(index, 1);
-      updatedItems = [...selectedItems];
+      updatedItems = selectedItemsForTab.filter(
+        (selectedItem) => selectedItem.name !== item.name
+      );
     }
 
-    setFieldValue(name, updatedItems);
-  };
-
-  const handleSelectAll = () => {
-    setFieldValue(name, data);
-  };
-
-  const handleSelectNone = () => {
-    setFieldValue(name, []);
+    setFieldValue(name, { ...selectedItems, [title]: updatedItems });
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={handleSelectAll}>
-          <AppText style={styles.link}>Select All</AppText>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleSelectNone}>
-          <AppText style={styles.link}>Select None</AppText>
-        </TouchableOpacity>
-      </View>
       <FlatList
         data={data}
         renderItem={({ item }) => (
           <SelectableItem
             onPress={() => handlePress(item)}
-            isSelected={(values[name] || []).includes(item)}
+            isSelected={
+              (values[name]?.[title] || []).findIndex(
+                (selectedItem) => selectedItem.name === item.name
+              ) !== -1
+            }
           >
             {iconMapping && (
               <MaterialCommunityIcons
@@ -70,24 +69,6 @@ const SelectableList = ({ name, data, iconMapping, title }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.light,
-    columnGap: 20,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  link: {
-    color: colors.primary,
-    fontSize: 16,
   },
   flatListContent: {
     flexGrow: 1,

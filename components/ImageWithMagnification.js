@@ -52,7 +52,10 @@ function ImageWithMagnification({
             onPress={handleCloseModal}
             color={colors.light}
           />
-          <Image source={selectedImage} style={styles.fullScreenImage} />
+          <Image
+            source={{ uri: selectedImage }}
+            style={styles.fullScreenImage}
+          />
         </View>
       </Modal>
     </>

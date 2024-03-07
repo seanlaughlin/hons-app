@@ -1,14 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, SafeAreaView, Text, FlatList, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import colors from "../config/colors";
 import Search from "../components/Search";
 import Card from "../components/Card";
-import categories from "../mockdata/categories";
+
+import categoriesApi from "../api/categories";
+import useApi from "../hooks/useApi";
 
 function FindVenueScreen(props) {
   const navigation = useNavigation();
+  const [categories, setCategories] = useState(null);
+
+  const getCategoriesApi = useApi(categoriesApi.getCategories);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await getCategoriesApi.request();
+        setCategories(getCategoriesApi.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const gotoCategory = (category) => {
     const catName = category.name;
@@ -31,13 +48,13 @@ function FindVenueScreen(props) {
         />
         <FlatList
           data={categories}
-          keyExtractor={(category) => category.id.toString()}
+          keyExtractor={(category) => category.name}
           numColumns={2}
           accessibilityLabel="Venue categories"
           renderItem={({ item }) => (
             <Card
               title={item.title}
-              imageUrl={item.image}
+              imageUrl={item.imageUri}
               onPress={() => gotoCategory(item)}
               accessibilityLabel={`${item.title} category`}
               accessibilityHint="Press to load venues in this category."

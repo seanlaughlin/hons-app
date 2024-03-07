@@ -6,10 +6,9 @@ import colors from "../config/colors";
 import AppText from "./AppText";
 
 function AccessibilityReview({ review }) {
-  const image =
-    review.image.length > 0
-      ? review.image[0]
-      : require("../assets/placeholder-square.jpg");
+  const image = review.imageUri
+    ? review.imageUri
+    : "../assets/placeholder-square.jpg";
 
   const icon = review.for ? "check-circle" : "close-circle";
 
@@ -18,7 +17,7 @@ function AccessibilityReview({ review }) {
   return (
     <View style={styles.container}>
       <Image
-        source={image}
+        source={{ uri: image }}
         style={styles.image}
         accessibilityElementsHidden={true}
       />
