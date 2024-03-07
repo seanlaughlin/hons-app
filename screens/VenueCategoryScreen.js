@@ -1,33 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView } from "react-native";
 
 import colors from "../config/colors";
-import venues from "../mockdata/venues";
 import VenueListItem from "../components/VenueListItem";
 import AppText from "../components/AppText";
 import capitalise from "../utility/capitalise";
 import BackButton from "../components/BackButton";
-import useLocation from "../hooks/useLocation";
-import AppButton from "../components/AppButton";
 import FiltersButton from "../components/FiltersButton";
 
-// Refactor to venue results screen to be used with search
-function VenueCategoryScreen(props) {
-  const { category } = props.route.params;
-  const catVenues = venues.filter((venue) => venue.category === category);
+import venuesApi from "../api/venues";
+import useApi from "../hooks/useApi";
 
-  const location = useLocation();
+function VenueCategoryScreen(props) {
+  const { title, filters = [], location } = props.route.params;
+
+  const getFilteredVenues = useApi(venuesApi.getFilteredVenues);
+
+  useEffect(() => {
+    const fetchVenues = async () => {
+      try {
+        await getFilteredVenues
+          .request({ ...filters, location })
+          .then(console.log(getFilteredVenues));
+      } catch (error) {
+        console.error("Error fetching venues:", error);
+      }
+    };
+    fetchVenues();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <BackButton />
-      <AppText style={styles.title}>{capitalise(category)}</AppText>
+      <AppText style={styles.title}>{capitalise(title)}</AppText>
       <View style={styles.resultBox}>
-        {catVenues.length > 0 ? (
-          catVenues.map((venue) => {
-            return (
-              <VenueListItem venue={venue} key={venue.id} location={location} />
-            );
+        {getFilteredVenues.data.length > 0 ? (
+          getFilteredVenues.data.map((venue) => {
+            return <VenueListItem venue={venue} key={venue.id} />;
           })
         ) : (
           <AppText>No venues to display.</AppText>

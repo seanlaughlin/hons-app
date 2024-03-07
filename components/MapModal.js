@@ -76,7 +76,10 @@ function MapModal({
                 rowGap: 5,
               }}
             >
-              <Image style={styles.image} source={venue.images[0]} />
+              <Image
+                style={styles.image}
+                source={{ uri: venue.imageUris[0] }}
+              />
               <AppText
                 style={{ fontWeight: 600 }}
                 accessibilityLabel="Opening Hours"

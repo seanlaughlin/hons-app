@@ -8,12 +8,15 @@ import MapMarker from "../components/MapMarker";
 import mapSettings from "../config/mapSettings";
 import colors from "../config/colors";
 import MapModal from "../components/MapModal";
-import venues from "../mockdata/venues";
 import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
 
 import { getBoundingRegion } from "../utility/mapUtils";
 import { removeHtmlTags } from "../utility/removeHtmlTags";
+
+import { useFilterContext } from "../context/FilterContext";
+import venuesApi from "../api/venues";
+import useApi from "../hooks/useApi";
 
 function MapScreen(props) {
   const mapRef = useRef(null);
@@ -33,9 +36,13 @@ function MapScreen(props) {
   const [stepInstructions, setStepInstructions] = useState("");
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
+  const { filters } = useFilterContext();
+  const getFilteredVenues = useApi(venuesApi.getFilteredVenues);
+
   useEffect(() => {
     if (initLocation) {
       setLocation(initLocation);
+      getFilteredVenues.request({ location: initLocation });
     }
   }, [initLocation]);
 
@@ -161,20 +168,21 @@ function MapScreen(props) {
                 lineCap="round"
               />
             )}
-            {venues.map((venue) => (
-              <MapMarker
-                venueName={venue.name}
-                coords={venue.coords}
-                type={venue.type}
-                onPress={
-                  isNavigationMode ? null : () => handleMarkerPress(venue)
-                }
-                key={venue.id}
-                accessibilityLabel={`${venue.type} Map Marker for ${venue.name}`}
-                accessibilityHint="Press marker to open venue information modal."
-                importantForAccessibility="yes"
-              />
-            ))}
+            {getFilteredVenues.data.length > 0 &&
+              getFilteredVenues.data.map((venue) => (
+                <MapMarker
+                  venueName={venue.name}
+                  coords={venue.coords}
+                  type={venue.type}
+                  onPress={
+                    isNavigationMode ? null : () => handleMarkerPress(venue)
+                  }
+                  key={venue.id}
+                  accessibilityLabel={`${venue.type} Map Marker for ${venue.name}`}
+                  accessibilityHint="Press marker to open venue information modal."
+                  importantForAccessibility="yes"
+                />
+              ))}
           </MapView>
         )}
         {isNavigationMode && duration !== null && distance !== null && (

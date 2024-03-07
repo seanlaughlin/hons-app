@@ -17,7 +17,7 @@ import { getDistance } from "../utility/mapUtils";
 function VenueInfoScreen({ route }) {
   const [distance, setDistance] = useState(0);
   const { venue } = route.params;
-
+  console.log(venue.imageUris);
   const location = useLocation();
 
   const navigation = useNavigation();
@@ -45,7 +45,7 @@ function VenueInfoScreen({ route }) {
             {capitalise(venue.type)} in {venue.neighbourhood} ({distance} km
             away)
           </AppText>
-          <ImageCarousel imageUris={venue.images} />
+          <ImageCarousel imageUris={venue.imageUris} />
         </ScrollView>
         <AppText style={{ fontSize: 20 }}>{venue.address}</AppText>
         <View style={styles.venueInfo}>
@@ -59,18 +59,21 @@ function VenueInfoScreen({ route }) {
           </View>
           <View style={{ flex: 3 }}>
             <AppText style={styles.infoHeading}>Contact Details</AppText>
-            {Object.entries(venue.contact).map(([key, value]) => (
-              <View style={{ flexDirection: "row" }}>
-                <MaterialCommunityIcons
-                  name={venueIconMapping[key]}
-                  style={{ marginRight: 10 }}
-                  accessibilityElementsHidden={true}
-                />
-                <AppText style={{ marginBottom: 5 }}>
-                  {capitalise(key)} : {value}
-                </AppText>
-              </View>
-            ))}
+            {Object.entries(venue.contact).map(
+              ([key, value]) =>
+                key !== "_id" && (
+                  <View style={{ flexDirection: "row" }} key={key}>
+                    <MaterialCommunityIcons
+                      name={venueIconMapping[key]}
+                      style={{ marginRight: 10 }}
+                      accessibilityElementsHidden={true}
+                    />
+                    <AppText style={{ marginBottom: 5 }}>
+                      {capitalise(key)} : {value}
+                    </AppText>
+                  </View>
+                )
+            )}
           </View>
         </View>
         <View

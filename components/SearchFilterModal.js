@@ -21,8 +21,6 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
     setSelectedCategories,
   } = useFilterContext();
 
-  console.log("selected categories", selectedCategories);
-  console.log("selected accessibilities", selectedAccessibilities);
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
@@ -49,7 +47,6 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
   };
 
   const handleSubmit = (values) => {
-    console.log(values);
     setSelectedAccessibilities(values.accessibilities);
     setSelectedCategories(values.categories);
     handleCloseModal();

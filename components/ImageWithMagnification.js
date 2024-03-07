@@ -33,7 +33,7 @@ function ImageWithMagnification({
         onPress={() => handleImagePress(uri)}
         {...others}
       >
-        <ImageBackground source={uri} style={styles.image}>
+        <ImageBackground source={{ uri: uri }} style={styles.image}>
           <View style={styles.imageMagnification}>
             <MaterialCommunityIcons
               name="magnify"

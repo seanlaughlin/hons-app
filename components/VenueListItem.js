@@ -11,9 +11,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableWithoutFeedback } from "react-native";
 
-function VenueListItem({ venue, location, ...others }) {
+function VenueListItem({ venue, ...others }) {
   const navigation = useNavigation();
-
+  console.log(venue);
   const handleVenuePress = () => {
     navigation.navigate("VenueInfoScreen", { venue: venue });
   };
@@ -23,7 +23,7 @@ function VenueListItem({ venue, location, ...others }) {
         style={{ flexDirection: "row", alignItems: "center", columnGap: 5 }}
       >
         <Image
-          source={venue.images[0]}
+          source={{ uri: venue.imageUris[0] }}
           style={styles.image}
           accessibilityElementsHidden={true}
         />
@@ -32,11 +32,7 @@ function VenueListItem({ venue, location, ...others }) {
           <AppText style={{ fontWeight: 600 }}>
             {capitalise(venue.type)}
           </AppText>
-          {location && (
-            <AppText>
-              {(getDistance(location, venue.coords) / 1000).toFixed(2)} km
-            </AppText>
-          )}
+          <AppText>{venue.distanceToUser} km</AppText>
         </View>
       </View>
       {venue.accessibility.map((access) => {

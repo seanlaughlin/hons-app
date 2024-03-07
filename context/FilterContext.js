@@ -1,12 +1,37 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 
 const FilterContext = createContext();
 
 export const FilterContextProvider = ({ children }) => {
   const [selectedAccessibilities, setSelectedAccessibilities] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedDistance, setSelectedDistance] = useState(null);
+  const [selectedDistance, setSelectedDistance] = useState(1); // default 1km
   const [searchTerm, setSearchTerm] = useState(null);
+
+  let filters = {
+    selectedAccessibilities,
+    selectedCategories,
+    selectedDistance,
+    searchTerm,
+  };
+
+  const updateFilters = () => {
+    filters = {
+      selectedAccessibilities,
+      selectedCategories,
+      selectedDistance,
+      searchTerm,
+    };
+  };
+
+  useEffect(() => {
+    updateFilters();
+  }, [
+    selectedAccessibilities,
+    selectedCategories,
+    selectedDistance,
+    searchTerm,
+  ]);
 
   return (
     <FilterContext.Provider
@@ -19,6 +44,7 @@ export const FilterContextProvider = ({ children }) => {
         setSelectedDistance,
         searchTerm,
         setSearchTerm,
+        filters,
       }}
     >
       {children}

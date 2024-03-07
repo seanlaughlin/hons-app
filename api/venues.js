@@ -11,4 +11,5 @@ const getFilteredVenues = (filters) =>
 
 export default {
   getVenues,
+  getFilteredVenues,
 };
