@@ -31,7 +31,12 @@ function VenueCategoryScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
       <BackButton />
-      <AppText style={styles.title}>{capitalise(title)}</AppText>
+      <View style={styles.header}>
+        <AppText style={styles.title}>{capitalise(title)}</AppText>
+        <AppText style={{ fontSize: 15 }}>
+          {getFilteredVenues.data.length} matching venues
+        </AppText>
+      </View>
       <View style={styles.resultBox}>
         {getFilteredVenues.data.length > 0 ? (
           getFilteredVenues.data.map((venue) => {
@@ -41,7 +46,6 @@ function VenueCategoryScreen(props) {
           <AppText>No venues to display.</AppText>
         )}
       </View>
-      <FiltersButton style={styles.filterButton} />
     </SafeAreaView>
   );
 }
@@ -52,9 +56,9 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     height: "100%",
   },
-  filterButton: {
-    position: "absolute",
-    bottom: 10,
+  header: {
+    alignItems: "center",
+    marginBottom: 10,
   },
   resultBox: {
     borderTopColor: colors.border,
@@ -64,7 +68,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     color: colors.primary,
-    marginBottom: 20,
   },
 });
 
