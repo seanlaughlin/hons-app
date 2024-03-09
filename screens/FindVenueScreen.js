@@ -34,7 +34,6 @@ function FindVenueScreen(props) {
       filters: { categoryIds: [category._id] },
       location,
     });
-    console.log(location);
   };
 
   return (

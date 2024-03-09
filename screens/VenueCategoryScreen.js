@@ -19,9 +19,7 @@ function VenueCategoryScreen(props) {
   useEffect(() => {
     const fetchVenues = async () => {
       try {
-        await getFilteredVenues
-          .request({ ...filters, location })
-          .then(console.log(getFilteredVenues));
+        await getFilteredVenues.request({ ...filters, location });
       } catch (error) {
         console.error("Error fetching venues:", error);
       }

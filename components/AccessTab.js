@@ -4,13 +4,19 @@ import SelectableList from "./SelectableList";
 import accessCriteriaApi from "../api/accessCriteria";
 import { useEffect } from "react";
 import accessibilityIconMapping from "../config/accessibilityIconMapping";
-import AppText from "./AppText";
 
 const AccessTab = () => {
   const accessCriteria = useApi(accessCriteriaApi.getAccessCriteria);
 
   useEffect(() => {
-    accessCriteria.request();
+    const fetchCriteria = async () => {
+      try {
+        await accessCriteria.request();
+      } catch (error) {
+        console.error("Error fetching accessCriteria:", error);
+      }
+    };
+    fetchCriteria();
   }, []);
 
   return (

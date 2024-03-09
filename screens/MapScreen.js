@@ -41,10 +41,21 @@ function MapScreen(props) {
 
   useEffect(() => {
     if (initLocation) {
+      const categoryIds = filters.selectedCategories.map(
+        (category) => category._id
+      );
+
+      const accessibilityCriteria = filters.selectedAccessibilities.map(
+        (accessibility) => accessibility.criteria
+      );
       setLocation(initLocation);
-      getFilteredVenues.request({ location: initLocation });
+      getFilteredVenues.request({
+        location: initLocation,
+        accessibilityCriteria: accessibilityCriteria,
+        categoryIds: categoryIds,
+      });
     }
-  }, [initLocation]);
+  }, [initLocation, filters]);
 
   useEffect(() => {
     if (location) {

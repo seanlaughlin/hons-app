@@ -1,6 +1,6 @@
 // SearchFilterModal.js
 
-import React from "react";
+import React, { useState } from "react";
 import { Modal, SafeAreaView, useWindowDimensions } from "react-native";
 import AppText from "./AppText";
 import { Formik } from "formik";
@@ -22,8 +22,8 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
   } = useFilterContext();
 
   const layout = useWindowDimensions();
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
     { key: "distance", title: "Distance" },
     { key: "access", title: "Access" },
     { key: "categories", title: "Categories" },
