@@ -12,13 +12,13 @@ function Search({ placeholder, onSubmit, ...others }) {
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
-    if (searchValue !== "") {
-      setSearchTerm(searchValue);
+    if (searchValue.trim() !== "") {
+      setSearchTerm(searchValue.trim());
     }
   }, [searchValue, setSearchTerm]);
 
   const handleSearch = async () => {
-    onSubmit(searchValue);
+    onSubmit(searchValue.trim());
   };
 
   return (

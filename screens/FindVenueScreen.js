@@ -14,7 +14,7 @@ import { useFilterContext } from "../context/FilterContext";
 function FindVenueScreen(props) {
   const navigation = useNavigation();
   const location = useLocation();
-  const { filters } = useFilterContext();
+  const { filters, setSearchTerm } = useFilterContext();
 
   const getCategoriesApi = useApi(categoriesApi.getCategories);
 
@@ -27,6 +27,7 @@ function FindVenueScreen(props) {
       }
     };
     fetchCategories();
+    setSearchTerm(null);
   }, []);
 
   const gotoCategory = (category) => {
@@ -41,6 +42,14 @@ function FindVenueScreen(props) {
     });
   };
 
+  const gotoSearchResults = () => {
+    console.log(filters);
+    navigation.navigate("VenueResultsScreen", {
+      title: "Search Results",
+      filters,
+    });
+  };
+
   return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -51,7 +60,7 @@ function FindVenueScreen(props) {
         </Text>
         <Search
           placeholder={"I'm looking for..."}
-          onSubmit={() => console.log("submitted search")}
+          onSubmit={gotoSearchResults}
           accessibilityLabel="Venue search field"
         />
         <FlatList

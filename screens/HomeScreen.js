@@ -15,7 +15,7 @@ import { useFilterContext } from "../context/FilterContext";
 
 function HomeScreen(props) {
   const navigation = useNavigation();
-  const { filters, setSearchTerm } = useFilterContext();
+  const { filters } = useFilterContext();
   useEffect(() => {
     AccessibilityInfo.announceForAccessibility("Welcome Access Local");
   }, []);
