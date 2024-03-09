@@ -94,18 +94,18 @@ function MapModal({
               <AppText>Tel: {venue.contact.phone}</AppText>
             </View>
             <View>
-              {/* Amend to work with accessibility api*/}
-              {/* <FlatList
+              <FlatList
                 data={venue.accessibility.filter(
                   (item) => item.reportedFor > 0 && item.reportedAgainst === 0
                 )}
-                renderItem={({ item }) => <ModalAccessItem item={item} />}
-                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                  <ModalAccessItem item={item} accessibilityLabel={item.name} />
+                )}
+                keyExtractor={(item) => item.criteria.toString()}
                 contentContainerStyle={styles.venueAccessInfo}
                 showsVerticalScrollIndicator={true}
                 style={{ maxHeight: 220 }}
-                accessibilityLabel="Venue Accessibility information"
-              /> */}
+              />
             </View>
           </View>
           <View style={styles.buttonsContainer}>

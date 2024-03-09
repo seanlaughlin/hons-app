@@ -1,5 +1,3 @@
-// SearchFilterModal.js
-
 import React, { useState } from "react";
 import { Modal, SafeAreaView, useWindowDimensions } from "react-native";
 import AppText from "./AppText";

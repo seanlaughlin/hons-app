@@ -17,7 +17,7 @@ import { getDistance } from "../utility/mapUtils";
 function VenueInfoScreen({ route }) {
   const [distance, setDistance] = useState(0);
   const { venue } = route.params;
-  console.log(venue.imageUris);
+
   const location = useLocation();
 
   const navigation = useNavigation();

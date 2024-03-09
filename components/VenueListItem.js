@@ -13,7 +13,7 @@ import { TouchableWithoutFeedback } from "react-native";
 
 function VenueListItem({ venue, ...others }) {
   const navigation = useNavigation();
-  console.log(venue);
+
   const handleVenuePress = () => {
     navigation.navigate("VenueInfoScreen", { venue: venue });
   };

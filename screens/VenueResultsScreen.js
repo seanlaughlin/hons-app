@@ -10,10 +10,11 @@ import FiltersButton from "../components/FiltersButton";
 
 import venuesApi from "../api/venues";
 import useApi from "../hooks/useApi";
+import useLocation from "../hooks/useLocation";
 
 function VenueCategoryScreen(props) {
-  const { title, filters = [], location } = props.route.params;
-
+  const { title, filters = [] } = props.route.params;
+  const location = useLocation();
   const getFilteredVenues = useApi(venuesApi.getFilteredVenues);
 
   useEffect(() => {
@@ -25,7 +26,7 @@ function VenueCategoryScreen(props) {
       }
     };
     fetchVenues();
-  }, []);
+  }, [location]);
 
   return (
     <SafeAreaView style={styles.container}>

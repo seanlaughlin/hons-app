@@ -1,23 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 
 import AppTextInput from "./AppTextInput";
 import AppButton from "./AppButton";
 import colors from "../config/colors";
 import FiltersButton from "./FiltersButton";
+import { useFilterContext } from "../context/FilterContext";
 
 function Search({ placeholder, onSubmit, ...others }) {
+  const { setSearchTerm } = useFilterContext();
+  const [searchValue, setSearchValue] = useState("");
+
+  useEffect(() => {
+    if (searchValue !== "") {
+      setSearchTerm(searchValue);
+    }
+  }, [searchValue, setSearchTerm]);
+
+  const handleSearch = async () => {
+    onSubmit(searchValue);
+  };
+
   return (
     <View style={styles.container} {...others}>
       <AppTextInput
         placeholder={placeholder}
         accessibilityLabel="Field for search term"
         accessibilityRole="search"
-      ></AppTextInput>
+        value={searchValue}
+        onChangeText={setSearchValue}
+      />
       <View style={styles.buttonContainer}>
         <AppButton
           title="🔎 Search"
-          onPress={onSubmit}
+          onPress={handleSearch}
           style={styles.button}
           borderColour={colors.secondary}
           accessibilityLabel="Search button"

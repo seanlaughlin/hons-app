@@ -1,28 +1,32 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useContext, useState } from "react";
+
+import venuesApi from "../api/venues";
+import { useFilterContext } from "./FilterContext";
 
 const VenueContext = createContext();
 
-export const VenueContextProvider = ({ children }) => {
-  const [selectedVenues, setSelectedVenues] = useState([]);
+export const VenueProvider = ({ children }) => {
+  const [venues, setVenues] = useState([]);
+  const { filters } = useFilterContext();
+
+  const fetchVenues = async () => {
+    try {
+      const result = await venuesApi.getFilteredVenues(filters);
+      setVenues(result.data);
+    } catch (error) {
+      console.error("Error fetching venues:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchVenues();
+  }, []);
 
   return (
-    <VenueContext.Provider
-      value={{
-        selectedVenues,
-        setSelectedVenues,
-      }}
-    >
+    <VenueContext.Provider value={{ venues, fetchVenues }}>
       {children}
     </VenueContext.Provider>
   );
 };
 
-export const useVenues = () => {
-  const context = useContext(VenueContext);
-  if (!context) {
-    throw new Error("useVenues must be used within a VenueContextProvider");
-  }
-  return context;
-};
-
-export default VenueContext;
+export const useVenueContext = () => useContext(VenueContext);

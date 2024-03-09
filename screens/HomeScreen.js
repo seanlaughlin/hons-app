@@ -10,11 +10,22 @@ import {
 import colors from "../config/colors";
 import ContentContainer from "../components/ContentContainer";
 import Search from "../components/Search";
+import { useNavigation } from "@react-navigation/native";
+import { useFilterContext } from "../context/FilterContext";
 
 function HomeScreen(props) {
+  const navigation = useNavigation();
+  const { filters, setSearchTerm } = useFilterContext();
   useEffect(() => {
     AccessibilityInfo.announceForAccessibility("Welcome Access Local");
   }, []);
+
+  const gotoSearchResults = () => {
+    navigation.navigate("VenueResultsScreen", {
+      title: "Search Results",
+      filters,
+    });
+  };
 
   return (
     <>
@@ -38,7 +49,7 @@ function HomeScreen(props) {
           <Text style={styles.search}>Find a Venue</Text>
           <Search
             placeholder={"I'm looking for..."}
-            onSubmit={() => console.log("submitted search")}
+            onSubmit={gotoSearchResults}
             accessibilityLabel="Venue search field"
           />
         </ContentContainer>

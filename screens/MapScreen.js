@@ -1,5 +1,5 @@
-import MapView, { PROVIDER_GOOGLE, Polyline } from "react-native-maps";
-import React, { useState, useEffect, useRef } from "react";
+import MapView, { PROVIDER_GOOGLE, Polyline, Circle } from "react-native-maps";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { View, StyleSheet, AccessibilityInfo } from "react-native";
 import MapViewDirections from "react-native-maps-directions";
 
@@ -17,6 +17,7 @@ import { removeHtmlTags } from "../utility/removeHtmlTags";
 import { useFilterContext } from "../context/FilterContext";
 import venuesApi from "../api/venues";
 import useApi from "../hooks/useApi";
+import FiltersButton from "../components/FiltersButton";
 
 function MapScreen(props) {
   const mapRef = useRef(null);
@@ -41,18 +42,15 @@ function MapScreen(props) {
 
   useEffect(() => {
     if (initLocation) {
-      const categoryIds = filters.selectedCategories.map(
-        (category) => category._id
-      );
+      const categoryIds = filters.categoryIds;
 
-      const accessibilityCriteria = filters.selectedAccessibilities.map(
-        (accessibility) => accessibility.criteria
-      );
+      const accessibilityCriteria = filters.accessibilityCriteria;
       setLocation(initLocation);
       getFilteredVenues.request({
         location: initLocation,
         accessibilityCriteria: accessibilityCriteria,
         categoryIds: categoryIds,
+        maxDistance: filters.selectedDistance,
       });
     }
   }, [initLocation, filters]);
@@ -161,6 +159,12 @@ function MapScreen(props) {
             }
             accessibilityLabel="Map of the local area"
           >
+            <Circle
+              center={location}
+              radius={filters.selectedDistance * 1000}
+              strokeWidth={3}
+              strokeColor={colors.primary}
+            />
             {isNavigationMode && modalVenue && origin && modalVenue.coords && (
               <MapViewDirections
                 origin={origin}
@@ -250,6 +254,9 @@ function MapScreen(props) {
           </>
         )}
       </View>
+      {!isNavigationMode && !isModalVisible && (
+        <FiltersButton style={styles.filterButton} />
+      )}
     </View>
   );
 }
@@ -265,6 +272,10 @@ const styles = StyleSheet.create({
   },
   directionsBox: {
     bottom: 160,
+  },
+  filterButton: {
+    position: "absolute",
+    bottom: 30,
   },
   navigationButtons: {
     position: "absolute",

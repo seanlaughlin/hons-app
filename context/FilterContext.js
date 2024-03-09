@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import accessCriteriaApi from "../api/accessCriteria";
+
 import categoriesApi from "../api/categories";
 
 const FilterContext = createContext();
@@ -9,6 +9,8 @@ export const FilterContextProvider = ({ children }) => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedDistance, setSelectedDistance] = useState(1); // default 1km
   const [searchTerm, setSearchTerm] = useState(null);
+  const [location, setLocation] = useState(null);
+  const [filters, setFilters] = useState({});
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -19,33 +21,24 @@ export const FilterContextProvider = ({ children }) => {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchCategories();
   }, []);
 
-  let filters = {
-    selectedAccessibilities,
-    selectedCategories,
-    selectedDistance,
-    searchTerm,
-  };
-
-  const updateFilters = () => {
-    filters = {
-      selectedAccessibilities,
-      selectedCategories,
+  useEffect(() => {
+    setFilters({
+      accessibilityCriteria: selectedAccessibilities.map(
+        (accessibility) => accessibility.criteria
+      ),
+      categoryIds: selectedCategories.map((category) => category._id),
       selectedDistance,
       searchTerm,
-    };
-  };
-
-  useEffect(() => {
-    updateFilters();
+    });
   }, [
     selectedAccessibilities,
     selectedCategories,
     selectedDistance,
     searchTerm,
+    location,
   ]);
 
   return (
@@ -60,6 +53,8 @@ export const FilterContextProvider = ({ children }) => {
         searchTerm,
         setSearchTerm,
         filters,
+        location,
+        setLocation,
       }}
     >
       {children}

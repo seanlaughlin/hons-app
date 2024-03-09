@@ -1,5 +1,5 @@
-// useAccessibilities.js
 import { useState, useEffect } from "react";
+
 import accessCriteriaApi from "../api/accessCriteria";
 import useApi from "../hooks/useApi";
 

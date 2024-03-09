@@ -9,10 +9,12 @@ import Card from "../components/Card";
 import categoriesApi from "../api/categories";
 import useApi from "../hooks/useApi";
 import useLocation from "../hooks/useLocation";
+import { useFilterContext } from "../context/FilterContext";
 
 function FindVenueScreen(props) {
   const navigation = useNavigation();
   const location = useLocation();
+  const { filters } = useFilterContext();
 
   const getCategoriesApi = useApi(categoriesApi.getCategories);
 
@@ -29,9 +31,12 @@ function FindVenueScreen(props) {
 
   const gotoCategory = (category) => {
     const catName = category.name;
-    navigation.navigate("VenueCategoryScreen", {
+    navigation.navigate("VenueResultsScreen", {
       title: catName,
-      filters: { categoryIds: [category._id] },
+      filters: {
+        categoryIds: [category._id],
+        accessibilityCriteria: filters.accessibilityCriteria,
+      },
       location,
     });
   };
