@@ -4,9 +4,13 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 import colors from "../config/colors";
-import AppText from "./AppText";
 
-function BackButton({ containerStyle, ...props }) {
+function BackButton({
+  containerStyle,
+  color = colors.primary,
+  size = 30,
+  ...props
+}) {
   const navigation = useNavigation();
 
   return (
@@ -17,27 +21,16 @@ function BackButton({ containerStyle, ...props }) {
         onPress={() => navigation.goBack()}
         accessibilityRole="button"
       >
-        <MaterialCommunityIcons
-          name="chevron-left-circle"
-          size={30}
-          color={colors.primary}
-        />
-        <AppText style={{ fontSize: 10 }}>Back</AppText>
+        <MaterialCommunityIcons name="chevron-left" size={size} color={color} />
       </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  backButtonContainer: {
-    position: "absolute",
-    top: 70,
-    left: 15,
-    zIndex: 1,
-  },
+  backButtonContainer: {},
   backButton: {
     alignItems: "center",
-    paddingHorizontal: 10,
   },
 });
 

@@ -17,6 +17,7 @@ import categoriesApi from "../api/categories";
 import useApi from "../hooks/useApi";
 import useLocation from "../hooks/useLocation";
 import { useFilterContext } from "../context/FilterContext";
+import ContentContainer from "../components/ContentContainer";
 
 function FindVenueScreen(props) {
   const navigation = useNavigation();
@@ -66,7 +67,7 @@ function FindVenueScreen(props) {
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.light }}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
-          <View style={styles.header}>
+          <ContentContainer style={styles.header}>
             <Text style={styles.title}>Find a Venue</Text>
             <Text style={{ fontSize: 16 }}>
               Search for a service or venue you're looking for in the box below,
@@ -77,7 +78,7 @@ function FindVenueScreen(props) {
               onSubmit={gotoSearchResults}
               accessibilityLabel="Venue search field"
             />
-          </View>
+          </ContentContainer>
           <SectionList
             sections={sections}
             keyExtractor={(item) => item._id}
@@ -105,7 +106,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light,
   },
   header: {
-    backgroundColor: colors.white,
     padding: 20,
     borderRadius: 10,
     marginVertical: 10,

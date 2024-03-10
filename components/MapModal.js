@@ -71,9 +71,9 @@ function MapModal({
           <View style={styles.venueInfo}>
             <View
               style={{
-                flex: 4,
+                flex: 3,
                 alignItems: "flex-start",
-                rowGap: 5,
+                rowGap: 2,
               }}
             >
               <Image
@@ -133,15 +133,14 @@ function MapModal({
 const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: "row",
-    columnGap: 25,
   },
   closeIcon: {
     alignSelf: "flex-start",
   },
   image: {
     width: "60%",
-    height: 130,
-    width: 130,
+    height: 140,
+    width: 140,
     borderRadius: 8,
     borderColor: colors.medium,
     borderWidth: 1,
@@ -154,25 +153,28 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   modalContent: {
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: colors.white,
     alignSelf: "center",
     padding: 20,
     borderRadius: 20,
     shadowColor: "grey",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.7,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
     width: "100%",
     maxHeight: 500,
   },
   subtitle: {
     fontSize: 15,
   },
-  venueAccessInfo: { alignItems: "flex-start", rowGap: 2 },
+  venueAccessInfo: {
+    alignItems: "flex-start",
+    rowGap: 2,
+  },
   venueInfo: {
     flexDirection: "row",
-    marginVertical: 10,
+    marginVertical: 20,
     justifyContent: "center",
     alignItems: "center",
   },

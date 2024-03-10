@@ -40,7 +40,13 @@ function HomeScreen(props) {
             Find accessible local venues in your neighbourhood
           </Text>
         </View>
-        <ContentContainer style={{ padding: 20, marginHorizontal: 55 }}>
+        <ContentContainer
+          style={{
+            marginHorizontal: 55,
+            backgroundColor: "rgba(255, 255, 255, 0.75)",
+            width: "auto",
+          }}
+        >
           <Text style={styles.welcome}>Welcome! 🙋‍♀️</Text>
           <Text>
             New here? Check out our 'Getting Started' guide to learn how to use

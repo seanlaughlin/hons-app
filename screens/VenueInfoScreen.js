@@ -20,6 +20,7 @@ import BackButton from "../components/BackButton";
 import useLocation from "../hooks/useLocation";
 import { getDistance } from "../utility/mapUtils";
 import ListItemSeparator from "../components/ListItemSeparator";
+import ContentContainer from "../components/ContentContainer";
 
 function VenueInfoScreen({ route }) {
   const [distance, setDistance] = useState(0);
@@ -40,21 +41,19 @@ function VenueInfoScreen({ route }) {
     >
       {/* <BackButton /> */}
       <ScrollView contentContainerStyle={styles.container}>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            flex: 1,
-            backgroundColor: colors.white,
-            width: "100%",
-            borderRadius: 10,
-            paddingHorizontal: 5,
-            paddingVertical: 15,
-          }}
-        >
-          <AppText style={styles.title} accessibilityRole="header">
-            {venue.name}
-          </AppText>
+        <ContentContainer style={{ paddingHorizontal: 0, paddingTop: 0 }}>
+          <View style={styles.header}>
+            <BackButton color={colors.white} size={40} />
+            <View style={styles.titleContainer}>
+              <AppText
+                style={styles.title}
+                accessibilityRole="header"
+                numberOfLines={1}
+              >
+                {venue.name}
+              </AppText>
+            </View>
+          </View>
           <AppText style={{ fontSize: 18 }}>
             {capitalise(venue.type)} in {venue.neighbourhood} ({distance} km
             away)
@@ -62,11 +61,11 @@ function VenueInfoScreen({ route }) {
           <ImageCarousel imageUris={venue.imageUris} />
           <AppText style={{ fontSize: 18 }}>{venue.address}</AppText>
           <View style={styles.buttonsContainer}>
-            <AppButton title="🗺 View on Map" />
+            <AppButton title="🗺 Get Directions" />
             <AppButton title="⭐ Add to Favorites" />
           </View>
-        </View>
-        <View style={styles.venueInfo}>
+        </ContentContainer>
+        <ContentContainer style={styles.venueInfo}>
           <View style={{ flex: 2 }}>
             <AppText style={styles.infoHeading}>Opening Hours</AppText>
             {venue.openingHours.map((item) => (
@@ -93,8 +92,8 @@ function VenueInfoScreen({ route }) {
                 )
             )}
           </View>
-        </View>
-        <View
+        </ContentContainer>
+        <ContentContainer
           style={styles.venueAccess}
           accessibilityLabel="Accessibility Information"
         >
@@ -115,8 +114,8 @@ function VenueInfoScreen({ route }) {
             )}
             keyExtractor={(item) => item.criteria.toString()}
           />
-        </View>
-        <View style={styles.reviewBox}>
+        </ContentContainer>
+        <ContentContainer>
           <AppText
             style={{ color: colors.primary, fontSize: 20, marginBottom: 5 }}
           >
@@ -129,7 +128,7 @@ function VenueInfoScreen({ route }) {
             a few short questions on your experience at {venue.name}.
           </AppText>
           <AppButton title="📖 Submit a Review" style={{ marginTop: 10 }} />
-        </View>
+        </ContentContainer>
       </ScrollView>
     </SafeAreaView>
   );
@@ -153,35 +152,32 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     overflow: "hidden",
   },
-  reviewBox: {
-    justifyContent: "center",
-    alignItems: "center",
+  header: {
+    backgroundColor: colors.primary,
     width: "100%",
-    backgroundColor: colors.white,
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    paddingVertical: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 2,
+    marginBottom: 5,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  titleContainer: {
+    flex: 1,
+    justifyContent: "center",
+    flexDirection: "row",
+    marginRight: 40,
   },
   title: {
-    fontSize: 35,
-    color: colors.primary,
-    marginTop: 5,
+    fontSize: 30,
+    color: colors.white,
   },
   venueAccess: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    backgroundColor: colors.white,
-    borderRadius: 10,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
   },
   venueInfo: {
     flexDirection: "row",
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    justifyContent: "center",
-    width: "100%",
-    backgroundColor: colors.white,
-    borderRadius: 10,
+    alignItems: "flex-start",
   },
 });
 
