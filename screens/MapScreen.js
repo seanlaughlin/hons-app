@@ -50,7 +50,7 @@ function MapScreen(props) {
         location: initLocation,
         accessibilityCriteria: accessibilityCriteria,
         categoryIds: categoryIds,
-        maxDistance: filters.selectedDistance,
+        maxDistance: 5,
       });
     }
   }, [initLocation, filters]);
