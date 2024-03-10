@@ -31,8 +31,8 @@ function BackButton({ containerStyle, ...props }) {
 const styles = StyleSheet.create({
   backButtonContainer: {
     position: "absolute",
-    top: 50,
-    left: 0,
+    top: 70,
+    left: 15,
     zIndex: 1,
   },
   backButton: {

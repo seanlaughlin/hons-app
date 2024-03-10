@@ -52,10 +52,12 @@ function ImageWithMagnification({
             onPress={handleCloseModal}
             color={colors.light}
           />
-          <Image
-            source={{ uri: selectedImage }}
-            style={styles.fullScreenImage}
-          />
+          <View style={styles.fullScreenImageContainer}>
+            <Image
+              source={{ uri: selectedImage }}
+              style={styles.fullScreenImage}
+            />
+          </View>
         </View>
       </Modal>
     </>
@@ -86,9 +88,20 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.7)",
   },
   fullScreenImage: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    resizeMode: "contain",
+    borderRadius: 10,
+  },
+  fullScreenImageContainer: {
     width: "90%",
     height: "90%",
-    resizeMode: "contain",
+    borderRadius: 10,
+    overflow: "hidden",
+    backgroundColor: "transparent",
+    justifyContent: "center",
+    alignItems: "center",
   },
   closeButton: {
     position: "absolute",

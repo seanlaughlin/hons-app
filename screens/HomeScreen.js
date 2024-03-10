@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     position: "absolute",
-    top: 70,
+    top: 80,
     alignItems: "center",
   },
   tagline: {
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 40,
     fontWeight: "600",
-    paddingTop: 50,
+    paddingTop: 60,
     color: colors.dark,
   },
   welcome: {

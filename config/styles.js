@@ -4,7 +4,8 @@ import { Platform } from "react-native";
 export default {
   colors,
   text: {
-    fontFamily: Platform.OS === "android" ? "Arial" : "Arial",
-    color: colors.medium,
+    fontSize: 18,
+    fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
+    color: colors.dark,
   },
 };

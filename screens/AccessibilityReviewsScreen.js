@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
 
 import AppText from "../components/AppText";
-import reviews from "../mockdata/reviews";
+// import reviews from "../mockdata/reviews";
 import BackButton from "../components/BackButton";
 import colors from "../config/colors";
 import AccessibilityReview from "../components/AccessibilityReview";
@@ -12,20 +12,20 @@ function AccessibilityReviewsScreen({ route }) {
 
   const [accessibilityReviews, setAccessibilityReviews] = useState([]);
 
-  useEffect(() => {
-    const aReviews = reviews.filter(
-      (review) =>
-        review.venueId === venue.id &&
-        review.accessibilityId === accessibilityItem.id
-    );
-    if (aReviews.length > 0) {
-      setAccessibilityReviews(aReviews[0].reviews);
-    }
-  }, [venue.id, accessibilityItem.id]);
+  // useEffect(() => {
+  //   const aReviews = reviews.filter(
+  //     (review) =>
+  //       review.venueId === venue.id &&
+  //       review.accessibilityId === accessibilityItem.id
+  //   );
+  //   if (aReviews.length > 0) {
+  //     setAccessibilityReviews(aReviews[0].reviews);
+  //   }
+  // }, [venue.id, accessibilityItem.id]);
 
   return (
     <SafeAreaView>
-      <BackButton />
+      {/* <BackButton />
       <ScrollView contentContainerStyle={styles.container}>
         <AppText
           style={styles.title}
@@ -45,7 +45,7 @@ function AccessibilityReviewsScreen({ route }) {
         ) : (
           <AppText>No reviews to display.</AppText>
         )}
-      </ScrollView>
+      </ScrollView> */}
     </SafeAreaView>
   );
 }

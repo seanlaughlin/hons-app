@@ -14,7 +14,7 @@ const SelectableItem = ({ children, onPress, isSelected }) => {
               color={isSelected ? colors.green : colors.medium}
               value={isSelected}
               onValueChange={onPress}
-              style={{ width: 30, height: 30, borderRadius: 20 }}
+              style={{ width: 25, height: 25, borderRadius: 20 }}
             />
           </View>
         </View>
@@ -25,9 +25,7 @@ const SelectableItem = ({ children, onPress, isSelected }) => {
 
 const styles = StyleSheet.create({
   container: {
-    borderBottomColor: colors.border,
-    borderBottomWidth: 1,
-    paddingVertical: 5,
+    paddingVertical: 8,
   },
   requirementContainer: {
     flexDirection: "row",

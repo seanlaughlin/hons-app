@@ -27,13 +27,10 @@ function Card({ title, imageUrl, onPress, ...others }) {
 const styles = StyleSheet.create({
   card: {
     flex: 1,
-    borderRadius: 15,
+    borderRadius: 10,
     backgroundColor: colors.white,
-    margin: 5,
     overflow: "hidden",
-    borderColor: colors.medium,
-    borderWidth: 1,
-    maxWidth: "50%",
+    marginBottom: 10,
   },
   detailsContainer: {
     padding: 8,
@@ -44,7 +41,7 @@ const styles = StyleSheet.create({
     height: 120,
   },
   title: {
-    fontSize: 15,
+    fontSize: 18,
     marginBottom: 5,
   },
 });

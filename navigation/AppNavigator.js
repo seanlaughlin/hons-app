@@ -7,6 +7,7 @@ import MapNavigator from "./MapNavigator";
 import FindVenueNavigator from "./FindVenueNavigator";
 import HomeScreen from "../screens/HomeScreen";
 import VenueResultsScreen from "../screens/VenueResultsScreen";
+import VenueInfoScreen from "../screens/VenueInfoScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -47,6 +48,7 @@ const AppNavigator = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Tabs" component={TabNavigator} />
     <Stack.Screen name="VenueResultsScreen" component={VenueResultsScreen} />
+    <Stack.Screen name="VenueInfoScreen" component={VenueInfoScreen} />
   </Stack.Navigator>
 );
 

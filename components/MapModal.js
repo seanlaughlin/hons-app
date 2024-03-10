@@ -87,11 +87,13 @@ function MapModal({
                 Opening Hours
               </AppText>
               {venue.openingHours.map((item) => (
-                <AppText key={item.id}>
+                <AppText key={item.id} style={{ fontSize: 15 }}>
                   {item.time}: {item.hours}
                 </AppText>
               ))}
-              <AppText>Tel: {venue.contact.phone}</AppText>
+              <AppText style={{ fontSize: 15 }}>
+                Tel: {venue.contact.phone}
+              </AppText>
             </View>
             <View>
               <FlatList
@@ -156,7 +158,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.white,
     alignSelf: "center",
-    padding: 15,
+    padding: 20,
     borderRadius: 20,
     shadowColor: "grey",
     shadowOffset: { width: 0, height: 3 },
@@ -167,10 +169,10 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 15,
   },
-  venueAccessInfo: { alignItems: "flex-start", rowGap: 5 },
+  venueAccessInfo: { alignItems: "flex-start", rowGap: 2 },
   venueInfo: {
     flexDirection: "row",
-    marginVertical: 20,
+    marginVertical: 10,
     justifyContent: "center",
     alignItems: "center",
   },

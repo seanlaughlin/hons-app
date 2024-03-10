@@ -41,18 +41,18 @@ function VenueInfoScreen({ route }) {
           <AppText style={styles.title} accessibilityRole="header">
             {venue.name}
           </AppText>
-          <AppText style={{ fontSize: 20 }}>
+          <AppText style={{ fontSize: 18 }}>
             {capitalise(venue.type)} in {venue.neighbourhood} ({distance} km
             away)
           </AppText>
           <ImageCarousel imageUris={venue.imageUris} />
         </ScrollView>
-        <AppText style={{ fontSize: 20 }}>{venue.address}</AppText>
+        <AppText style={{ fontSize: 18 }}>{venue.address}</AppText>
         <View style={styles.venueInfo}>
           <View style={{ flex: 2 }}>
             <AppText style={styles.infoHeading}>Opening Hours</AppText>
             {venue.openingHours.map((item) => (
-              <AppText style={{ marginBottom: 5 }}>
+              <AppText style={{ marginBottom: 5, fontSize: 13 }}>
                 {item.time}: {item.hours}
               </AppText>
             ))}
@@ -68,7 +68,7 @@ function VenueInfoScreen({ route }) {
                       style={{ marginRight: 10 }}
                       accessibilityElementsHidden={true}
                     />
-                    <AppText style={{ marginBottom: 5 }}>
+                    <AppText style={{ marginBottom: 5, fontSize: 13 }}>
                       {capitalise(key)} : {value}
                     </AppText>
                   </View>
@@ -99,13 +99,13 @@ function VenueInfoScreen({ route }) {
           >
             Something Missing?
           </AppText>
-          <AppText style={{ fontSize: 16 }}>
+          <AppText style={{ fontSize: 15 }}>
             As a community supported application, we rely on user submissions to
             provide venue accessibility information. If you'd like to report
             something about this venue, please click the button below to answer
             a few short questions on your experience at {venue.name}.
           </AppText>
-          <AppButton title="📖 Submit a Review" />
+          <AppButton title="📖 Submit a Review" style={{ marginTop: 10 }} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -117,6 +117,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingTop: 45,
+    backgroundColor: colors.light,
+    paddingBottom: 20,
+    overflow: "hidden",
   },
   infoHeading: {
     fontSize: 16,

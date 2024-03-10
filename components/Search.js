@@ -14,6 +14,8 @@ function Search({ placeholder, onSubmit, ...others }) {
   useEffect(() => {
     if (searchValue.trim() !== "") {
       setSearchTerm(searchValue.trim());
+    } else {
+      setSearchTerm("");
     }
   }, [searchValue, setSearchTerm]);
 

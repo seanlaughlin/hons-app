@@ -10,6 +10,7 @@ import accessibilityIconMapping from "../config/accessibilityIconMapping";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableWithoutFeedback } from "react-native";
+import BackButton from "./BackButton";
 
 function VenueListItem({ venue, ...others }) {
   const navigation = useNavigation();
@@ -27,53 +28,77 @@ function VenueListItem({ venue, ...others }) {
           style={styles.image}
           accessibilityElementsHidden={true}
         />
-        <View>
-          <AppText style={styles.name}>{venue.name}</AppText>
-          <AppText style={{ fontWeight: 600 }}>
-            {capitalise(venue.type)}
+        <View style={styles.textContainer}>
+          <AppText style={styles.name} numberOfRows={1}>
+            {venue.name}
           </AppText>
-          <AppText>{venue.distanceToUser} km</AppText>
+          <AppText style={styles.otherText}>{capitalise(venue.type)}</AppText>
+          <AppText style={styles.otherText}>{venue.distanceToUser} km</AppText>
         </View>
       </View>
-      {venue.accessibility.map((access) => {
-        if (access.reportedFor > access.reportedAgainst)
-          return (
-            <MaterialCommunityIcons
-              name={accessibilityIconMapping[access.criteria]}
-              size={28}
-              color={colors.green}
-              accessibilityLabel={access.name}
-            />
-          );
-      })}
-      <TouchableWithoutFeedback onPress={handleVenuePress}>
-        <MaterialCommunityIcons
-          name="chevron-right"
-          size={40}
-          color={colors.medium}
-          accessibilityLabel="Go to venue information"
-          accessibilityRole="button"
-        />
-      </TouchableWithoutFeedback>
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexDirection: "row",
+          flex: 1,
+        }}
+      >
+        <View style={styles.accessIcons}>
+          {venue.accessibility.map((access) => {
+            if (access.reportedFor > access.reportedAgainst)
+              return (
+                <MaterialCommunityIcons
+                  name={accessibilityIconMapping[access.criteria]}
+                  size={28}
+                  color={colors.green}
+                  accessibilityLabel={access.name}
+                />
+              );
+          })}
+        </View>
+        <TouchableWithoutFeedback onPress={handleVenuePress}>
+          <MaterialCommunityIcons
+            name="chevron-right"
+            size={40}
+            color={colors.medium}
+            accessibilityLabel="Go to venue information"
+            accessibilityRole="button"
+          />
+        </TouchableWithoutFeedback>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  accessIcons: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    columnGap: 5,
+  },
   container: {
     flexDirection: "row",
     columnGap: 10,
-    borderBottomColor: colors.border,
-    borderBottomWidth: 1,
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
+    width: "100%",
   },
   image: {
     height: 75,
     width: 75,
+    marginRight: 10,
   },
   name: {
     fontSize: 15,
+    width: 125,
+  },
+  otherText: {
+    fontSize: 12,
+  },
+  textContainer: {
+    paddingVertical: 10,
   },
 });
 

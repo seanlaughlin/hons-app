@@ -5,6 +5,7 @@ import SelectableItem from "./SelectableItem";
 import colors from "../config/colors";
 import AppText from "./AppText";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import ListItemSeparator from "./ListItemSeparator";
 
 const SelectableList = ({ name, data, iconMapping, title }) => {
   const { setFieldValue, values } = useFormikContext();
@@ -52,6 +53,7 @@ const SelectableList = ({ name, data, iconMapping, title }) => {
       </View>
       <FlatList
         data={data}
+        ItemSeparatorComponent={() => <ListItemSeparator />}
         renderItem={({ item }) => (
           <SelectableItem
             onPress={() => handlePress(item)}
@@ -66,6 +68,7 @@ const SelectableList = ({ name, data, iconMapping, title }) => {
                 name={iconMapping[item.criteria]}
                 size={30}
                 color={colors.green}
+                style={{ marginRight: 10 }}
               />
             )}
             <AppText style={{ fontSize: 18 }}>{item.title}</AppText>

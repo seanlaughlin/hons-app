@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, SafeAreaView, Text, FlatList, View } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  Text,
+  SectionList,
+  View,
+  ScrollView,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import colors from "../config/colors";
@@ -50,49 +57,79 @@ function FindVenueScreen(props) {
     });
   };
 
+  const sections = getCategoriesApi.data.map((category) => ({
+    title: category.title,
+    data: [category],
+  }));
+
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
-        <Text style={styles.title}>Find a Venue</Text>
-        <Text style={{ fontSize: 18 }}>
-          Search for a service or venue you're looking for in the box below, or
-          choose a category.
-        </Text>
-        <Search
-          placeholder={"I'm looking for..."}
-          onSubmit={gotoSearchResults}
-          accessibilityLabel="Venue search field"
-        />
-        <FlatList
-          data={getCategoriesApi.data}
-          keyExtractor={(category) => category.name}
-          numColumns={2}
-          accessibilityLabel="Venue categories"
-          renderItem={({ item }) => (
-            <Card
-              title={item.title}
-              imageUrl={item.imageUri}
-              onPress={() => gotoCategory(item)}
-              accessibilityLabel={`${item.title} category`}
-              accessibilityHint="Press to load venues in this category."
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.light }}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <Text style={styles.title}>Find a Venue</Text>
+            <Text style={{ fontSize: 16 }}>
+              Search for a service or venue you're looking for in the box below,
+              or choose a category.
+            </Text>
+            <Search
+              placeholder={"I'm looking for..."}
+              onSubmit={gotoSearchResults}
+              accessibilityLabel="Venue search field"
             />
-          )}
-        />
-      </View>
+          </View>
+          <SectionList
+            sections={sections}
+            keyExtractor={(item) => item._id}
+            numColumns={2}
+            renderItem={({ item }) => (
+              <Card
+                title={item.title}
+                imageUrl={item.imageUri}
+                onPress={() => gotoCategory(item)}
+                accessibilityLabel={`${item.title} category`}
+                accessibilityHint="Press to load venues in this category."
+              />
+            )}
+            ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+          />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
+    backgroundColor: colors.light,
+  },
+  header: {
+    backgroundColor: colors.white,
+    padding: 20,
+    borderRadius: 10,
+    marginVertical: 10,
   },
   title: {
-    fontSize: 40,
+    fontSize: 30,
     marginTop: 20,
     marginBottom: 20,
     textAlign: "center",
     color: colors.primary,
+  },
+  sectionHeader: {
+    fontSize: 24,
+    fontWeight: "bold",
+    backgroundColor: colors.light,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    marginBottom: 10,
+  },
+  contentContainer: {
+    paddingHorizontal: 5,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
   },
 });
 
