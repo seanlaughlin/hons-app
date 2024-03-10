@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
-    columnGap: 10,
   },
 });
 

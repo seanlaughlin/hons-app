@@ -83,8 +83,6 @@ function VenueInfoAccessItem({ item, onPress, ...others }) {
 
 const styles = StyleSheet.create({
   container: {
-    borderTopColor: colors.lightgrey,
-    borderTopWidth: 1,
     paddingVertical: 15,
     paddingHorizontal: 10,
     width: "100%",

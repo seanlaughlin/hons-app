@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, SafeAreaView, ScrollView, View } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  View,
+  FlatList,
+} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
@@ -13,6 +19,7 @@ import AppButton from "../components/AppButton";
 import BackButton from "../components/BackButton";
 import useLocation from "../hooks/useLocation";
 import { getDistance } from "../utility/mapUtils";
+import ListItemSeparator from "../components/ListItemSeparator";
 
 function VenueInfoScreen({ route }) {
   const [distance, setDistance] = useState(0);
@@ -28,14 +35,21 @@ function VenueInfoScreen({ route }) {
   }, [location]);
 
   return (
-    <SafeAreaView>
-      <BackButton />
+    <SafeAreaView
+      style={{ backgroundColor: colors.light, paddingHorizontal: 15 }}
+    >
+      {/* <BackButton /> */}
       <ScrollView contentContainerStyle={styles.container}>
-        <ScrollView
-          contentContainerStyle={{
+        <View
+          style={{
             justifyContent: "center",
             alignItems: "center",
-            flexGrow: 1,
+            flex: 1,
+            backgroundColor: colors.white,
+            width: "100%",
+            borderRadius: 10,
+            paddingHorizontal: 5,
+            paddingVertical: 15,
           }}
         >
           <AppText style={styles.title} accessibilityRole="header">
@@ -46,8 +60,12 @@ function VenueInfoScreen({ route }) {
             away)
           </AppText>
           <ImageCarousel imageUris={venue.imageUris} />
-        </ScrollView>
-        <AppText style={{ fontSize: 18 }}>{venue.address}</AppText>
+          <AppText style={{ fontSize: 18 }}>{venue.address}</AppText>
+          <View style={styles.buttonsContainer}>
+            <AppButton title="🗺 View on Map" />
+            <AppButton title="⭐ Add to Favorites" />
+          </View>
+        </View>
         <View style={styles.venueInfo}>
           <View style={{ flex: 2 }}>
             <AppText style={styles.infoHeading}>Opening Hours</AppText>
@@ -80,22 +98,27 @@ function VenueInfoScreen({ route }) {
           style={styles.venueAccess}
           accessibilityLabel="Accessibility Information"
         >
-          {venue.accessibility.map((item) => (
-            <VenueInfoAccessItem
-              item={item}
-              key={item.id}
-              onPress={() =>
-                navigation.navigate("AccessibilityReviewsScreen", {
-                  venue: venue,
-                  accessibilityItem: item,
-                })
-              }
-            />
-          ))}
+          <FlatList
+            data={venue.accessibility}
+            ItemSeparatorComponent={ListItemSeparator}
+            renderItem={({ item }) => (
+              <VenueInfoAccessItem
+                item={item}
+                key={item.id}
+                onPress={() =>
+                  navigation.navigate("AccessibilityReviewsScreen", {
+                    venue: venue,
+                    accessibilityItem: item,
+                  })
+                }
+              />
+            )}
+            keyExtractor={(item) => item.criteria.toString()}
+          />
         </View>
         <View style={styles.reviewBox}>
           <AppText
-            style={{ color: colors.primary, fontSize: 20, marginBottom: 10 }}
+            style={{ color: colors.primary, fontSize: 20, marginBottom: 5 }}
           >
             Something Missing?
           </AppText>
@@ -113,36 +136,43 @@ function VenueInfoScreen({ route }) {
 }
 
 const styles = StyleSheet.create({
+  buttonsContainer: {
+    flexDirection: "row",
+    marginVertical: 10,
+  },
   container: {
-    justifyContent: "center",
-    alignItems: "center",
-    paddingTop: 45,
     backgroundColor: colors.light,
-    paddingBottom: 20,
+    paddingHorizontal: 10,
     overflow: "hidden",
+    rowGap: 8,
   },
   infoHeading: {
     fontSize: 16,
     fontWeight: 600,
     marginBottom: 8,
+    alignSelf: "center",
+    overflow: "hidden",
   },
   reviewBox: {
-    paddingHorizontal: 20,
     justifyContent: "center",
     alignItems: "center",
+    width: "100%",
+    backgroundColor: colors.white,
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 20,
   },
   title: {
-    fontSize: 40,
-    marginBottom: 5,
+    fontSize: 35,
     color: colors.primary,
+    marginTop: 5,
   },
   venueAccess: {
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    marginBottom: 15,
-    borderBottomColor: colors.lightgrey,
-    borderBottomWidth: 1,
+    backgroundColor: colors.white,
+    borderRadius: 10,
   },
   venueInfo: {
     flexDirection: "row",
@@ -150,6 +180,8 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     justifyContent: "center",
     width: "100%",
+    backgroundColor: colors.white,
+    borderRadius: 10,
   },
 });
 

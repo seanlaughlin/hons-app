@@ -11,6 +11,7 @@ import venuesApi from "../api/venues";
 import useApi from "../hooks/useApi";
 import useLocation from "../hooks/useLocation";
 import ListItemSeparator from "../components/ListItemSeparator";
+import AppButton from "../components/AppButton";
 
 function VenueCategoryScreen(props) {
   const { title, filters = [] } = props.route.params;
@@ -55,6 +56,11 @@ function VenueCategoryScreen(props) {
           <AppText>No venues to display.</AppText>
         )}
       </View>
+      <AppButton
+        style={styles.symbolsGuideButton}
+        title="💡 Access Symbols Guide"
+        accessibilityLabel="Press here for accessibility symbols guide"
+      />
     </SafeAreaView>
   );
 }
@@ -73,6 +79,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 10,
     marginBottom: 10,
+  },
+  symbolsGuideButton: {
+    position: "absolute",
+    bottom: 40,
   },
   resultBox: {
     width: "95%",

@@ -92,7 +92,6 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    marginBottom: 10,
     backgroundColor: colors.medium,
   },
   verticalDivider: {
