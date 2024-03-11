@@ -18,8 +18,9 @@ import { useFilterContext } from "../context/FilterContext";
 import venuesApi from "../api/venues";
 import useApi from "../hooks/useApi";
 import FiltersButton from "../components/FiltersButton";
+import BackButton from "../components/BackButton";
 
-function MapScreen(props) {
+function MapScreen({ route }) {
   const mapRef = useRef(null);
   const initLocation = useLocation();
 
@@ -62,6 +63,15 @@ function MapScreen(props) {
     updateRegion();
   }, [modalVenue]);
 
+  useEffect(() => {
+    if (route.params && route.params.venue) {
+      updateRegion();
+      setOrigin(route.params.venue.coords);
+      setModalVenue(route.params.venue);
+      setIsNavigationMode(true);
+    }
+  }, [route.params]);
+
   const updateRegion = () => {
     const newRegion = getBoundingRegion(location, modalVenue.coords);
     if (newRegion) {
@@ -86,9 +96,11 @@ function MapScreen(props) {
       }
     }
     setCurrentStepIndex(closestStepIndex);
-    setStepInstructions(
-      removeHtmlTags(directions[closestStepIndex].html_instructions)
-    );
+    if (directions[closestStepIndex]) {
+      setStepInstructions(
+        removeHtmlTags(directions[closestStepIndex].html_instructions)
+      );
+    }
   };
 
   const onReady = (result) => {
@@ -98,9 +110,11 @@ function MapScreen(props) {
     setDuration(durationInMinutes);
     setDistance(result.distance.toFixed(2));
     setDirections(result.legs[0].steps);
-    setStepInstructions(
-      removeHtmlTags(result.legs[0].steps[0].html_instructions)
-    );
+    if (result) {
+      setStepInstructions(
+        removeHtmlTags(result.legs[0].steps[0].html_instructions)
+      );
+    }
   };
 
   const handleMarkerPress = (venue) => {
@@ -226,7 +240,10 @@ function MapScreen(props) {
             </View>
             <View style={[styles.directionsBox, styles.opaqueBox]}>
               <AppText
-                style={{ fontSize: 15, fontWeight: 600 }}
+                style={{
+                  fontSize: 15,
+                  fontWeight: 600,
+                }}
                 accessibilityLabel="Directions"
               >
                 {stepInstructions}
@@ -254,6 +271,13 @@ function MapScreen(props) {
       {!isNavigationMode && !isModalVisible && (
         <FiltersButton style={styles.filterButton} />
       )}
+      {route.params && route.params.venue && (
+        <BackButton
+          style={styles.backButton}
+          color={colors.primary}
+          size={50}
+        />
+      )}
     </View>
   );
 }
@@ -264,11 +288,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  backButton: {
+    position: "absolute",
+    top: 30,
+    left: 10,
+  },
   durationBox: {
     top: 60,
   },
   directionsBox: {
     bottom: 160,
+    justifyContent: "center",
+    alignItems: "center",
   },
   filterButton: {
     position: "absolute",

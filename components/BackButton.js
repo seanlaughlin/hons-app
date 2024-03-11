@@ -5,16 +5,11 @@ import { useNavigation } from "@react-navigation/native";
 
 import colors from "../config/colors";
 
-function BackButton({
-  containerStyle,
-  color = colors.primary,
-  size = 30,
-  ...props
-}) {
+function BackButton({ style, color = colors.primary, size = 30, ...props }) {
   const navigation = useNavigation();
 
   return (
-    <View style={[styles.backButtonContainer, containerStyle]}>
+    <View style={[styles.backButtonContainer, style]}>
       <TouchableOpacity
         {...props}
         style={styles.backButton}

@@ -1,3 +1,6 @@
 export function removeHtmlTags(input) {
-  return input.replace(/<[^>]*>/g, "");
+  return input
+    .replace(/<div[^>]*>/gi, "\n")
+    .replace(/<\/div>/gi, "")
+    .replace(/<[^>]*>/g, "");
 }

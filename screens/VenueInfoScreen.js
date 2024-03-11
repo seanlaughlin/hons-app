@@ -54,7 +54,14 @@ function VenueInfoScreen({ route }) {
           <ImageCarousel imageUris={venue.imageUris} />
           <AppText style={{ fontSize: 18 }}>{venue.address}</AppText>
           <View style={styles.buttonsContainer}>
-            <AppButton title="🗺 Get Directions" />
+            <AppButton
+              title="🗺 Get Directions"
+              onPress={() =>
+                navigation.navigate("MapScreen", {
+                  venue: venue,
+                })
+              }
+            />
             <AppButton title="⭐ Add to Favorites" />
           </View>
         </HeaderContainer>
