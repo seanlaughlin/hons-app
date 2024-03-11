@@ -21,6 +21,8 @@ import useLocation from "../hooks/useLocation";
 import { getDistance } from "../utility/mapUtils";
 import ListItemSeparator from "../components/ListItemSeparator";
 import ContentContainer from "../components/ContentContainer";
+import HeaderContainer from "../components/HeaderContainer";
+import { kmToMiles } from "../utility/mapUtils";
 
 function VenueInfoScreen({ route }) {
   const [distance, setDistance] = useState(0);
@@ -39,24 +41,14 @@ function VenueInfoScreen({ route }) {
     <SafeAreaView
       style={{ backgroundColor: colors.light, paddingHorizontal: 15 }}
     >
-      {/* <BackButton /> */}
       <ScrollView contentContainerStyle={styles.container}>
-        <ContentContainer style={{ paddingHorizontal: 0, paddingTop: 0 }}>
-          <View style={styles.header}>
-            <BackButton color={colors.white} size={40} />
-            <View style={styles.titleContainer}>
-              <AppText
-                style={styles.title}
-                accessibilityRole="header"
-                numberOfLines={1}
-              >
-                {venue.name}
-              </AppText>
-            </View>
-          </View>
+        <HeaderContainer
+          title={venue.name}
+          button={<BackButton color={colors.white} size={40} />}
+        >
           <AppText style={{ fontSize: 18 }}>
-            {capitalise(venue.type)} in {venue.neighbourhood} ({distance} km
-            away)
+            {capitalise(venue.type)} in {venue.neighbourhood} (
+            {kmToMiles(distance)} miles away)
           </AppText>
           <ImageCarousel imageUris={venue.imageUris} />
           <AppText style={{ fontSize: 18 }}>{venue.address}</AppText>
@@ -64,7 +56,7 @@ function VenueInfoScreen({ route }) {
             <AppButton title="🗺 Get Directions" />
             <AppButton title="⭐ Add to Favorites" />
           </View>
-        </ContentContainer>
+        </HeaderContainer>
         <ContentContainer style={styles.venueInfo}>
           <View style={{ flex: 2 }}>
             <AppText style={styles.infoHeading}>Opening Hours</AppText>

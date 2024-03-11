@@ -12,6 +12,7 @@ import useApi from "../hooks/useApi";
 import useLocation from "../hooks/useLocation";
 import ListItemSeparator from "../components/ListItemSeparator";
 import AppButton from "../components/AppButton";
+import HeaderContainer from "../components/HeaderContainer";
 
 function VenueCategoryScreen(props) {
   const { title, filters = [] } = props.route.params;
@@ -31,64 +32,71 @@ function VenueCategoryScreen(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <BackButton />
-      <View style={styles.header}>
-        <AppText style={styles.title}>{capitalise(title)}</AppText>
-        <AppText
-          style={{
-            fontSize: 15,
-            marginBottom: 5,
-          }}
+      <View
+        style={{
+          paddingHorizontal: 15,
+          rowGap: 8,
+          flex: 1,
+          alignItems: "center",
+        }}
+      >
+        <HeaderContainer
+          title={capitalise(title)}
+          button={<BackButton color={colors.white} size={40} />}
         >
-          {getFilteredVenues.data.length} matching venues
-        </AppText>
+          <View style={styles.header}>
+            <AppText
+              style={{
+                fontSize: 15,
+              }}
+            >
+              {getFilteredVenues.data.length} matching venues
+            </AppText>
+          </View>
+        </HeaderContainer>
+        <View style={styles.resultBox}>
+          {getFilteredVenues.data.length > 0 ? (
+            <FlatList
+              data={getFilteredVenues.data}
+              keyExtractor={(venue) => venue._id.toString()}
+              renderItem={({ item }) => <VenueListItem venue={item} />}
+              ItemSeparatorComponent={() => <ListItemSeparator />}
+              contentContainerStyle={styles.flatListContent}
+            />
+          ) : (
+            <AppText>No venues to display.</AppText>
+          )}
+        </View>
+        <AppButton
+          style={styles.symbolsGuideButton}
+          title="💡 Access Symbols Guide"
+          accessibilityLabel="Press here for accessibility symbols guide"
+        />
       </View>
-      <View style={styles.resultBox}>
-        {getFilteredVenues.data.length > 0 ? (
-          <FlatList
-            data={getFilteredVenues.data}
-            keyExtractor={(venue) => venue._id.toString()}
-            renderItem={({ item }) => <VenueListItem venue={item} />}
-            ItemSeparatorComponent={() => <ListItemSeparator />}
-            contentContainerStyle={styles.flatListContent}
-          />
-        ) : (
-          <AppText>No venues to display.</AppText>
-        )}
-      </View>
-      <AppButton
-        style={styles.symbolsGuideButton}
-        title="💡 Access Symbols Guide"
-        accessibilityLabel="Press here for accessibility symbols guide"
-      />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
-    flexGrow: 1,
-    height: "100%",
     backgroundColor: colors.light,
+    height: "100%",
   },
   header: {
     alignItems: "center",
     backgroundColor: colors.white,
-    width: "95%",
     borderRadius: 10,
     paddingVertical: 10,
-    marginBottom: 10,
   },
   symbolsGuideButton: {
     position: "absolute",
     bottom: 40,
   },
   resultBox: {
-    width: "95%",
     backgroundColor: colors.white,
     borderRadius: 10,
     overflow: "hidden",
+    width: "100%",
   },
   title: {
     fontSize: 30,

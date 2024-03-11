@@ -10,6 +10,7 @@ import ModalAccessItem from "./ModalAccessItem";
 import capitalise from "../utility/capitalise";
 import useLocation from "../hooks/useLocation";
 import { getDistance } from "../utility/mapUtils";
+import { kmToMiles } from "../utility/mapUtils";
 
 function MapModal({
   venue,
@@ -65,8 +66,8 @@ function MapModal({
             {venue.name}
           </AppText>
           <AppText style={styles.subtitle}>
-            {capitalise(venue.type)} in {venue.neighbourhood} ({distance} km
-            away)
+            {capitalise(venue.type)} in {venue.neighbourhood} (
+            {kmToMiles(distance)} miles away)
           </AppText>
           <View style={styles.venueInfo}>
             <View

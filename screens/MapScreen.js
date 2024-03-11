@@ -42,15 +42,12 @@ function MapScreen(props) {
 
   useEffect(() => {
     if (initLocation) {
-      const categoryIds = filters.categoryIds;
-
-      const accessibilityCriteria = filters.accessibilityCriteria;
       setLocation(initLocation);
       getFilteredVenues.request({
         location: initLocation,
-        accessibilityCriteria: accessibilityCriteria,
-        categoryIds: categoryIds,
-        maxDistance: 5,
+        accessibilityCriteria: filters.accessibilityCriteria,
+        categoryIds: filters.categoryIds,
+        maxDistance: filters.maxDistance,
       });
     }
   }, [initLocation, filters]);

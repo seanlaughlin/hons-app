@@ -11,6 +11,8 @@ function Search({ placeholder, onSubmit, ...others }) {
   const { setSearchTerm } = useFilterContext();
   const [searchValue, setSearchValue] = useState("");
 
+  const { searchTerm } = useFilterContext();
+
   useEffect(() => {
     if (searchValue.trim() !== "") {
       setSearchTerm(searchValue.trim());
@@ -29,7 +31,7 @@ function Search({ placeholder, onSubmit, ...others }) {
         placeholder={placeholder}
         accessibilityLabel="Field for search term"
         accessibilityRole="search"
-        value={searchValue}
+        value={searchTerm}
         onChangeText={setSearchValue}
       />
       <View style={styles.buttonContainer}>

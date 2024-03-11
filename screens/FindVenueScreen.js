@@ -18,6 +18,7 @@ import useApi from "../hooks/useApi";
 import useLocation from "../hooks/useLocation";
 import { useFilterContext } from "../context/FilterContext";
 import ContentContainer from "../components/ContentContainer";
+import HeaderContainer from "../components/HeaderContainer";
 
 function FindVenueScreen(props) {
   const navigation = useNavigation();
@@ -67,19 +68,21 @@ function FindVenueScreen(props) {
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.light }}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
-          <ContentContainer style={styles.header}>
-            <Text style={styles.title}>Find a Venue</Text>
-            <Text style={{ fontSize: 16 }}>
-              Search for a service or venue you're looking for in the box below,
-              or choose a category.
-            </Text>
-            <Search
-              placeholder={"I'm looking for..."}
-              onSubmit={gotoSearchResults}
-              accessibilityLabel="Venue search field"
-            />
-          </ContentContainer>
+          <HeaderContainer title="Find a Venue">
+            <View style={{ paddingHorizontal: 40, paddingVertical: 10 }}>
+              <Text style={{ fontSize: 16 }}>
+                Search for a service or venue you're looking for in the box
+                below, or choose a category.
+              </Text>
+              <Search
+                placeholder={"I'm looking for..."}
+                onSubmit={gotoSearchResults}
+                accessibilityLabel="Venue search field"
+              />
+            </View>
+          </HeaderContainer>
           <SectionList
+            style={{ marginTop: 8 }}
             sections={sections}
             keyExtractor={(item) => item._id}
             numColumns={2}

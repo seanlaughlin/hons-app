@@ -7,7 +7,7 @@ const FilterContext = createContext();
 export const FilterContextProvider = ({ children }) => {
   const [selectedAccessibilities, setSelectedAccessibilities] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedDistance, setSelectedDistance] = useState(5); // default 1km
+  const [selectedDistance, setSelectedDistance] = useState(1); // default 1km
   const [searchTerm, setSearchTerm] = useState(null);
   const [location, setLocation] = useState(null);
   const [filters, setFilters] = useState({});

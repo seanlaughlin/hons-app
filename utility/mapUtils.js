@@ -42,3 +42,7 @@ export function getDistance(location, venueCoords) {
   const distance = R * c; // in metres
   return distance;
 }
+
+export function kmToMiles(km) {
+  return (km * 0.621371).toFixed(2);
+}

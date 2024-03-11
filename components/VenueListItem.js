@@ -10,7 +10,7 @@ import accessibilityIconMapping from "../config/accessibilityIconMapping";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableWithoutFeedback } from "react-native";
-import BackButton from "./BackButton";
+import { kmToMiles } from "../utility/mapUtils";
 
 function VenueListItem({ venue, ...others }) {
   const navigation = useNavigation();
@@ -33,7 +33,9 @@ function VenueListItem({ venue, ...others }) {
             {venue.name}
           </AppText>
           <AppText style={styles.otherText}>{capitalise(venue.type)}</AppText>
-          <AppText style={styles.otherText}>{venue.distanceToUser} km</AppText>
+          <AppText style={styles.otherText}>
+            {kmToMiles(venue.distanceToUser)} miles
+          </AppText>
         </View>
       </View>
       <View
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
     columnGap: 10,
     alignItems: "center",
     justifyContent: "flex-start",
-    width: "100%",
+    flexGrow: 1,
   },
   image: {
     height: 75,
