@@ -10,10 +10,11 @@ function HeaderContainer({
   size = 30,
   button,
   children,
+  style,
   ...otherProps
 }) {
   return (
-    <ContentContainer style={styles.container} {...otherProps}>
+    <ContentContainer style={[styles.container, style]} {...otherProps}>
       <View style={styles.header}>
         {button}
         <View

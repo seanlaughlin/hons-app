@@ -10,6 +10,7 @@ import AccessTab from "./AccessTab";
 import DistanceTab from "./DistanceTab";
 import CategoriesTab from "./CategoriesTab";
 import { useFilterContext } from "../context/FilterContext";
+import HeaderContainer from "./HeaderContainer";
 
 function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
   const {
@@ -57,11 +58,17 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
       animationType="slide"
       {...others}
     >
-      <SafeAreaView style={{ flexDirection: "row", justifyContent: "center" }}>
-        <CloseButton action={handleCloseModal} />
-        <AppText style={{ fontSize: 35, color: colors.primary }}>
-          Search Filters
-        </AppText>
+      <SafeAreaView
+        style={{
+          paddingHorizontal: 10,
+        }}
+      >
+        <HeaderContainer
+          title="Search Filters"
+          button={
+            <CloseButton action={handleCloseModal} color={colors.white} />
+          }
+        ></HeaderContainer>
       </SafeAreaView>
       <Formik
         initialValues={{
@@ -77,7 +84,6 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
               renderScene={renderScene}
               onIndexChange={setIndex}
               initialLayout={{ width: layout.width }}
-              style={{ marginTop: 20 }}
               renderTabBar={(props) => (
                 <TabBar
                   {...props}

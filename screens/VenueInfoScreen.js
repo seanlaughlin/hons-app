@@ -45,6 +45,7 @@ function VenueInfoScreen({ route }) {
         <HeaderContainer
           title={venue.name}
           button={<BackButton color={colors.white} size={40} />}
+          style={styles.contentContainers}
         >
           <AppText style={{ fontSize: 18 }}>
             {capitalise(venue.type)} in {venue.neighbourhood} (
@@ -57,7 +58,7 @@ function VenueInfoScreen({ route }) {
             <AppButton title="⭐ Add to Favorites" />
           </View>
         </HeaderContainer>
-        <ContentContainer style={styles.venueInfo}>
+        <ContentContainer style={[styles.venueInfo, styles.contentContainers]}>
           <View style={{ flex: 2 }}>
             <AppText style={styles.infoHeading}>Opening Hours</AppText>
             {venue.openingHours.map((item) => (
@@ -107,7 +108,7 @@ function VenueInfoScreen({ route }) {
             keyExtractor={(item) => item.criteria.toString()}
           />
         </ContentContainer>
-        <ContentContainer>
+        <ContentContainer style={{ paddingBottom: 15 }}>
           <AppText
             style={{ color: colors.primary, fontSize: 20, marginBottom: 5 }}
           >
@@ -137,6 +138,9 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     rowGap: 8,
   },
+  contentContainers: {
+    paddingBottom: 15,
+  },
   infoHeading: {
     fontSize: 16,
     fontWeight: 600,
@@ -165,7 +169,7 @@ const styles = StyleSheet.create({
   },
   venueAccess: {
     paddingHorizontal: 0,
-    paddingVertical: 0,
+    paddingTop: 0,
   },
   venueInfo: {
     flexDirection: "row",

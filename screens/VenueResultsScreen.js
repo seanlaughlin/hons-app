@@ -53,20 +53,20 @@ function VenueCategoryScreen(props) {
               {getFilteredVenues.data.length} matching venues
             </AppText>
           </View>
+
+          <View style={styles.resultBox}>
+            {getFilteredVenues.data.length > 0 ? (
+              <FlatList
+                data={getFilteredVenues.data}
+                keyExtractor={(venue) => venue._id.toString()}
+                renderItem={({ item }) => <VenueListItem venue={item} />}
+                ItemSeparatorComponent={() => <ListItemSeparator />}
+              />
+            ) : (
+              <AppText>No venues to display.</AppText>
+            )}
+          </View>
         </HeaderContainer>
-        <View style={styles.resultBox}>
-          {getFilteredVenues.data.length > 0 ? (
-            <FlatList
-              data={getFilteredVenues.data}
-              keyExtractor={(venue) => venue._id.toString()}
-              renderItem={({ item }) => <VenueListItem venue={item} />}
-              ItemSeparatorComponent={() => <ListItemSeparator />}
-              contentContainerStyle={styles.flatListContent}
-            />
-          ) : (
-            <AppText>No venues to display.</AppText>
-          )}
-        </View>
         <AppButton
           style={styles.symbolsGuideButton}
           title="💡 Access Symbols Guide"
@@ -86,7 +86,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.white,
     borderRadius: 10,
-    paddingVertical: 10,
+    paddingBottom: 5,
+    borderBottomColor: colors.light,
+    borderBottomWidth: 1,
+    width: "100%",
   },
   symbolsGuideButton: {
     position: "absolute",
@@ -94,7 +97,6 @@ const styles = StyleSheet.create({
   },
   resultBox: {
     backgroundColor: colors.white,
-    borderRadius: 10,
     overflow: "hidden",
     width: "100%",
   },
