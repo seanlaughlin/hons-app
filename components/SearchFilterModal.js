@@ -18,6 +18,10 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
     setSelectedAccessibilities,
     selectedCategories,
     setSelectedCategories,
+    transportMode,
+    setTransportMode,
+    selectedTravelDuration,
+    setSelectedTravelDuration,
   } = useFilterContext();
 
   const layout = useWindowDimensions();
@@ -48,6 +52,8 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
   const handleSubmit = (values) => {
     setSelectedAccessibilities(values.accessibilities);
     setSelectedCategories(values.categories);
+    setTransportMode(values.transportMode);
+    setSelectedTravelDuration(values.travelDuration);
     handleCloseModal();
   };
 
@@ -74,6 +80,8 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
         initialValues={{
           accessibilities: selectedAccessibilities || [],
           categories: selectedCategories || [],
+          transportMode: transportMode || "walking",
+          travelDuration: selectedTravelDuration || 10,
         }}
         onSubmit={handleSubmit}
       >

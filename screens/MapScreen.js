@@ -18,11 +18,13 @@ import { useFilterContext } from "../context/FilterContext";
 import venuesApi from "../api/venues";
 import useApi from "../hooks/useApi";
 import FiltersButton from "../components/FiltersButton";
-import BackButton from "../components/BackButton";
+import { kmToMiles } from "../utility/mapUtils";
+import { useNavigation } from "@react-navigation/native";
 
 function MapScreen({ route }) {
   const mapRef = useRef(null);
   const initLocation = useLocation();
+  const navigator = useNavigation();
 
   const [location, setLocation] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -126,6 +128,10 @@ function MapScreen({ route }) {
     setDistance(null);
     setCoordinates([]);
     setIsNavigationMode(false);
+    //bug, this always triggers even navigation started from map screen
+    if (route.params && route.params.venue) {
+      navigator.goBack();
+    }
   };
 
   const handleStartNavigation = () => {
@@ -203,7 +209,7 @@ function MapScreen({ route }) {
                   onPress={
                     isNavigationMode ? null : () => handleMarkerPress(venue)
                   }
-                  key={venue.id}
+                  key={venue._id}
                   accessibilityLabel={`${venue.type} Map Marker for ${venue.name}`}
                   accessibilityHint="Press marker to open venue information modal."
                   importantForAccessibility="yes"
@@ -228,14 +234,15 @@ function MapScreen({ route }) {
                   accessibilityLabel="Distance to venue"
                 >
                   {" "}
-                  ({distance} km)
+                  ({kmToMiles(distance)} miles)
                 </AppText>
               </View>
               <AppText
                 style={{ fontSize: 18 }}
                 accessibilityLabel="Duration of travel"
               >
-                Estimate: {duration} min 🚶‍♂️ (avg)
+                Estimate: {duration} min 🚶‍♂️ /{"  "}
+                {Math.round(duration * 1.114)} min ♿
               </AppText>
             </View>
             <View style={[styles.directionsBox, styles.opaqueBox]}>
@@ -254,7 +261,7 @@ function MapScreen({ route }) {
                 title="👋 I've arrived"
                 color="green"
                 borderColor={colors.greendark}
-                onPress={handleCancelNavigation}
+                onPress={() => setIsNavigationMode(false)}
                 accessibilityLabel="Confirm arrival at the venue"
               />
               <AppButton
@@ -270,13 +277,6 @@ function MapScreen({ route }) {
       </View>
       {!isNavigationMode && !isModalVisible && (
         <FiltersButton style={styles.filterButton} />
-      )}
-      {route.params && route.params.venue && (
-        <BackButton
-          style={styles.backButton}
-          color={colors.primary}
-          size={50}
-        />
       )}
     </View>
   );

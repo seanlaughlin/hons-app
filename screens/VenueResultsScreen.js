@@ -59,7 +59,9 @@ function VenueCategoryScreen(props) {
               <FlatList
                 data={getFilteredVenues.data}
                 keyExtractor={(venue) => venue._id.toString()}
-                renderItem={({ item }) => <VenueListItem venue={item} />}
+                renderItem={({ item }) => (
+                  <VenueListItem venue={item} key={item._id} />
+                )}
                 ItemSeparatorComponent={() => <ListItemSeparator />}
               />
             ) : (

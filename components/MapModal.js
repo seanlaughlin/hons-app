@@ -11,6 +11,7 @@ import capitalise from "../utility/capitalise";
 import useLocation from "../hooks/useLocation";
 import { getDistance } from "../utility/mapUtils";
 import { kmToMiles } from "../utility/mapUtils";
+import HeaderContainer from "./HeaderContainer";
 
 function MapModal({
   venue,
@@ -47,24 +48,24 @@ function MapModal({
       {...others}
     >
       <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <MaterialCommunityIcons
-            name="close"
-            style={styles.closeIcon}
-            size={25}
-            color={colors.medium}
-            onPress={handleCloseModal}
-            accessibilityLabel="Close Button"
-            accessibilityHint="Press here to close venue information modal."
-            accessibilityRole="button"
-          />
-          <AppText
-            style={{ fontSize: 22, fontWeight: 600 }}
-            numberOfLines={1}
-            accessibilityRole="header"
-          >
-            {venue.name}
-          </AppText>
+        <HeaderContainer
+          button={
+            <MaterialCommunityIcons
+              name="close"
+              style={styles.closeIcon}
+              size={35}
+              color={colors.white}
+              onPress={handleCloseModal}
+              accessibilityLabel="Close Button"
+              accessibilityHint="Press here to close venue information modal."
+              accessibilityRole="button"
+            />
+          }
+          title={venue.name}
+          style={{
+            paddingVertical: 15,
+          }}
+        >
           <AppText style={styles.subtitle}>
             {capitalise(venue.type)} in {venue.neighbourhood} (
             {kmToMiles(distance)} miles away)
@@ -88,11 +89,11 @@ function MapModal({
                 Opening Hours
               </AppText>
               {venue.openingHours.map((item) => (
-                <AppText key={item.id} style={{ fontSize: 15 }}>
+                <AppText key={item._id} style={{ fontSize: 14 }}>
                   {item.time}: {item.hours}
                 </AppText>
               ))}
-              <AppText style={{ fontSize: 15 }}>
+              <AppText style={{ fontSize: 14 }}>
                 Tel: {venue.contact.phone}
               </AppText>
             </View>
@@ -102,7 +103,11 @@ function MapModal({
                   (item) => item.reportedFor > 0 && item.reportedAgainst === 0
                 )}
                 renderItem={({ item }) => (
-                  <ModalAccessItem item={item} accessibilityLabel={item.name} />
+                  <ModalAccessItem
+                    item={item}
+                    key={item._id}
+                    accessibilityLabel={item.name}
+                  />
                 )}
                 keyExtractor={(item) => item.criteria.toString()}
                 contentContainerStyle={styles.venueAccessInfo}
@@ -125,7 +130,7 @@ function MapModal({
               accessibilityHint="Press to get directions to the venue."
             />
           </View>
-        </View>
+        </HeaderContainer>
       </View>
     </Modal>
   );
@@ -152,19 +157,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     padding: 20,
-  },
-  modalContent: {
-    justifyContent: "flex-start",
-    alignItems: "center",
-    backgroundColor: colors.white,
-    alignSelf: "center",
-    padding: 20,
-    borderRadius: 20,
-    shadowColor: "grey",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    width: "100%",
-    maxHeight: 500,
+    overflow: "visible",
   },
   subtitle: {
     fontSize: 15,
@@ -175,9 +168,10 @@ const styles = StyleSheet.create({
   },
   venueInfo: {
     flexDirection: "row",
-    marginVertical: 20,
+    marginVertical: 10,
     justifyContent: "center",
     alignItems: "center",
+    paddingHorizontal: 15,
   },
 });
 

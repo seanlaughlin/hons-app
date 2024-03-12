@@ -69,7 +69,10 @@ function VenueInfoScreen({ route }) {
           <View style={{ flex: 2 }}>
             <AppText style={styles.infoHeading}>Opening Hours</AppText>
             {venue.openingHours.map((item) => (
-              <AppText style={{ marginBottom: 5, fontSize: 13 }}>
+              <AppText
+                style={{ marginBottom: 5, fontSize: 13 }}
+                key={item.hours}
+              >
                 {item.time}: {item.hours}
               </AppText>
             ))}

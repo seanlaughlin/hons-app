@@ -7,10 +7,27 @@ const FilterContext = createContext();
 export const FilterContextProvider = ({ children }) => {
   const [selectedAccessibilities, setSelectedAccessibilities] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [transportMode, setTransportMode] = useState("walking");
+  const [selectedTravelDuration, setSelectedTravelDuration] = useState(10);
   const [selectedDistance, setSelectedDistance] = useState(1); // default 1km
   const [searchTerm, setSearchTerm] = useState(null);
   const [location, setLocation] = useState(null);
   const [filters, setFilters] = useState({});
+
+  const setTravelDistance = () => {
+    const walkingSpeedKmph = 4.83 / 60;
+    const wheelingSpeedKmph = 4.22 / 60;
+
+    let distanceKm;
+    if (transportMode === "walking") {
+      distanceKm = walkingSpeedKmph * selectedTravelDuration;
+    } else if (transportMode === "wheeling") {
+      distanceKm = wheelingSpeedKmph * selectedTravelDuration;
+    } else {
+      throw new Error("Unable to set distance: invalid mode of transport");
+    }
+    setSelectedDistance(distanceKm);
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -32,14 +49,19 @@ export const FilterContextProvider = ({ children }) => {
       categoryIds: selectedCategories.map((category) => category._id),
       selectedDistance,
       searchTerm,
+      selectedDistance,
     });
   }, [
     selectedAccessibilities,
     selectedCategories,
-    selectedDistance,
     searchTerm,
     location,
+    selectedDistance,
   ]);
+
+  useEffect(() => {
+    if (selectedTravelDuration && transportMode) setTravelDistance();
+  }, [selectedTravelDuration, transportMode]);
 
   return (
     <FilterContext.Provider
@@ -55,6 +77,10 @@ export const FilterContextProvider = ({ children }) => {
         filters,
         location,
         setLocation,
+        transportMode,
+        setTransportMode,
+        selectedTravelDuration,
+        setSelectedTravelDuration,
       }}
     >
       {children}

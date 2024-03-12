@@ -21,9 +21,12 @@ function HomeScreen(props) {
   }, []);
 
   const gotoSearchResults = () => {
-    navigation.navigate("VenueResultsScreen", {
-      title: "Search Results",
-      filters,
+    navigation.navigate("Find Venue", {
+      screen: "VenueResultsScreen",
+      params: {
+        title: "Search Results",
+        filters,
+      },
     });
   };
 
