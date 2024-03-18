@@ -13,22 +13,14 @@ import useLocation from "../hooks/useLocation";
 import ListItemSeparator from "../components/ListItemSeparator";
 import AppButton from "../components/AppButton";
 import HeaderContainer from "../components/HeaderContainer";
+import { useVenueContext } from "../context/VenueContext";
 
 function VenueCategoryScreen(props) {
-  const { title, filters = [] } = props.route.params;
-  const location = useLocation();
-  const getFilteredVenues = useApi(venuesApi.getFilteredVenues);
+  const { title, categoryId = null } = props.route.params;
 
-  useEffect(() => {
-    const fetchVenues = async () => {
-      try {
-        await getFilteredVenues.request({ ...filters, location });
-      } catch (error) {
-        console.error("Error fetching venues:", error);
-      }
-    };
-    fetchVenues();
-  }, [location]);
+  let { venues } = useVenueContext();
+  if (categoryId !== null)
+    venues = venues.filter((venue) => venue.category === categoryId);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -50,14 +42,14 @@ function VenueCategoryScreen(props) {
                 fontSize: 15,
               }}
             >
-              {getFilteredVenues.data.length} matching venues
+              {venues.length} matching venues
             </AppText>
           </View>
 
           <View style={styles.resultBox}>
-            {getFilteredVenues.data.length > 0 ? (
+            {venues.length > 0 ? (
               <FlatList
-                data={getFilteredVenues.data}
+                data={venues}
                 keyExtractor={(venue) => venue._id.toString()}
                 renderItem={({ item }) => (
                   <VenueListItem venue={item} key={item._id} />

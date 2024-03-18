@@ -10,7 +10,10 @@ import MapScreen from "../screens/MapScreen";
 const Stack = createStackNavigator();
 
 const FindVenueNavigator = () => (
-  <Stack.Navigator initialRouteName="FindVenueScreen" headerMode="none">
+  <Stack.Navigator
+    initialRouteName="FindVenueScreen"
+    screenOptions={{ headerShown: false }}
+  >
     <Stack.Screen name="FindVenueScreen" component={FindVenueScreen} />
     <Stack.Screen name="VenueResultsScreen" component={VenueResultsScreen} />
     <Stack.Screen name="VenueInfoScreen" component={VenueInfoScreen} />

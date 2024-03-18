@@ -43,11 +43,7 @@ function FindVenueScreen(props) {
     const catName = category.name;
     navigation.navigate("VenueResultsScreen", {
       title: catName,
-      filters: {
-        categoryIds: [category._id],
-        accessibilityCriteria: filters.accessibilityCriteria,
-      },
-      location,
+      categoryId: category._id,
     });
   };
 

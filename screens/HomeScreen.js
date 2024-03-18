@@ -12,10 +12,12 @@ import ContentContainer from "../components/ContentContainer";
 import Search from "../components/Search";
 import { useNavigation } from "@react-navigation/native";
 import { useFilterContext } from "../context/FilterContext";
+import { useVenueContext } from "../context/VenueContext";
 
 function HomeScreen(props) {
   const navigation = useNavigation();
   const { filters } = useFilterContext();
+
   useEffect(() => {
     AccessibilityInfo.announceForAccessibility("Welcome Access Local");
   }, []);

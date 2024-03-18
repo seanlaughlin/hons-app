@@ -15,11 +15,10 @@ import { getBoundingRegion } from "../utility/mapUtils";
 import { removeHtmlTags } from "../utility/removeHtmlTags";
 
 import { useFilterContext } from "../context/FilterContext";
-import venuesApi from "../api/venues";
-import useApi from "../hooks/useApi";
 import FiltersButton from "../components/FiltersButton";
 import { kmToMiles } from "../utility/mapUtils";
 import { useNavigation } from "@react-navigation/native";
+import { useVenueContext } from "../context/VenueContext";
 
 function MapScreen({ route }) {
   const mapRef = useRef(null);
@@ -40,20 +39,14 @@ function MapScreen({ route }) {
   const [stepInstructions, setStepInstructions] = useState("");
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
+  const { venues } = useVenueContext();
   const { filters } = useFilterContext();
-  const getFilteredVenues = useApi(venuesApi.getFilteredVenues);
 
   useEffect(() => {
     if (initLocation) {
       setLocation(initLocation);
-      getFilteredVenues.request({
-        location: initLocation,
-        accessibilityCriteria: filters.accessibilityCriteria,
-        categoryIds: filters.categoryIds,
-        maxDistance: filters.maxDistance,
-      });
     }
-  }, [initLocation, filters]);
+  }, [initLocation]);
 
   useEffect(() => {
     if (location) {
@@ -201,8 +194,8 @@ function MapScreen({ route }) {
                 lineCap="round"
               />
             )}
-            {getFilteredVenues.data.length > 0 &&
-              getFilteredVenues.data.map((venue) => (
+            {venues.length > 0 &&
+              venues.map((venue) => (
                 <MapMarker
                   venueName={venue.name}
                   coords={venue.coords}

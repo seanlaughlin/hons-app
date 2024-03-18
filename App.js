@@ -9,9 +9,11 @@ import { VenueContextProvider } from "./context/VenueContext";
 export default function App() {
   return (
     <FilterContextProvider>
-      <NavigationContainer theme={navigationTheme}>
-        <AppNavigator />
-      </NavigationContainer>
+      <VenueContextProvider>
+        <NavigationContainer theme={navigationTheme}>
+          <AppNavigator />
+        </NavigationContainer>
+      </VenueContextProvider>
     </FilterContextProvider>
   );
 }
