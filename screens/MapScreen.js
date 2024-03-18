@@ -128,9 +128,10 @@ function MapScreen({ route }) {
     setDistance(null);
     setCoordinates([]);
     setIsNavigationMode(false);
-    //bug, this always triggers even navigation started from map screen
-    if (route.params && route.params.venue) {
+    if (route.params && route.params.fromSearch) {
       navigator.goBack();
+    } else {
+      setIsNavigationMode(false);
     }
   };
 

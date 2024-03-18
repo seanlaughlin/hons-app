@@ -26,7 +26,7 @@ import { kmToMiles } from "../utility/mapUtils";
 
 function VenueInfoScreen({ route }) {
   const [distance, setDistance] = useState(0);
-  const { venue } = route.params;
+  const { venue, fromSearch } = route.params;
 
   const location = useLocation();
 
@@ -59,6 +59,7 @@ function VenueInfoScreen({ route }) {
               onPress={() =>
                 navigation.navigate("MapScreen", {
                   venue: venue,
+                  fromSearch: fromSearch,
                 })
               }
             />

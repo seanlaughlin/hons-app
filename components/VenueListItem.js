@@ -16,7 +16,7 @@ function VenueListItem({ venue, ...others }) {
   const navigation = useNavigation();
 
   const handleVenuePress = () => {
-    navigation.navigate("VenueInfoScreen", { venue: venue });
+    navigation.navigate("VenueInfoScreen", { venue: venue, fromSearch: true });
   };
   return (
     <View style={styles.container} {...others}>
