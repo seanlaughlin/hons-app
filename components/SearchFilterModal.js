@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Modal, SafeAreaView, useWindowDimensions } from "react-native";
-import AppText from "./AppText";
 import { Formik } from "formik";
 import { TabView, TabBar } from "react-native-tab-view";
 import CloseButton from "./CloseButton";

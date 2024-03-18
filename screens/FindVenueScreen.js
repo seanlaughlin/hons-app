@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -15,14 +15,11 @@ import Card from "../components/Card";
 
 import categoriesApi from "../api/categories";
 import useApi from "../hooks/useApi";
-import useLocation from "../hooks/useLocation";
 import { useFilterContext } from "../context/FilterContext";
-import ContentContainer from "../components/ContentContainer";
 import HeaderContainer from "../components/HeaderContainer";
 
 function FindVenueScreen(props) {
   const navigation = useNavigation();
-  const location = useLocation();
   const { filters, setSearchTerm } = useFilterContext();
 
   const getCategoriesApi = useApi(categoriesApi.getCategories);
