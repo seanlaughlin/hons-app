@@ -10,6 +10,8 @@ import DistanceTab from "./DistanceTab";
 import CategoriesTab from "./CategoriesTab";
 import { useFilterContext } from "../context/FilterContext";
 import HeaderContainer from "./HeaderContainer";
+import Accordion from "./Accordion";
+import ListItemSeparator from "./ListItemSeparator";
 
 function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
   const {
@@ -86,27 +88,24 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
       >
         {({ handleChange, handleSubmit }) => (
           <>
-            <TabView
-              navigationState={{ index, routes }}
-              renderScene={renderScene}
-              onIndexChange={setIndex}
-              initialLayout={{ width: layout.width }}
-              renderTabBar={(props) => (
-                <TabBar
-                  {...props}
-                  indicatorStyle={{ backgroundColor: colors.secondary }}
-                  style={{ backgroundColor: colors.primary }}
-                  labelStyle={{ color: colors.white }}
-                />
-              )}
-            />
+            <Accordion title="Distance" expanded={true}>
+              <DistanceTab />
+            </Accordion>
+            <ListItemSeparator />
+            <Accordion title="Access" expanded={true}>
+              <AccessTab />
+            </Accordion>
+            <ListItemSeparator />
+            <Accordion title="Categories" expanded={true}>
+              <CategoriesTab />
+            </Accordion>
             <AppButton
               style={{
                 maxWidth: 180,
                 alignSelf: "center",
                 marginVertical: 10,
                 position: "absolute",
-                bottom: 20,
+                bottom: 50,
               }}
               title="✅ Apply Filters"
               onPress={handleSubmit}
