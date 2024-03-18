@@ -11,7 +11,11 @@ import DistanceTab from "./DistanceTab";
 import CategoriesTab from "./CategoriesTab";
 import { useFilterContext } from "../context/FilterContext";
 import HeaderContainer from "./HeaderContainer";
-
+import Accordion from "./Accordion";
+import ListItemSeparator from "./ListItemSeparator";
+import { ScrollView } from "react-native";
+import ContentContainer from "./ContentContainer";
+import { View } from "react-native";
 function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
   const {
     selectedAccessibilities,
@@ -23,27 +27,6 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
     selectedTravelDuration,
     setSelectedTravelDuration,
   } = useFilterContext();
-
-  const layout = useWindowDimensions();
-  const [index, setIndex] = useState(0);
-  const [routes] = useState([
-    { key: "distance", title: "Distance" },
-    { key: "access", title: "Access" },
-    { key: "categories", title: "Categories" },
-  ]);
-
-  const renderScene = ({ route, props }) => {
-    switch (route.key) {
-      case "access":
-        return <AccessTab {...props} />;
-      case "distance":
-        return <DistanceTab {...props} />;
-      case "categories":
-        return <CategoriesTab {...props} />;
-      default:
-        return null;
-    }
-  };
 
   const handleCloseModal = () => {
     setIsModalVisible(false);
@@ -66,55 +49,49 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
     >
       <SafeAreaView
         style={{
-          paddingHorizontal: 10,
+          backgroundColor: colors.light,
+          width: "100%",
         }}
       >
-        <HeaderContainer
-          title="Search Filters"
-          button={
-            <CloseButton action={handleCloseModal} color={colors.white} />
-          }
-        ></HeaderContainer>
-      </SafeAreaView>
-      <Formik
-        initialValues={{
-          accessibilities: selectedAccessibilities || [],
-          categories: selectedCategories || [],
-          transportMode: transportMode || "walking",
-          travelDuration: selectedTravelDuration || 10,
-        }}
-        onSubmit={handleSubmit}
-      >
-        {({ handleChange, handleSubmit }) => (
-          <>
-            <TabView
-              navigationState={{ index, routes }}
-              renderScene={renderScene}
-              onIndexChange={setIndex}
-              initialLayout={{ width: layout.width }}
-              renderTabBar={(props) => (
-                <TabBar
-                  {...props}
-                  indicatorStyle={{ backgroundColor: colors.secondary }}
-                  style={{ backgroundColor: colors.primary }}
-                  labelStyle={{ color: colors.white }}
-                />
-              )}
-            />
-            <AppButton
-              style={{
-                maxWidth: 180,
-                alignSelf: "center",
-                marginVertical: 10,
-                position: "absolute",
-                bottom: 20,
+        <ScrollView>
+          <ContentContainer style={{ paddingHorizontal: 0 }}>
+            <Formik
+              initialValues={{
+                accessibilities: selectedAccessibilities || [],
+                categories: selectedCategories || [],
+                transportMode: transportMode || "walking",
+                travelDuration: selectedTravelDuration || 10,
               }}
-              title="✅ Apply Filters"
-              onPress={handleSubmit}
-            />
-          </>
-        )}
-      </Formik>
+              onSubmit={handleSubmit}
+            >
+              <View>
+                <Accordion title="Distance" expanded={true}>
+                  <DistanceTab />
+                </Accordion>
+                <ListItemSeparator />
+                <Accordion title="Access" expanded={true}>
+                  <AccessTab />
+                </Accordion>
+                <ListItemSeparator />
+                <Accordion title="Categories" expanded={true}>
+                  <CategoriesTab />
+                </Accordion>
+              </View>
+            </Formik>
+          </ContentContainer>
+        </ScrollView>
+      </SafeAreaView>
+      <AppButton
+        style={{
+          maxWidth: 180,
+          alignSelf: "center",
+          marginVertical: 10,
+          position: "absolute",
+          bottom: 35,
+        }}
+        title="✅ Apply Filters"
+        onPress={handleSubmit}
+      />
     </Modal>
   );
 }

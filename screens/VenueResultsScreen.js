@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet, SafeAreaView, FlatList } from "react-native";
 
 import colors from "../config/colors";
@@ -65,7 +65,9 @@ function VenueCategoryScreen(props) {
                 ItemSeparatorComponent={() => <ListItemSeparator />}
               />
             ) : (
-              <AppText>No venues to display.</AppText>
+              <AppText style={{ padding: 20, alignSelf: "center" }}>
+                No results found.
+              </AppText>
             )}
           </View>
         </HeaderContainer>

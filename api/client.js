@@ -1,7 +1,7 @@
 import { create } from "apisauce";
 
 const apiClient = create({
-  baseURL: "http://192.168.0.3:5000/api",
+  baseURL: "https://hons-backend.onrender.com/api",
 });
 
 export default apiClient;

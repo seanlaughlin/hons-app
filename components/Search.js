@@ -9,20 +9,20 @@ import { useFilterContext } from "../context/FilterContext";
 
 function Search({ placeholder, onSubmit, ...others }) {
   const { setSearchTerm } = useFilterContext();
-  const [searchValue, setSearchValue] = useState("");
-
   const { searchTerm } = useFilterContext();
-
+  const [searchValue, setSearchValue] = useState("");
+  //bugs with this not searching correctly because of 2 uses, not correct first go sometimes
   useEffect(() => {
-    if (searchValue.trim() !== "") {
-      setSearchTerm(searchValue.trim());
+    if (searchValue !== "") {
+      setSearchTerm(searchValue);
     } else {
       setSearchTerm("");
     }
   }, [searchValue, setSearchTerm]);
 
   const handleSearch = async () => {
-    onSubmit(searchValue.trim());
+    setSearchTerm(searchValue);
+    onSubmit(searchValue);
   };
 
   return (
@@ -31,7 +31,7 @@ function Search({ placeholder, onSubmit, ...others }) {
         placeholder={placeholder}
         accessibilityLabel="Field for search term"
         accessibilityRole="search"
-        value={searchTerm}
+        value={searchValue}
         onChangeText={setSearchValue}
       />
       <View style={styles.buttonContainer}>

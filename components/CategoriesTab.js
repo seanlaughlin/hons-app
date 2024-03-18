@@ -13,7 +13,7 @@ const CategoriesTab = () => {
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View>
       <SelectableList
         name="categories"
         data={allCategories.data}

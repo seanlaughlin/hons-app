@@ -1,18 +1,33 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const Accordion = ({ title, children }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+import AppText from "./AppText";
+import colors from "../config/colors";
+import ListItemSeparator from "./ListItemSeparator";
+
+const Accordion = ({ title, children, expanded = false }, style) => {
+  const [isExpanded, setIsExpanded] = useState(expanded);
 
   const toggleAccordion = () => {
     setIsExpanded((prevState) => !prevState);
   };
 
+  const iconName = isExpanded ? "chevron-down" : "chevron-right";
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <TouchableOpacity style={styles.header} onPress={toggleAccordion}>
-        <Text style={styles.headerText}>{title}</Text>
+        <View style={styles.headerContent}>
+          <AppText style={styles.headerText}>{title}</AppText>
+        </View>
+        <MaterialCommunityIcons
+          name={iconName}
+          color={colors.white}
+          size={30}
+        />
       </TouchableOpacity>
+      <ListItemSeparator />
       {isExpanded && <View style={styles.content}>{children}</View>}
     </View>
   );
@@ -20,22 +35,26 @@ const Accordion = ({ title, children }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
-    borderRadius: 5,
-    marginBottom: 10,
+    backgroundColor: colors.white,
     overflow: "hidden",
+    width: "100%",
   },
   header: {
-    backgroundColor: "#f1f1f1",
-    padding: 20,
+    backgroundColor: colors.primary,
+    padding: 15,
+    flexDirection: "row",
+    alignItems: "center", // Align items vertically
+  },
+  headerContent: {
+    flex: 1, // Expand to fill available space
   },
   headerText: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 20,
+    fontWeight: "600",
+    color: colors.white,
+    textAlign: "center", // Center text horizontally
   },
-  content: {
-    padding: 20,
-  },
+  content: {},
 });
 
 export default Accordion;

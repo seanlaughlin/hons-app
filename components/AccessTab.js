@@ -4,6 +4,7 @@ import SelectableList from "./SelectableList";
 import accessCriteriaApi from "../api/accessCriteria";
 import { useEffect } from "react";
 import accessibilityIconMapping from "../config/accessibilityIconMapping";
+import Accordion from "./Accordion";
 
 const AccessTab = () => {
   const accessCriteria = useApi(accessCriteriaApi.getAccessCriteria);
@@ -20,7 +21,7 @@ const AccessTab = () => {
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View>
       <SelectableList
         name="accessibilities"
         data={accessCriteria.data}

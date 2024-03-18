@@ -10,7 +10,7 @@ const SelectableIcon = ({ iconName, selected, onPress, title }) => {
       <View style={{ alignItems: "center" }}>
         <MaterialCommunityIcons
           name={iconName}
-          size={60}
+          size={45}
           color={selected ? colors.primary : colors.medium}
         />
         <AppText
