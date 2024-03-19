@@ -64,6 +64,8 @@ function MapModal({
           title={venue.name}
           style={{
             paddingVertical: 15,
+            borderColor: colors.medium,
+            borderWidth: 1,
           }}
         >
           <AppText style={styles.subtitle}>
@@ -158,9 +160,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     overflow: "visible",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   subtitle: {
     fontSize: 15,
+    marginTop: 5,
   },
   venueAccessInfo: {
     alignItems: "flex-start",

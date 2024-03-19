@@ -50,6 +50,7 @@ function HomeScreen(props) {
             marginHorizontal: 55,
             backgroundColor: "rgba(255, 255, 255, 0.75)",
             width: "auto",
+            padding: 15,
           }}
         >
           <Text style={styles.welcome}>Welcome! 🙋‍♀️</Text>

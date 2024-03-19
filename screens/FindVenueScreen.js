@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -6,12 +6,14 @@ import {
   SectionList,
   View,
   ScrollView,
+  Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import colors from "../config/colors";
 import Search from "../components/Search";
 import Card from "../components/Card";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 import categoriesApi from "../api/categories";
 import useApi from "../hooks/useApi";
@@ -52,10 +54,11 @@ function FindVenueScreen(props) {
     });
   };
 
-  const sections = getCategoriesApi.data.map((category) => ({
-    title: category.title,
-    data: [category],
-  }));
+  const sections =
+    getCategoriesApi.data?.map((category) => ({
+      title: category.title,
+      data: [category],
+    })) ?? [];
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.light }}>
@@ -74,22 +77,26 @@ function FindVenueScreen(props) {
               />
             </View>
           </HeaderContainer>
-          <SectionList
-            style={{ marginTop: 8 }}
-            sections={sections}
-            keyExtractor={(item) => item._id}
-            numColumns={2}
-            renderItem={({ item }) => (
-              <Card
-                title={item.title}
-                imageUrl={item.imageUri}
-                onPress={() => gotoCategory(item)}
-                accessibilityLabel={`${item.title} category`}
-                accessibilityHint="Press to load venues in this category."
-              />
-            )}
-            ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-          />
+          {getCategoriesApi.loading ? (
+            <ActivityIndicator visible={true} />
+          ) : (
+            <SectionList
+              style={{ marginTop: 8 }}
+              sections={sections}
+              keyExtractor={(item) => item._id}
+              numColumns={2}
+              renderItem={({ item }) => (
+                <Card
+                  title={item.title}
+                  imageUrl={item.imageUri}
+                  onPress={() => gotoCategory(item)}
+                  accessibilityLabel={`${item.title} category`}
+                  accessibilityHint="Press to load venues in this category."
+                />
+              )}
+              ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+            />
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -100,29 +107,6 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 15,
     backgroundColor: colors.light,
-  },
-  header: {
-    padding: 20,
-    borderRadius: 10,
-    marginVertical: 10,
-  },
-  title: {
-    fontSize: 30,
-    marginTop: 20,
-    marginBottom: 20,
-    textAlign: "center",
-    color: colors.primary,
-  },
-  sectionHeader: {
-    fontSize: 24,
-    fontWeight: "bold",
-    backgroundColor: colors.light,
-    paddingHorizontal: 15,
-    paddingVertical: 5,
-    marginBottom: 10,
-  },
-  contentContainer: {
-    paddingHorizontal: 5,
   },
   scrollViewContent: {
     flexGrow: 1,

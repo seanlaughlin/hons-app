@@ -4,28 +4,31 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 import AppText from "./AppText";
+import { TouchableOpacity } from "react-native";
 
-function AccessibilityReview({ review }) {
+function AccessibilityReview({ review, onPress }) {
   const image = review.imageUri
     ? review.imageUri
-    : "../assets/placeholder-square.jpg";
+    : require("../assets/placeholder-square.jpg");
 
   const icon = review.for ? "check-circle" : "close-circle";
 
-  const handlePress = () => {};
-
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Image
-        source={{ uri: image }}
+        source={image}
         style={styles.image}
         accessibilityElementsHidden={true}
       />
 
       <View style={styles.textContainer}>
         <AppText style={styles.name}>{review.user}</AppText>
-        <AppText>Visited On: {review.date.toLocaleDateString()}</AppText>
-        <AppText numberOfLines={2}>"{review.comments}"</AppText>
+        <AppText style={{ fontSize: 15 }}>
+          Visited On: {new Date(review.date).toLocaleDateString()}
+        </AppText>
+        <AppText numberOfLines={1} style={{ fontSize: 15 }}>
+          "{review.comment}"
+        </AppText>
       </View>
       <MaterialCommunityIcons
         name={icon}
@@ -33,7 +36,7 @@ function AccessibilityReview({ review }) {
         color={review.for ? colors.green : colors.danger}
         style={{ alignSelf: "center", marginRight: 10 }}
       />
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -46,6 +49,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: colors.border,
     borderWidth: 1,
+    maxHeight: 100,
   },
   image: {
     height: 100,
@@ -59,6 +63,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontWeight: "bold",
+    fontSize: 16,
   },
 });
 

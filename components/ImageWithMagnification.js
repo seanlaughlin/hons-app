@@ -8,32 +8,33 @@ import {
   ImageBackground,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
 import colors from "../config/colors";
 
 function ImageWithMagnification({
   uri,
+  source,
   disableMagnification = false,
   ...others
 }) {
   const [selectedImage, setSelectedImage] = useState(null);
 
-  const handleImagePress = (uri) => {
-    setSelectedImage(uri);
+  const handleImagePress = (source) => {
+    setSelectedImage(source);
   };
 
   const handleCloseModal = () => {
     setSelectedImage(null);
   };
 
+  const imageSource = uri ? { uri } : source;
+
   return (
     <>
       <TouchableOpacity
-        key={uri}
-        onPress={() => handleImagePress(uri)}
+        onPress={() => handleImagePress(imageSource)}
         {...others}
       >
-        <ImageBackground source={{ uri: uri }} style={styles.image}>
+        <ImageBackground source={imageSource} style={styles.image}>
           <View style={styles.imageMagnification}>
             <MaterialCommunityIcons
               name="magnify"
@@ -53,10 +54,7 @@ function ImageWithMagnification({
             color={colors.light}
           />
           <View style={styles.fullScreenImageContainer}>
-            <Image
-              source={{ uri: selectedImage }}
-              style={styles.fullScreenImage}
-            />
+            <Image source={selectedImage} style={styles.fullScreenImage} />
           </View>
         </View>
       </Modal>
@@ -108,10 +106,6 @@ const styles = StyleSheet.create({
     top: 30,
     left: 30,
     zIndex: 1,
-  },
-  closeText: {
-    color: colors.white,
-    fontSize: 16,
   },
 });
 
