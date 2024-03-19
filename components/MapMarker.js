@@ -11,7 +11,7 @@ function MapMarker({ type, coords, onPress, ...others }) {
     <Marker coordinate={coords} onPress={onPress} {...others}>
       <MaterialCommunityIcons
         name={markerIcon}
-        size={40}
+        size={35}
         color={colors.primary}
         {...others}
       />

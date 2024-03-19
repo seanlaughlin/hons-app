@@ -20,7 +20,7 @@ const AccessTab = () => {
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View>
       <SelectableList
         name="accessibilities"
         data={accessCriteria.data}

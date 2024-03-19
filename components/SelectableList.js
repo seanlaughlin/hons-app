@@ -41,13 +41,13 @@ const SelectableList = ({ name, data, iconMapping, title }) => {
       <View style={styles.buttonsContainer}>
         <Button
           title="Select All"
-          color={colors.white}
+          color={colors.primary}
           onPress={handleSelectAll}
         />
         <View style={styles.verticalDivider} />
         <Button
           title="Select None"
-          color={colors.white}
+          color={colors.primary}
           onPress={handleSelectNone}
         />
       </View>
@@ -84,7 +84,7 @@ const SelectableList = ({ name, data, iconMapping, title }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
   },
   flatListContent: {
     flexGrow: 1,
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    backgroundColor: colors.medium,
+    backgroundColor: colors.light,
   },
   verticalDivider: {
     width: 1,

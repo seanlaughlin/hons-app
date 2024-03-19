@@ -47,7 +47,7 @@ function VenueInfoScreen({ route }) {
           button={<BackButton color={colors.white} size={40} />}
           style={styles.contentContainers}
         >
-          <AppText style={{ fontSize: 18 }}>
+          <AppText style={{ fontSize: 18, marginTop: 5 }}>
             {capitalise(venue.type)} in {venue.neighbourhood} (
             {kmToMiles(distance)} miles away)
           </AppText>

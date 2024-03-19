@@ -40,6 +40,7 @@ function VenueCategoryScreen(props) {
             <AppText
               style={{
                 fontSize: 15,
+                marginTop: 5,
               }}
             >
               {venues.length} matching venues

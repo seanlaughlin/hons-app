@@ -4,7 +4,6 @@ import { View, StyleSheet, Image } from "react-native";
 import AppText from "./AppText";
 
 import colors from "../config/colors";
-import { getDistance } from "../utility/mapUtils";
 import capitalise from "../utility/capitalise";
 import accessibilityIconMapping from "../config/accessibilityIconMapping";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -47,7 +46,7 @@ function VenueListItem({ venue, ...others }) {
         }}
       >
         <View style={styles.accessIcons}>
-          {venue.accessibility.map((access) => {
+          {venue.accessibility.map((access, index) => {
             if (access.reportedFor > access.reportedAgainst)
               return (
                 <MaterialCommunityIcons
@@ -55,6 +54,7 @@ function VenueListItem({ venue, ...others }) {
                   size={28}
                   color={colors.green}
                   accessibilityLabel={access.name}
+                  key={index}
                 />
               );
           })}

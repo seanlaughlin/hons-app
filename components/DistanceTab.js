@@ -49,8 +49,8 @@ const DistanceTab = () => {
         <AppText>60 min</AppText>
       </View>
       <AppText>{sliderValue} minutes</AppText>
-      <View style={{ margin: 25, alignItems: "center" }}>
-        <AppText style={{ fontSize: 20, marginBottom: 15 }}>
+      <View style={{ margin: 20, alignItems: "center" }}>
+        <AppText style={{ fontSize: 18, marginBottom: 15 }}>
           ...and my method of travel is...
         </AppText>
         <View style={{ flexDirection: "row", columnGap: 40 }}>
@@ -59,12 +59,14 @@ const DistanceTab = () => {
             title="Walking"
             selected={values["transportMode"] === "walking"}
             onPress={() => handlePress("walking")}
+            size={35}
           />
           <SelectableIcon
             iconName="wheelchair-accessibility"
             title="Wheeling"
             selected={values["transportMode"] === "wheeling"}
             onPress={() => handlePress("wheeling")}
+            size={35}
           />
         </View>
       </View>
