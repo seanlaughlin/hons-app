@@ -14,6 +14,7 @@ function ImageWithMagnification({
   uri,
   source,
   disableMagnification = false,
+  size = 140,
   ...others
 }) {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -34,7 +35,10 @@ function ImageWithMagnification({
         onPress={() => handleImagePress(imageSource)}
         {...others}
       >
-        <ImageBackground source={imageSource} style={styles.image}>
+        <ImageBackground
+          source={imageSource}
+          style={[styles.image, { height: size, width: size }]}
+        >
           <View style={styles.imageMagnification}>
             <MaterialCommunityIcons
               name="magnify"
@@ -64,8 +68,6 @@ function ImageWithMagnification({
 
 const styles = StyleSheet.create({
   image: {
-    height: 140,
-    width: 140,
     borderColor: colors.light,
     borderRadius: 10,
     marginHorizontal: 5,

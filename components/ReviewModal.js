@@ -6,11 +6,12 @@ import CloseButton from "./CloseButton";
 import AppText from "./AppText";
 import colors from "../config/colors";
 import HeaderContainer from "./HeaderContainer";
+import ImageWithMagnification from "./ImageWithMagnification";
 
 function ReviewModal({ review, isVisible, setIsVisible }) {
-  const imageUri = review.image
-    ? review.image
-    : "../assets/placeholder-square.jpg";
+  const image = review.image
+    ? { uri: process.env.EXPO_PUBLIC_SERVER_URL + "/" + review.image.full }
+    : require("../assets/placeholder-square.jpg");
 
   const handleCloseModal = () => {
     setIsVisible(false);
@@ -43,10 +44,7 @@ function ReviewModal({ review, isVisible, setIsVisible }) {
                 padding: 15,
               }}
             >
-              <Image
-                source={require("../assets/placeholder-square.jpg")}
-                style={{ width: 180, height: 180, borderRadius: 10 }}
-              />
+              <ImageWithMagnification source={image} size={175} />
               <View>
                 <View style={{ flexDirection: "row" }}>
                   <AppText>User: </AppText>
@@ -73,7 +71,9 @@ function ReviewModal({ review, isVisible, setIsVisible }) {
                 />
               </View>
             </View>
-            <AppText>Comment: "{review.comment}"</AppText>
+            <AppText style={{ alignSelf: "flex-start", marginHorizontal: 15 }}>
+              Comment: "{review.comment}"
+            </AppText>
           </HeaderContainer>
         </View>
       </View>

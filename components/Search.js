@@ -11,18 +11,13 @@ function Search({ placeholder, onSubmit, ...others }) {
   const { setSearchTerm } = useFilterContext();
   const [searchValue, setSearchValue] = useState("");
 
-  const { searchTerm } = useFilterContext();
-
-  useEffect(() => {
-    if (searchValue.trim() !== "") {
-      setSearchTerm(searchValue.trim());
+  const handleSearch = async () => {
+    if (searchValue !== "") {
+      setSearchTerm(searchValue);
     } else {
       setSearchTerm("");
     }
-  }, [searchValue, setSearchTerm]);
-
-  const handleSearch = async () => {
-    onSubmit(searchValue.trim());
+    onSubmit(searchValue);
   };
 
   return (
@@ -31,7 +26,7 @@ function Search({ placeholder, onSubmit, ...others }) {
         placeholder={placeholder}
         accessibilityLabel="Field for search term"
         accessibilityRole="search"
-        value={searchTerm}
+        value={searchValue}
         onChangeText={setSearchValue}
       />
       <View style={styles.buttonContainer}>

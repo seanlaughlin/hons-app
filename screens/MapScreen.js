@@ -40,7 +40,7 @@ function MapScreen({ route }) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
   const { venues } = useVenueContext();
-  const { filters } = useFilterContext();
+  const { filters, setSearchTerm } = useFilterContext();
 
   useEffect(() => {
     if (initLocation) {

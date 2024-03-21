@@ -37,8 +37,8 @@ function AccessibilityReviewsScreen({ route }) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.light }}>
-      <View
-        style={{
+      <ScrollView
+        contentContainerStyle={{
           paddingHorizontal: 15,
           rowGap: 5,
         }}
@@ -47,12 +47,15 @@ function AccessibilityReviewsScreen({ route }) {
           title={accessibilityItem.name}
           button={<BackButton color={colors.white} size={40} />}
         >
-          <ScrollView contentContainerStyle={styles.container}>
+          <View style={styles.container}>
             <AppText style={styles.subTitle} numberOfLines={1}>
               Reviews for {venue.name}
             </AppText>
+            <AppText style={{ fontSize: 12 }}>
+              💡 Tap reviews to read full info
+            </AppText>
             <AppText style={{ fontSize: 20 }}></AppText>
-            {getReviewsApi.data ? (
+            {getReviewsApi.data.length > 0 ? (
               getReviewsApi.data.map((review, index) => (
                 <AccessibilityReview
                   review={review}
@@ -63,7 +66,7 @@ function AccessibilityReviewsScreen({ route }) {
             ) : (
               <AppText>No reviews to display.</AppText>
             )}
-          </ScrollView>
+          </View>
         </HeaderContainer>
         <ContentContainer style={{ paddingBottom: 15 }}>
           <AppText
@@ -79,7 +82,7 @@ function AccessibilityReviewsScreen({ route }) {
           </AppText>
           <AppButton title="📖 Submit a Review" style={{ marginTop: 10 }} />
         </ContentContainer>
-      </View>
+      </ScrollView>
       <ReviewModal
         isVisible={isModalVisible}
         setIsVisible={setIsModalVisible}
@@ -93,7 +96,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
+    marginVertical: 10,
     width: "100%",
     paddingHorizontal: 10,
   },

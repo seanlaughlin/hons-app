@@ -23,10 +23,13 @@ import ListItemSeparator from "../components/ListItemSeparator";
 import ContentContainer from "../components/ContentContainer";
 import HeaderContainer from "../components/HeaderContainer";
 import { kmToMiles } from "../utility/mapUtils";
+import SubmitReviewModal from "../components/SubmitReviewModal";
 
 function VenueInfoScreen({ route }) {
   const [distance, setDistance] = useState(0);
   const { venue, fromSearch } = route.params;
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const location = useLocation();
 
@@ -131,9 +134,18 @@ function VenueInfoScreen({ route }) {
             something about this venue, please click the button below to answer
             a few short questions on your experience at {venue.name}.
           </AppText>
-          <AppButton title="📖 Submit a Review" style={{ marginTop: 10 }} />
+          <AppButton
+            title="📖 Submit a Review"
+            style={{ marginTop: 10 }}
+            onPress={() => setIsModalVisible(true)}
+          />
         </ContentContainer>
       </ScrollView>
+      <SubmitReviewModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        venue={venue}
+      />
     </SafeAreaView>
   );
 }

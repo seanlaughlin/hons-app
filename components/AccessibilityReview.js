@@ -7,8 +7,8 @@ import AppText from "./AppText";
 import { TouchableOpacity } from "react-native";
 
 function AccessibilityReview({ review, onPress }) {
-  const image = review.imageUri
-    ? review.imageUri
+  const image = review.image
+    ? { uri: process.env.EXPO_PUBLIC_SERVER_URL + "/" + review.image.thumb }
     : require("../assets/placeholder-square.jpg");
 
   const icon = review.for ? "check-circle" : "close-circle";

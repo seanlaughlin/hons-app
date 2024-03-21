@@ -11,7 +11,7 @@ const SelectableItem = ({ children, onPress, isSelected }) => {
           {children}
           <View style={styles.checkboxContainer}>
             <Checkbox
-              color={isSelected ? colors.green : colors.medium}
+              color={isSelected ? colors.green : colors.border}
               value={isSelected}
               onValueChange={onPress}
               style={{ width: 25, height: 25, borderRadius: 20 }}

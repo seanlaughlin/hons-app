@@ -1,7 +1,6 @@
 import React from "react";
 import { TextInput, View, StyleSheet } from "react-native";
 
-import defaultStyles from "../config/styles";
 import colors from "../config/colors";
 
 function AppTextInput({ icon, ...others }) {
@@ -21,7 +20,7 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 15,
     marginHorizontal: 15,
-    borderColor: colors.medium,
+    borderColor: colors.border,
     borderWidth: 1,
   },
   icon: {

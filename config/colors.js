@@ -7,7 +7,7 @@ export default {
   light: "#f8f4f4",
   lightgrey: "#ddd",
   dark: "#0c0c0c",
-  border: "#959595",
+  border: "#ccc",
   danger: "#E85841",
   dangerdark: "#A54232",
   green: "#01D11D",

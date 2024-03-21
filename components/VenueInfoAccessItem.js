@@ -66,7 +66,7 @@ function VenueInfoAccessItem({ item, onPress, ...others }) {
           onPress={onPress}
         >
           <AppText style={{ fontSize: 12 }} accessibilityElementsHidden={true}>
-            View full info{" "}
+            View reviews{" "}
           </AppText>
 
           <MaterialCommunityIcons

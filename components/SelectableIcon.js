@@ -4,19 +4,26 @@ import colors from "../config/colors";
 import AppText from "./AppText";
 import { TouchableWithoutFeedback, View } from "react-native";
 
-const SelectableIcon = ({ iconName, selected, onPress, title, size }) => {
+const SelectableIcon = ({
+  iconName,
+  selected,
+  onPress,
+  title,
+  size,
+  selectedColor = colors.primary,
+}) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={{ alignItems: "center" }}>
         <MaterialCommunityIcons
           name={iconName}
           size={size}
-          color={selected ? colors.primary : colors.medium}
+          color={selected ? selectedColor : colors.medium}
         />
         <AppText
           style={{
-            fontSize: 20,
-            color: selected ? colors.primary : colors.medium,
+            fontSize: 18,
+            color: selected ? selectedColor : colors.medium,
           }}
         >
           {title}

@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Modal,
-  SafeAreaView,
-  ScrollView,
-  View,
-  useWindowDimensions,
-} from "react-native";
+import { Modal, SafeAreaView, ScrollView, View } from "react-native";
 import { Formik } from "formik";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
