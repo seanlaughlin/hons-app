@@ -13,7 +13,7 @@ export const FilterContextProvider = ({ children }) => {
   const [searchTerm, setSearchTerm] = useState(null);
   const [location, setLocation] = useState(null);
   const [showNoReviews, setShowNoReviews] = useState(false);
-  const [showMixedReviews, setShowMixedReviews] = useState(false);
+  const [showMixedReviews, setShowMixedReviews] = useState(true);
   const [filters, setFilters] = useState({});
 
   const setTravelDistance = () => {

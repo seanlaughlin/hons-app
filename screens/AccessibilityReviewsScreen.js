@@ -12,6 +12,8 @@ import ContentContainer from "../components/ContentContainer";
 import ReviewModal from "../components/ReviewModal";
 import AppButton from "../components/AppButton";
 import SubmitReviewModal from "../components/SubmitReviewModal";
+import ListItemSeparator from "../components/ListItemSeparator";
+import CheckBox from "@react-native-community/checkbox";
 
 function AccessibilityReviewsScreen({ route }) {
   const { venue, accessibilityItem } = route.params;
@@ -54,21 +56,30 @@ function AccessibilityReviewsScreen({ route }) {
             <AppText style={styles.subTitle} numberOfLines={1}>
               Reviews for {venue.name}
             </AppText>
-            <AppText style={{ fontSize: 12 }}>
+            <AppText
+              style={{ fontSize: 12, marginBottom: 5 }}
+              accessibilityLabel="Tap reviews for full info"
+            >
               💡 Tap reviews to read full info
             </AppText>
-            <AppText style={{ fontSize: 20 }}></AppText>
             {getReviewsApi.data.length > 0 ? (
-              getReviewsApi.data.map((review, index) => (
-                <AccessibilityReview
-                  review={review}
-                  style={{ width: "100%" }}
-                  onPress={() => handleReviewPress(review)}
-                  key={index}
-                />
+              getReviewsApi.data.map((review) => (
+                <>
+                  <AccessibilityReview
+                    review={review}
+                    style={{ width: "100%" }}
+                    onPress={() => handleReviewPress(review)}
+                    key={review._id}
+                  />
+                </>
               ))
             ) : (
-              <AppText>No reviews to display.</AppText>
+              <>
+                <ListItemSeparator />
+                <AppText style={{ marginTop: 10 }}>
+                  No reviews to display.
+                </AppText>
+              </>
             )}
           </View>
         </HeaderContainer>

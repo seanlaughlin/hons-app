@@ -25,6 +25,10 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
     setTransportMode,
     selectedTravelDuration,
     setSelectedTravelDuration,
+    showNoReviews,
+    setShowNoReviews,
+    showMixedReviews,
+    setShowMixedReviews,
   } = useFilterContext();
 
   const handleCloseModal = () => {
@@ -36,6 +40,8 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
     setSelectedCategories(values.categories);
     setTransportMode(values.transportMode);
     setSelectedTravelDuration(values.travelDuration);
+    setShowNoReviews(values.showNoReviews);
+    setShowMixedReviews(values.showMixedReviews);
     handleCloseModal();
   };
 
@@ -58,6 +64,8 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
               categories: selectedCategories || [],
               transportMode: transportMode || "walking",
               travelDuration: selectedTravelDuration || 10,
+              showNoReviews: showNoReviews,
+              showMixedReviews: showMixedReviews,
             }}
             onSubmit={handleSubmit}
           >

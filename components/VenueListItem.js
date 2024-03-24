@@ -64,7 +64,7 @@ function VenueListItem({ venue, ...others }) {
           flex: 1,
         }}
       >
-        {/* show max of 3 then text indicating additional criteria exist (+3 etc)*/}
+        {/* Show max of 3 then text indicating additional criteria exist (+3 etc)*/}
         <View style={styles.accessIcons}>
           {/* Render icons from selectedAccessibilities */}
           {filteredAccessibilities.slice(0, 3).map((access, index) => {

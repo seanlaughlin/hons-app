@@ -105,7 +105,7 @@ function VenueInfoScreen({ route }) {
           {/* show those with reportedFor and no mixed at top, then order by amount of reviews for */}
           <FlatList
             data={venue.accessibility.sort((a, b) => {
-              if (a.reportedAgainst === 0 && b.reportedAgainst > 0) return -1;
+              if (a.reportedFor !== 0 && b.reportedFor === 0) return -1;
               if (a.reportedAgainst > 0 && b.reportedAgainst === 0) return 1;
               if (a.reportedAgainst === 0 && b.reportedAgainst === 0) {
                 return b.reportedFor - a.reportedFor;

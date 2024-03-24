@@ -17,6 +17,7 @@ import ImageInput from "./ImageInput";
 import AppButton from "./AppButton";
 import reviewsApi from "../api/reviews";
 import LoadingModal from "./LoadingModal";
+import { useVenueContext } from "../context/VenueContext";
 
 function SubmitReviewModal({
   isModalVisible,
@@ -30,6 +31,8 @@ function SubmitReviewModal({
   const [isLoadingModalVisible, setIsLoadingModalVisible] = useState(false);
   const [imageUri, setImageUri] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const { fetchVenues } = useVenueContext();
 
   useEffect(() => {
     const fetchCriteria = async () => {
@@ -57,6 +60,7 @@ function SubmitReviewModal({
       if (result.ok) {
         setSubmissionOutcome("Saved!");
         setImageUri(null);
+        fetchVenues();
         resetForm();
       } else {
         setSubmissionOutcome("Error");

@@ -67,6 +67,12 @@ function MapScreen({ route }) {
     }
   }, [route.params]);
 
+  useEffect(() => {
+    AccessibilityInfo.announceForAccessibilityWithOptions(stepInstructions, {
+      options: { queue: true },
+    });
+  }, [stepInstructions]);
+
   const updateRegion = () => {
     const newRegion = getBoundingRegion(location, modalVenue.coords);
     if (newRegion) {
@@ -133,8 +139,7 @@ function MapScreen({ route }) {
     setIsModalVisible(false);
     setIsNavigationMode(true);
     AccessibilityInfo.announceForAccessibilityWithOptions(
-      `Navigating to ${modalVenue.name}, ${distance} kilometers away.`,
-      { options: { queue: true } }
+      `Navigating to ${modalVenue.name}, ${distance} kilometers away.`
     );
   };
 

@@ -75,8 +75,7 @@ function MapModal({
           <View style={styles.venueInfo}>
             <View
               style={{
-                flex: 3,
-                alignItems: "flex-start",
+                // flex: 3,
                 rowGap: 2,
               }}
             >
@@ -99,7 +98,12 @@ function MapModal({
                 Tel: {venue.contact.phone}
               </AppText>
             </View>
-            <View>
+            <View
+              style={{
+                justifyContent: "flex-start",
+                alignItems: "flex-start",
+              }}
+            >
               <FlatList
                 data={venue.accessibility.filter(
                   (item) => item.reportedFor > 0 && item.reportedAgainst === 0
@@ -168,13 +172,16 @@ const styles = StyleSheet.create({
   },
   venueAccessInfo: {
     alignItems: "flex-start",
+    marginLeft: 15,
+    justifyContent: "center",
     rowGap: 2,
   },
   venueInfo: {
     flexDirection: "row",
     marginVertical: 10,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
+    alignSelf: "flex-start",
     paddingHorizontal: 15,
   },
 });
