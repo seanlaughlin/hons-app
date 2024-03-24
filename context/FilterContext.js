@@ -12,6 +12,8 @@ export const FilterContextProvider = ({ children }) => {
   const [selectedDistance, setSelectedDistance] = useState(1); // default 1km
   const [searchTerm, setSearchTerm] = useState(null);
   const [location, setLocation] = useState(null);
+  const [showNoReviews, setShowNoReviews] = useState(false);
+  const [showMixedReviews, setShowMixedReviews] = useState(false);
   const [filters, setFilters] = useState({});
 
   const setTravelDistance = () => {
@@ -50,6 +52,8 @@ export const FilterContextProvider = ({ children }) => {
       selectedDistance,
       searchTerm,
       selectedDistance,
+      showNoReviews,
+      showMixedReviews,
     });
   }, [
     selectedAccessibilities,
@@ -57,6 +61,8 @@ export const FilterContextProvider = ({ children }) => {
     searchTerm,
     location,
     selectedDistance,
+    showNoReviews,
+    showMixedReviews,
   ]);
 
   useEffect(() => {
@@ -81,6 +87,10 @@ export const FilterContextProvider = ({ children }) => {
         setTransportMode,
         selectedTravelDuration,
         setSelectedTravelDuration,
+        showNoReviews,
+        setShowNoReviews,
+        showMixedReviews,
+        setShowMixedReviews,
       }}
     >
       {children}

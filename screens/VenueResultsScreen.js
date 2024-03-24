@@ -11,12 +11,11 @@ import ListItemSeparator from "../components/ListItemSeparator";
 import AppButton from "../components/AppButton";
 import HeaderContainer from "../components/HeaderContainer";
 import { useVenueContext } from "../context/VenueContext";
-import ActivityIndicator from "../components/ActivityIndicator";
 
 function VenueCategoryScreen(props) {
   const { title, categoryId = null } = props.route.params;
-
   let { venues } = useVenueContext();
+
   if (categoryId !== null)
     venues = venues.filter((venue) => venue.category === categoryId);
 
@@ -44,26 +43,22 @@ function VenueCategoryScreen(props) {
               {venues.length} matching venues
             </AppText>
           </View>
-          {venues.length === 0 || venues === null ? (
-            <View style={styles.loadingContainer}>
-              <ActivityIndicator visible={true} size={100} />
-            </View>
-          ) : (
-            <View style={styles.resultBox}>
-              {venues.length > 0 ? (
-                <FlatList
-                  data={venues}
-                  keyExtractor={(venue) => venue._id.toString()}
-                  renderItem={({ item }) => (
-                    <VenueListItem venue={item} key={item._id} />
-                  )}
-                  ItemSeparatorComponent={() => <ListItemSeparator />}
-                />
-              ) : (
-                <AppText>No venues to display.</AppText>
-              )}
-            </View>
-          )}
+          <View style={styles.resultBox}>
+            {venues.length > 0 ? (
+              <FlatList
+                data={venues}
+                keyExtractor={(venue) => venue._id.toString()}
+                renderItem={({ item }) => (
+                  <VenueListItem venue={item} key={item._id} />
+                )}
+                ItemSeparatorComponent={() => <ListItemSeparator />}
+              />
+            ) : (
+              <AppText style={{ padding: 10, alignSelf: "center" }}>
+                No venues to display.
+              </AppText>
+            )}
+          </View>
         </HeaderContainer>
         <AppButton
           style={styles.symbolsGuideButton}

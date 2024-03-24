@@ -13,6 +13,8 @@ function VenueInfoAccessItem({ item, onPress, ...others }) {
       ? colors.green
       : colors.warning;
 
+  const hasReviews = !(item.reportedFor === 0 && item.reportedAgainst === 0);
+
   return (
     <View style={styles.container} {...others}>
       <View style={styles.itemContainer}>
@@ -35,7 +37,13 @@ function VenueInfoAccessItem({ item, onPress, ...others }) {
               accessibilityHint={
                 iconColour == colors.green
                   ? `Confirmed by ${item.reportedFor} users`
-                  : `Unconfirmed - please check full info`
+                  : hasReviews
+                  ? `Mixed reviews (${(
+                      (item.reportedFor /
+                        (item.reportedFor + item.reportedAgainst)) *
+                      100
+                    ).toFixed(0)}% agree)`
+                  : "No reviews"
               }
             >
               {item.name}
@@ -45,38 +53,49 @@ function VenueInfoAccessItem({ item, onPress, ...others }) {
               accessibilityElementsHidden={true}
             >
               {iconColour === colors.green
-                ? `Reported by ${item.reportedFor} user${
+                ? `Confirmed by ${item.reportedFor} user${
                     item.reportedFor > 1 ? "s" : ""
                   }`
-                : "Mixed reviews - please check full info"}
+                : hasReviews
+                ? `Mixed reviews (${(
+                    (item.reportedFor /
+                      (item.reportedFor + item.reportedAgainst)) *
+                    100
+                  ).toFixed(0)}% agree)`
+                : "No reviews"}
             </AppText>
           </View>
         </View>
       </View>
-      <View
-        style={styles.fullInfoContainer}
-        accessibilityLabel={`Tap to view full accessibility feedback related to ${item.name}`}
-        accessible={true}
-      >
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-          onPress={onPress}
+      {hasReviews && (
+        <View
+          style={styles.fullInfoContainer}
+          accessibilityLabel={`Tap to view full accessibility feedback related to ${item.name}`}
+          accessible={true}
         >
-          <AppText style={{ fontSize: 12 }} accessibilityElementsHidden={true}>
-            View reviews{" "}
-          </AppText>
+          <TouchableOpacity
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+            onPress={onPress}
+          >
+            <AppText
+              style={{ fontSize: 12 }}
+              accessibilityElementsHidden={true}
+            >
+              View reviews{" "}
+            </AppText>
 
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={30}
-            color={colors.primary}
-            accessibilityElementsHidden={true}
-          />
-        </TouchableOpacity>
-      </View>
+            <MaterialCommunityIcons
+              name="chevron-right"
+              size={30}
+              color={colors.primary}
+              accessibilityElementsHidden={true}
+            />
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }
@@ -94,6 +113,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
+    width: "100%",
   },
   fullInfoContainer: {
     justifyContent: "flex-end",

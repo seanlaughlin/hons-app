@@ -28,11 +28,9 @@ import SubmitReviewModal from "../components/SubmitReviewModal";
 function VenueInfoScreen({ route }) {
   const [distance, setDistance] = useState(0);
   const { venue, fromSearch } = route.params;
-
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const location = useLocation();
-
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -104,8 +102,16 @@ function VenueInfoScreen({ route }) {
           style={styles.venueAccess}
           accessibilityLabel="Accessibility Information"
         >
+          {/* show those with reportedFor and no mixed at top, then order by amount of reviews for */}
           <FlatList
-            data={venue.accessibility}
+            data={venue.accessibility.sort((a, b) => {
+              if (a.reportedAgainst === 0 && b.reportedAgainst > 0) return -1;
+              if (a.reportedAgainst > 0 && b.reportedAgainst === 0) return 1;
+              if (a.reportedAgainst === 0 && b.reportedAgainst === 0) {
+                return b.reportedFor - a.reportedFor;
+              }
+              return a.reportedAgainst - b.reportedAgainst;
+            })}
             ItemSeparatorComponent={ListItemSeparator}
             renderItem={({ item }) => (
               <VenueInfoAccessItem
@@ -131,11 +137,11 @@ function VenueInfoScreen({ route }) {
           <AppText style={{ fontSize: 15 }}>
             As a community supported application, we rely on user submissions to
             provide venue accessibility information. If you'd like to report
-            something about this venue, please click the button below to answer
-            a few short questions on your experience at {venue.name}.
+            something about this venue, please tap the button below to answer a
+            few short questions on your experience at {venue.name}.
           </AppText>
           <AppButton
-            title="📖 Submit a Review"
+            title="📖 Leave a Review"
             style={{ marginTop: 10 }}
             onPress={() => setIsModalVisible(true)}
           />

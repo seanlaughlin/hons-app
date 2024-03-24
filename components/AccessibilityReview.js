@@ -35,6 +35,9 @@ function AccessibilityReview({ review, onPress }) {
         size={30}
         color={review.for ? colors.green : colors.danger}
         style={{ alignSelf: "center", marginRight: 10 }}
+        accessibilityLabel={
+          (review.for ? "Agree for " : "Disagree for ") + review.accessCriteria
+        }
       />
     </TouchableOpacity>
   );

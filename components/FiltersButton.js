@@ -23,8 +23,9 @@ function FiltersButton({ style }) {
         onPress={handleFilterPress}
         style={[styles.button, style]}
         borderColour={colors.secondary}
-        accessibilityLabel="Filters button"
+        accessibilityLabel="Filters"
         accessibilityHint="Press here to open search filters modal."
+        accessibilityRole="button"
       />
     </>
   );

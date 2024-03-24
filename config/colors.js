@@ -14,5 +14,3 @@ export default {
   greendark: "#009C15",
   warning: "#F89500",
 };
-
-// Replace medium with dark value and light with border, remove border

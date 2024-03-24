@@ -1,22 +1,41 @@
 import React from "react";
 import { View, StyleSheet, Image } from "react-native";
-
-import AppText from "./AppText";
-
-import colors from "../config/colors";
-import capitalise from "../utility/capitalise";
-import accessibilityIconMapping from "../config/accessibilityIconMapping";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableWithoutFeedback } from "react-native";
+
+import AppText from "./AppText";
+import colors from "../config/colors";
+import capitalise from "../utility/capitalise";
+import accessibilityIconMapping from "../config/accessibilityIconMapping";
 import { kmToMiles } from "../utility/mapUtils";
+import { useFilterContext } from "../context/FilterContext";
 
 function VenueListItem({ venue, ...others }) {
   const navigation = useNavigation();
+  const { selectedAccessibilities } = useFilterContext();
+
+  const filteredAccessibilities = venue.accessibility.filter(
+    (access) =>
+      selectedAccessibilities.some(
+        (selected) => selected.criteria === access.criteria
+      ) && access.reportedFor > 0
+  );
+
+  const notFilteredAccessibilities = venue.accessibility.filter(
+    (access) =>
+      !selectedAccessibilities.some(
+        (selected) => selected.criteria === access.criteria
+      ) && access.reportedFor > 0
+  );
+
+  const additionalIconsNeeded =
+    filteredAccessibilities.length < 3 ? 3 - filteredAccessibilities.length : 0;
 
   const handleVenuePress = () => {
     navigation.navigate("VenueInfoScreen", { venue: venue, fromSearch: true });
   };
+
   return (
     <View style={styles.container} {...others}>
       <View
@@ -45,20 +64,48 @@ function VenueListItem({ venue, ...others }) {
           flex: 1,
         }}
       >
+        {/* show max of 3 then text indicating additional criteria exist (+3 etc)*/}
         <View style={styles.accessIcons}>
-          {venue.accessibility.map((access, index) => {
-            if (access.reportedFor > access.reportedAgainst)
-              return (
-                <MaterialCommunityIcons
-                  name={accessibilityIconMapping[access.criteria]}
-                  size={28}
-                  color={colors.green}
-                  accessibilityLabel={access.name}
-                  key={index}
-                />
-              );
+          {/* Render icons from selectedAccessibilities */}
+          {filteredAccessibilities.slice(0, 3).map((access, index) => {
+            return (
+              <MaterialCommunityIcons
+                name={accessibilityIconMapping[access.criteria]}
+                size={28}
+                color={
+                  access.reportedAgainst === 0 && access.reportedFor !== 0
+                    ? colors.green
+                    : colors.warning
+                }
+                accessibilityLabel={access.name}
+                key={index}
+              />
+            );
           })}
+
+          {/* Render additional icons from venue.accessibility */}
+          {notFilteredAccessibilities
+            .slice(0, additionalIconsNeeded)
+            .map((access, index) => (
+              <MaterialCommunityIcons
+                name={accessibilityIconMapping[access.criteria]}
+                size={28}
+                color={
+                  access.reportedAgainst === 0 && access.reportedFor !== 0
+                    ? colors.green
+                    : colors.warning
+                }
+                accessibilityLabel={access.name}
+                key={index}
+              />
+            ))}
+
+          {/* Render text for additional icons if needed */}
+          {venue.accessibility.length > 3 && (
+            <AppText>+{venue.accessibility.length - 3}</AppText>
+          )}
         </View>
+
         <TouchableWithoutFeedback onPress={handleVenuePress}>
           <MaterialCommunityIcons
             name="chevron-right"
@@ -77,7 +124,7 @@ const styles = StyleSheet.create({
   accessIcons: {
     flexDirection: "row",
     justifyContent: "flex-start",
-    alignItems: "flex-start",
+    alignItems: "center",
     columnGap: 5,
   },
   container: {

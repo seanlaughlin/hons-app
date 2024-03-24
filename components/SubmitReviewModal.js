@@ -130,34 +130,35 @@ function SubmitReviewModal({
                   />
                   <View
                     style={{
-                      flexDirection: "row",
+                      flexDirection: "column",
                       justifyContent: "center",
                       alignItems: "center",
+                      marginVertical: 15,
                     }}
                   >
                     <Button
-                      title="📅 Select Date of Visit"
-                      onPress={() => setShowDatePicker(true)}
+                      title="📅 Select Date of Visit (required)"
+                      onPress={() => setShowDatePicker(!showDatePicker)}
                     />
-                    <AppText>
-                      (Selected: {values.date.toLocaleDateString()})
+                    <AppText style={{ fontSize: 15 }}>
+                      (Currently Selected: {values.date.toLocaleDateString()})
                     </AppText>
+                    {showDatePicker && (
+                      <DateTimePicker
+                        testID="dateTimePicker"
+                        value={values.date}
+                        mode={"date"}
+                        is24Hour={true}
+                        onChange={(event, selectedDate) => {
+                          setFieldValue("date", selectedDate);
+                          setShowDatePicker(false);
+                        }}
+                      />
+                    )}
                   </View>
-                  {showDatePicker && (
-                    <DateTimePicker
-                      testID="dateTimePicker"
-                      value={values.date}
-                      mode={"date"}
-                      is24Hour={true}
-                      onChange={(event, selectedDate) => {
-                        setFieldValue("date", selectedDate);
-                        setShowDatePicker(false);
-                      }}
-                    />
-                  )}
                   <View style={{ alignItems: "center" }}>
                     <AppText style={{ fontSize: 15 }}>
-                      Did {venue.name} meet this access requirement? (required)
+                      Did {venue.name} meet this access requirement?
                     </AppText>
                     <View style={styles.selectableIcons}>
                       <SelectableIcon
