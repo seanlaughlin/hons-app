@@ -13,12 +13,13 @@ const saveReview = (review) => {
   data.append("date", review.date.toISOString());
   data.append("for", review.for);
   data.append("comment", review.comment);
-  data.append("image", {
-    name: "image",
-    type: "image/jpeg",
-    uri: review.image,
-  });
-
+  if (review.image) {
+    data.append("image", {
+      name: "image",
+      type: "image/jpeg",
+      uri: review.image,
+    });
+  }
   const config = {
     headers: { "Content-Type": "multipart/form-data" },
   };
