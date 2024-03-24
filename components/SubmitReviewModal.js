@@ -73,7 +73,6 @@ function SubmitReviewModal({
 
   const handleSelectImage = (uri) => {
     setImageUri(uri);
-    console.log(uri);
   };
 
   return (
@@ -183,7 +182,7 @@ function SubmitReviewModal({
                       />
                     </View>
                   </View>
-                  {/* Include the ImageInput component */}
+
                   <AppText style={{ fontSize: 15, marginTop: 15 }}>
                     Tell us why (optional):
                   </AppText>

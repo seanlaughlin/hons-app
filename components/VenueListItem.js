@@ -75,7 +75,9 @@ function VenueListItem({ venue, ...others }) {
                 color={
                   access.reportedAgainst === 0 && access.reportedFor !== 0
                     ? colors.green
-                    : colors.warning
+                    : access.reportedFor !== 0
+                    ? colors.warning
+                    : colors.dangerdark
                 }
                 accessibilityLabel={access.name}
                 key={index}
@@ -93,7 +95,9 @@ function VenueListItem({ venue, ...others }) {
                 color={
                   access.reportedAgainst === 0 && access.reportedFor !== 0
                     ? colors.green
-                    : colors.warning
+                    : access.reportedFor !== 0
+                    ? colors.warning
+                    : colors.danger
                 }
                 accessibilityLabel={access.name}
                 key={index}
@@ -101,9 +105,9 @@ function VenueListItem({ venue, ...others }) {
             ))}
 
           {/* Render text for additional icons if needed */}
-          {venue.accessibility.length > 3 && (
-            <AppText>+{venue.accessibility.length - 3}</AppText>
-          )}
+          {venue.accessibility.filter(
+            (access) => access.reportedFor > 0 || access.reportedAgainst > 0
+          ).length > 3 && <AppText>+{venue.accessibility.length - 3}</AppText>}
         </View>
 
         <TouchableWithoutFeedback onPress={handleVenuePress}>

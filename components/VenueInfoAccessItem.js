@@ -11,7 +11,9 @@ function VenueInfoAccessItem({ item, onPress, ...others }) {
   const iconColour =
     item.reportedFor > 0 && item.reportedAgainst === 0
       ? colors.green
-      : colors.warning;
+      : item.reportedFor > 0 || item.reportedAgainst === 0
+      ? colors.warning
+      : colors.danger;
 
   const hasReviews = !(item.reportedFor === 0 && item.reportedAgainst === 0);
 
@@ -35,14 +37,14 @@ function VenueInfoAccessItem({ item, onPress, ...others }) {
             <AppText
               style={{ fontSize: 18 }}
               accessibilityHint={
-                iconColour == colors.green
-                  ? `Confirmed by ${item.reportedFor} users`
-                  : hasReviews
-                  ? `Mixed reviews (${(
+                item.reportedFor + item.reportedAgainst !== 0
+                  ? `${(
                       (item.reportedFor /
                         (item.reportedFor + item.reportedAgainst)) *
                       100
-                    ).toFixed(0)}% agree)`
+                    ).toFixed(0)}% of users agree (${
+                      item.reportedFor + item.reportedAgainst
+                    } reviews)`
                   : "No reviews"
               }
             >
@@ -52,16 +54,14 @@ function VenueInfoAccessItem({ item, onPress, ...others }) {
               style={{ fontSize: 12 }}
               accessibilityElementsHidden={true}
             >
-              {iconColour === colors.green
-                ? `Confirmed by ${item.reportedFor} user${
-                    item.reportedFor > 1 ? "s" : ""
-                  }`
-                : hasReviews
-                ? `Mixed reviews (${(
+              {item.reportedFor + item.reportedAgainst !== 0
+                ? `${(
                     (item.reportedFor /
                       (item.reportedFor + item.reportedAgainst)) *
                     100
-                  ).toFixed(0)}% agree)`
+                  ).toFixed(0)}% of users agree (${
+                    item.reportedFor + item.reportedAgainst
+                  } reviews)`
                 : "No reviews"}
             </AppText>
           </View>

@@ -39,8 +39,9 @@ function MapScreen({ route }) {
   const [stepInstructions, setStepInstructions] = useState("");
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
-  const { venues } = useVenueContext();
-  const { filters, setSearchTerm } = useFilterContext();
+  // need to find a way to stop search term filtering map venues
+  const { mapVenues } = useVenueContext();
+  const { filters } = useFilterContext();
 
   useEffect(() => {
     if (initLocation) {
@@ -199,8 +200,8 @@ function MapScreen({ route }) {
                 lineCap="round"
               />
             )}
-            {venues.length > 0 &&
-              venues.map((venue) => (
+            {mapVenues.length > 0 &&
+              mapVenues.map((venue) => (
                 <MapMarker
                   venueName={venue.name}
                   coords={venue.coords}
