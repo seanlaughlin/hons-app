@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Modal, SafeAreaView } from "react-native";
+import { View, StyleSheet, Modal, SafeAreaView, Button } from "react-native";
 import { Formik } from "formik";
+import DateTimePicker from "@react-native-community/datetimepicker";
+
 import HeaderContainer from "./HeaderContainer";
 import CloseButton from "./CloseButton";
 import colors from "../config/colors";
@@ -14,6 +16,7 @@ import SelectableIcon from "./SelectableIcon";
 import ImageInput from "./ImageInput";
 import AppButton from "./AppButton";
 import reviewsApi from "../api/reviews";
+import LoadingModal from "./LoadingModal";
 
 function SubmitReviewModal({
   isModalVisible,
@@ -23,6 +26,10 @@ function SubmitReviewModal({
 }) {
   const accessCriteria = useApi(accessCriteriaApi.getAccessCriteria);
   const [isLoading, setIsLoading] = useState(false);
+  const [submissionOutcome, setSubmissionOutcome] = useState(null);
+  const [isLoadingModalVisible, setIsLoadingModalVisible] = useState(false);
+  const [imageUri, setImageUri] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   useEffect(() => {
     const fetchCriteria = async () => {
@@ -36,15 +43,27 @@ function SubmitReviewModal({
   }, []);
 
   const handleCloseModal = () => {
+    setIsLoadingModalVisible(false);
     setIsModalVisible(false);
   };
 
-  const handleSubmit = async (values) => {
-    console.log(values);
-    const result = await reviewsApi.saveReview(values);
+  const handleSubmit = async (values, { resetForm }) => {
     setIsLoading(true);
-    if (result.ok) {
-      resetForm();
+    setSubmissionOutcome(null);
+    setIsLoadingModalVisible(true);
+    try {
+      const result = await reviewsApi.saveReview(values);
+      setIsLoading(true);
+      if (result.ok) {
+        setSubmissionOutcome("Saved!");
+        setImageUri(null);
+        resetForm();
+      } else {
+        setSubmissionOutcome("Error");
+      }
+      setIsLoading(false);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -52,8 +71,6 @@ function SubmitReviewModal({
     setImageUri(uri);
     console.log(uri);
   };
-
-  const [imageUri, setImageUri] = useState(null);
 
   return (
     <Modal
@@ -109,11 +126,38 @@ function SubmitReviewModal({
                   <DropdownList
                     items={accessCriteria.data}
                     fieldName="accessCriteria"
-                    placeholder={"Select access criteria"}
+                    placeholder={"Select access criteria (required)"}
                   />
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Button
+                      title="📅 Select Date of Visit"
+                      onPress={() => setShowDatePicker(true)}
+                    />
+                    <AppText>
+                      (Selected: {values.date.toLocaleDateString()})
+                    </AppText>
+                  </View>
+                  {showDatePicker && (
+                    <DateTimePicker
+                      testID="dateTimePicker"
+                      value={values.date}
+                      mode={"date"}
+                      is24Hour={true}
+                      onChange={(event, selectedDate) => {
+                        setFieldValue("date", selectedDate);
+                        setShowDatePicker(false);
+                      }}
+                    />
+                  )}
                   <View style={{ alignItems: "center" }}>
                     <AppText style={{ fontSize: 15 }}>
-                      Did {venue.name} meet this access requirement?
+                      Did {venue.name} meet this access requirement? (required)
                     </AppText>
                     <View style={styles.selectableIcons}>
                       <SelectableIcon
@@ -159,9 +203,6 @@ function SubmitReviewModal({
                         setFieldValue("image", uri);
                       }}
                     />
-                    <AppText style={{ fontSize: 15 }}>
-                      dsfdsfsdfdsfdsfdsf
-                    </AppText>
                   </View>
                   <AppButton
                     title="✅ Submit Review"
@@ -173,6 +214,13 @@ function SubmitReviewModal({
             </Formik>
           </HeaderContainer>
         </ScrollView>
+        <LoadingModal
+          isLoading={isLoading}
+          message={"Saving..."}
+          isVisible={isLoadingModalVisible}
+          setIsVisible={handleCloseModal}
+          outcome={submissionOutcome}
+        />
       </SafeAreaView>
     </Modal>
   );

@@ -107,7 +107,7 @@ function MapModal({
                 renderItem={({ item }) => (
                   <ModalAccessItem
                     item={item}
-                    key={item._id}
+                    key={item.criteria}
                     accessibilityLabel={item.name}
                   />
                 )}

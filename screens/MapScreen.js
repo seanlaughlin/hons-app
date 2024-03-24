@@ -180,7 +180,7 @@ function MapScreen({ route }) {
               <MapViewDirections
                 origin={origin}
                 destination={modalVenue.coords}
-                apikey={"AIzaSyDjqqVz1XAXLWjmilAFKiirz0mcgwxljxc"}
+                apikey={process.env.EXPO_PUBLIC_GOOGLE_API_KEY}
                 mode={"WALKING"}
                 onReady={onReady}
                 strokeWidth={0}

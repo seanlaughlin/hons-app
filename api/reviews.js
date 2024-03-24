@@ -7,10 +7,10 @@ const getReviews = (venueId, accessCriteria) =>
 
 const saveReview = (review) => {
   const data = new FormData();
-  data.append("user", review.user);
+  data.append("user", review.user ? review.user : "Anonymous");
   data.append("accessCriteria", review.accessCriteria);
   data.append("venueId", review.venueId);
-  data.append("date", new Date(review.date).toISOString());
+  data.append("date", review.date.toISOString());
   data.append("for", review.for);
   data.append("comment", review.comment);
   data.append("image", {

@@ -11,17 +11,20 @@ import HeaderContainer from "../components/HeaderContainer";
 import ContentContainer from "../components/ContentContainer";
 import ReviewModal from "../components/ReviewModal";
 import AppButton from "../components/AppButton";
+import SubmitReviewModal from "../components/SubmitReviewModal";
 
 function AccessibilityReviewsScreen({ route }) {
   const { venue, accessibilityItem } = route.params;
   const getReviewsApi = useApi(reviewsApi.getReviews);
 
   const [selectedReview, setSelectedReview] = useState({});
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isReviewModalVisible, setIsReviewModalVisible] = useState(false);
+  const [isSubmitReviewModalVisible, setIsSubmitReviewModalVisible] =
+    useState(false);
 
   const handleReviewPress = (review) => {
     setSelectedReview(review);
-    setIsModalVisible(true);
+    setIsReviewModalVisible(true);
   };
 
   useEffect(() => {
@@ -61,6 +64,7 @@ function AccessibilityReviewsScreen({ route }) {
                   review={review}
                   style={{ width: "100%" }}
                   onPress={() => handleReviewPress(review)}
+                  key={index}
                 />
               ))
             ) : (
@@ -80,13 +84,22 @@ function AccessibilityReviewsScreen({ route }) {
             something about this venue, please click the button below to answer
             a few short questions on your experience at {venue.name}.
           </AppText>
-          <AppButton title="📖 Submit a Review" style={{ marginTop: 10 }} />
+          <AppButton
+            title="📖 Submit a Review"
+            style={{ marginTop: 10 }}
+            onPress={() => setIsSubmitReviewModalVisible(true)}
+          />
         </ContentContainer>
       </ScrollView>
       <ReviewModal
-        isVisible={isModalVisible}
-        setIsVisible={setIsModalVisible}
+        isVisible={isReviewModalVisible}
+        setIsVisible={setIsReviewModalVisible}
         review={selectedReview}
+      />
+      <SubmitReviewModal
+        isModalVisible={isSubmitReviewModalVisible}
+        setIsModalVisible={setIsSubmitReviewModalVisible}
+        venue={venue}
       />
     </SafeAreaView>
   );
