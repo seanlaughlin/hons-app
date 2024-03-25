@@ -47,7 +47,9 @@ function VenueCategoryScreen(props) {
             {venues.length > 0 ? (
               <FlatList
                 data={venues}
-                keyExtractor={(venue) => venue._id.toString()}
+                keyExtractor={(venue) =>
+                  venue._id ? venue._id.toString() : null
+                }
                 renderItem={({ item }) => (
                   <VenueListItem venue={item} key={item._id} />
                 )}

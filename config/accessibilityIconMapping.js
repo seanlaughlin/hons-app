@@ -1,6 +1,6 @@
 export default {
   wheelchair: "wheelchair-accessibility",
-  asdFriendly: "head",
+  asdFriendly: "human",
   quiet: "volume-off",
   automaticNoDoors: "door-sliding",
 };

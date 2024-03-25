@@ -1,7 +1,13 @@
-import MapView, { PROVIDER_GOOGLE, Polyline, Circle } from "react-native-maps";
-import React, { useState, useEffect, useRef, useContext } from "react";
+import MapView, {
+  PROVIDER_GOOGLE,
+  Polyline,
+  Circle,
+  Marker,
+} from "react-native-maps";
+import React, { useState, useEffect, useRef } from "react";
 import { View, StyleSheet, AccessibilityInfo } from "react-native";
 import MapViewDirections from "react-native-maps-directions";
+import { useNavigation } from "@react-navigation/native";
 
 import useLocation from "../hooks/useLocation";
 import MapMarker from "../components/MapMarker";
@@ -10,15 +16,13 @@ import colors from "../config/colors";
 import MapModal from "../components/MapModal";
 import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
-
 import { getBoundingRegion } from "../utility/mapUtils";
 import { removeHtmlTags } from "../utility/removeHtmlTags";
-
 import { useFilterContext } from "../context/FilterContext";
 import FiltersButton from "../components/FiltersButton";
 import { kmToMiles } from "../utility/mapUtils";
-import { useNavigation } from "@react-navigation/native";
 import { useVenueContext } from "../context/VenueContext";
+import { reverseGeocodeAddress } from "../utility/googleMaps";
 
 function MapScreen({ route }) {
   const mapRef = useRef(null);
@@ -38,6 +42,11 @@ function MapScreen({ route }) {
   const [directions, setDirections] = useState([]);
   const [stepInstructions, setStepInstructions] = useState("");
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+
+  const [isMarkerPlaceMode, setIsMarkerPlaceMode] = useState(false);
+  const [newVenueCoords, setNewVenueCoords] = useState(null);
+  const [newVenueAddress, setNewVenueAddress] = useState(null);
+  const [isNewVenueModalVisible, setIsNewVenueModalVisible] = useState(false);
 
   // need to find a way to stop search term filtering map venues
   const { mapVenues } = useVenueContext();
@@ -73,6 +82,14 @@ function MapScreen({ route }) {
       options: { queue: true },
     });
   }, [stepInstructions]);
+
+  useEffect(() => {
+    if (newVenueCoords) {
+      reverseGeocodeAddress(newVenueCoords)
+        .then((result) => setNewVenueAddress(result))
+        .catch((error) => setNewVenueAddress("Error fetching address"));
+    }
+  }, [newVenueCoords]);
 
   const updateRegion = () => {
     const newRegion = getBoundingRegion(location, modalVenue.coords);
@@ -144,6 +161,21 @@ function MapScreen({ route }) {
     );
   };
 
+  const handleMapPress = (event) => {
+    if (isMarkerPlaceMode) {
+      const { latitude, longitude } = event.nativeEvent.coordinate;
+      setNewVenueCoords({ latitude, longitude });
+    } else {
+      return;
+    }
+  };
+
+  const handleMarkerPlaceModeCancel = () => {
+    setNewVenueCoords(null);
+    setNewVenueAddress(null);
+    setIsMarkerPlaceMode(false);
+  };
+
   return (
     <View style={styles.container}>
       {isModalVisible && (
@@ -175,6 +207,7 @@ function MapScreen({ route }) {
               updateUserLocation(event.nativeEvent.coordinate)
             }
             accessibilityLabel="Map of the local area"
+            onPress={handleMapPress}
           >
             <Circle
               center={location}
@@ -207,7 +240,9 @@ function MapScreen({ route }) {
                   coords={venue.coords}
                   type={venue.type}
                   onPress={
-                    isNavigationMode ? null : () => handleMarkerPress(venue)
+                    isNavigationMode || isMarkerPlaceMode
+                      ? null
+                      : () => handleMarkerPress(venue)
                   }
                   key={venue._id}
                   accessibilityLabel={`${venue.type} Map Marker for ${venue.name}`}
@@ -215,11 +250,12 @@ function MapScreen({ route }) {
                   importantForAccessibility="yes"
                 />
               ))}
+            {newVenueCoords && <Marker coordinate={newVenueCoords} />}
           </MapView>
         )}
         {isNavigationMode && duration !== null && distance !== null && (
           <>
-            <View style={[styles.durationBox, styles.opaqueBox]}>
+            <View style={[styles.topMessageBox, styles.opaqueBox]}>
               <View
                 style={{
                   flexDirection: "row",
@@ -245,7 +281,7 @@ function MapScreen({ route }) {
                 {Math.round(duration * 1.114)} min ♿
               </AppText>
             </View>
-            <View style={[styles.directionsBox, styles.opaqueBox]}>
+            <View style={[styles.bottomMessageBox, styles.opaqueBox]}>
               <AppText
                 style={{
                   fontSize: 15,
@@ -275,8 +311,48 @@ function MapScreen({ route }) {
           </>
         )}
       </View>
-      {!isNavigationMode && !isModalVisible && (
-        <FiltersButton style={styles.filterButton} />
+      {!isNavigationMode && !isMarkerPlaceMode && !isModalVisible && (
+        <View style={styles.filterButton}>
+          <FiltersButton />
+          <AppButton
+            title="➕ Add Venue"
+            onPress={() => setIsMarkerPlaceMode(true)}
+          />
+        </View>
+      )}
+      {isMarkerPlaceMode && (
+        <>
+          <View style={styles.filterButton}>
+            {newVenueCoords && (
+              <AppButton
+                title="✅ Confirm"
+                onPress={() => setIsMarkerPlaceMode(true)}
+              />
+            )}
+
+            <AppButton
+              title="❌ Cancel"
+              onPress={handleMarkerPlaceModeCancel}
+            />
+          </View>
+          {isMarkerPlaceMode && (
+            <View style={[styles.topMessageBox, styles.opaqueBox]}>
+              <AppText accessibilityLabel="Tap the location of the venue on the map">
+                💡 Tap the location of the venue on the map
+              </AppText>
+            </View>
+          )}
+          {newVenueAddress && isMarkerPlaceMode && (
+            <View style={[styles.opaqueBox, { bottom: 100 }]}>
+              <AppText accessibilityLabel={newVenueAddress}>
+                {newVenueAddress.split(",")[0]}
+              </AppText>
+              <AppText style={{ fontSize: 15 }}>
+                Is this the venue address?
+              </AppText>
+            </View>
+          )}
+        </>
       )}
     </View>
   );
@@ -293,10 +369,10 @@ const styles = StyleSheet.create({
     top: 30,
     left: 10,
   },
-  durationBox: {
+  topMessageBox: {
     top: 60,
   },
-  directionsBox: {
+  bottomMessageBox: {
     bottom: 160,
     justifyContent: "center",
     alignItems: "center",
@@ -304,6 +380,7 @@ const styles = StyleSheet.create({
   filterButton: {
     position: "absolute",
     bottom: 30,
+    flexDirection: "row",
   },
   navigationButtons: {
     position: "absolute",

@@ -28,6 +28,7 @@ function HomeScreen(props) {
       params: {
         title: "Search Results",
         filters,
+        returnTo: "FindVenueScreen",
       },
     });
   };

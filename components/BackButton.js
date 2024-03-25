@@ -5,15 +5,29 @@ import { useNavigation } from "@react-navigation/native";
 
 import colors from "../config/colors";
 
-function BackButton({ style, color = colors.primary, size = 30, ...props }) {
+function BackButton({
+  style,
+  color = colors.primary,
+  size = 30,
+  returnTo,
+  ...props
+}) {
   const navigation = useNavigation();
+
+  const goBack = () => {
+    if (returnTo) {
+      navigation.navigate(returnTo);
+    } else {
+      navigation.goBack();
+    }
+  };
 
   return (
     <View style={[styles.backButtonContainer, style]}>
       <TouchableOpacity
         {...props}
         style={styles.backButton}
-        onPress={() => navigation.goBack()}
+        onPress={goBack}
         accessibilityRole="button"
       >
         <MaterialCommunityIcons name="chevron-left" size={size} color={color} />

@@ -67,42 +67,44 @@ function VenueListItem({ venue, ...others }) {
         {/* Show max of 3 then text indicating additional criteria exist (+3 etc)*/}
         <View style={styles.accessIcons}>
           {/* Render icons from selectedAccessibilities */}
-          {filteredAccessibilities.slice(0, 3).map((access, index) => {
-            return (
-              <MaterialCommunityIcons
-                name={accessibilityIconMapping[access.criteria]}
-                size={28}
-                color={
-                  access.reportedAgainst === 0 && access.reportedFor !== 0
-                    ? colors.green
-                    : access.reportedFor !== 0
-                    ? colors.warning
-                    : colors.dangerdark
-                }
-                accessibilityLabel={access.name}
-                key={index}
-              />
-            );
-          })}
+          {filteredAccessibilities &&
+            filteredAccessibilities.slice(0, 3).map((access, index) => {
+              return (
+                <MaterialCommunityIcons
+                  name={accessibilityIconMapping[access.criteria]}
+                  size={28}
+                  color={
+                    access.reportedAgainst === 0 && access.reportedFor !== 0
+                      ? colors.green
+                      : access.reportedFor !== 0
+                      ? colors.warning
+                      : colors.dangerdark
+                  }
+                  accessibilityLabel={access.name}
+                  key={index}
+                />
+              );
+            })}
 
           {/* Render additional icons from venue.accessibility */}
-          {notFilteredAccessibilities
-            .slice(0, additionalIconsNeeded)
-            .map((access, index) => (
-              <MaterialCommunityIcons
-                name={accessibilityIconMapping[access.criteria]}
-                size={28}
-                color={
-                  access.reportedAgainst === 0 && access.reportedFor !== 0
-                    ? colors.green
-                    : access.reportedFor !== 0
-                    ? colors.warning
-                    : colors.danger
-                }
-                accessibilityLabel={access.name}
-                key={index}
-              />
-            ))}
+          {notFilteredAccessibilities &&
+            notFilteredAccessibilities
+              .slice(0, additionalIconsNeeded)
+              .map((access, index) => (
+                <MaterialCommunityIcons
+                  name={accessibilityIconMapping[access.criteria]}
+                  size={28}
+                  color={
+                    access.reportedAgainst === 0 && access.reportedFor !== 0
+                      ? colors.green
+                      : access.reportedFor !== 0
+                      ? colors.warning
+                      : colors.danger
+                  }
+                  accessibilityLabel={access.name}
+                  key={index}
+                />
+              ))}
 
           {/* Render text for additional icons if needed */}
           {venue.accessibility.filter(

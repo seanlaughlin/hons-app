@@ -28,7 +28,13 @@ function VenueInfoAccessItem({ item, onPress, ...others }) {
             accessibilityElementsHidden={true}
           />
           <MaterialCommunityIcons
-            name={iconColour === colors.green ? "check-circle" : "alert"}
+            name={
+              iconColour === colors.green
+                ? "check-circle"
+                : iconColour === colors.warning
+                ? "alert"
+                : "close-circle"
+            }
             size={35}
             color={iconColour}
             accessibilityElementsHidden={true}
@@ -45,7 +51,7 @@ function VenueInfoAccessItem({ item, onPress, ...others }) {
                     ).toFixed(0)}% of users agree (${
                       item.reportedFor + item.reportedAgainst
                     } reviews)`
-                  : "No reviews"
+                  : "No reviews (unconfirmed)"
               }
             >
               {item.name}
@@ -62,7 +68,7 @@ function VenueInfoAccessItem({ item, onPress, ...others }) {
                   ).toFixed(0)}% of users agree (${
                     item.reportedFor + item.reportedAgainst
                   } reviews)`
-                : "No reviews"}
+                : "No reviews (unconfirmed)"}
             </AppText>
           </View>
         </View>
