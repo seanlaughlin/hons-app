@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Image, FlatList, Modal } from "react-native";
+import { View, StyleSheet, Image, ScrollView, Modal } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
@@ -104,22 +104,35 @@ function MapModal({
                 alignItems: "flex-start",
               }}
             >
-              <FlatList
-                data={venue.accessibility.filter(
-                  (item) => item.reportedFor > 0 && item.reportedAgainst === 0
-                )}
-                renderItem={({ item }) => (
-                  <ModalAccessItem
-                    item={item}
-                    key={item.criteria}
-                    accessibilityLabel={item.name}
-                  />
-                )}
-                keyExtractor={(item) => item.criteria.toString()}
-                contentContainerStyle={styles.venueAccessInfo}
-                showsVerticalScrollIndicator={true}
-                style={{ maxHeight: 220 }}
-              />
+              <ScrollView
+                contentContainerStyle={{
+                  ...styles.venueAccessInfo,
+                  maxHeight: 220,
+                }}
+              >
+                {venue.accessibility
+                  .filter(
+                    (item) => item.reportedFor > 0 && item.reportedAgainst === 0
+                  )
+                  .map((item) => (
+                    <ModalAccessItem
+                      key={item.criteria}
+                      item={item}
+                      accessibilityLabel={item.name}
+                    />
+                  ))}
+                {venue.accessibility
+                  .filter(
+                    (item) => item.reportedFor > 0 && item.reportedAgainst > 0
+                  )
+                  .map((item) => (
+                    <ModalAccessItem
+                      key={item.criteria}
+                      item={item}
+                      accessibilityLabel={item.name}
+                    />
+                  ))}
+              </ScrollView>
             </View>
           </View>
           <View style={styles.buttonsContainer}>
@@ -173,14 +186,13 @@ const styles = StyleSheet.create({
   venueAccessInfo: {
     alignItems: "flex-start",
     marginLeft: 15,
-    justifyContent: "center",
     rowGap: 2,
   },
   venueInfo: {
     flexDirection: "row",
     marginVertical: 10,
     justifyContent: "flex-start",
-    alignItems: "center",
+    alignItems: "flex-start",
     alignSelf: "flex-start",
     paddingHorizontal: 15,
   },

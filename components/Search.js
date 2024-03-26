@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     maxWidth: 150,
   },
   buttonContainer: {
+    marginTop: 10,
     flexDirection: "row",
   },
 });

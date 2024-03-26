@@ -23,6 +23,7 @@ import FiltersButton from "../components/FiltersButton";
 import { kmToMiles } from "../utility/mapUtils";
 import { useVenueContext } from "../context/VenueContext";
 import { reverseGeocodeAddress } from "../utility/googleMaps";
+import AddVenueModal from "../components/AddVenueModal";
 
 function MapScreen({ route }) {
   const mapRef = useRef(null);
@@ -176,6 +177,13 @@ function MapScreen({ route }) {
     setIsMarkerPlaceMode(false);
   };
 
+  const handleNewVenueModalClose = () => {
+    setIsNewVenueModalVisible(false);
+    setNewVenueAddress(null);
+    setNewVenueCoords(null);
+    setIsMarkerPlaceMode(false);
+  };
+
   return (
     <View style={styles.container}>
       {isModalVisible && (
@@ -326,7 +334,7 @@ function MapScreen({ route }) {
             {newVenueCoords && (
               <AppButton
                 title="✅ Confirm"
-                onPress={() => setIsMarkerPlaceMode(true)}
+                onPress={() => setIsNewVenueModalVisible(true)}
               />
             )}
 
@@ -345,13 +353,19 @@ function MapScreen({ route }) {
           {newVenueAddress && isMarkerPlaceMode && (
             <View style={[styles.opaqueBox, { bottom: 100 }]}>
               <AppText accessibilityLabel={newVenueAddress}>
-                {newVenueAddress.split(",")[0]}
+                {newVenueAddress.address.split(",")[0]}
               </AppText>
               <AppText style={{ fontSize: 15 }}>
                 Is this the venue address?
               </AppText>
             </View>
           )}
+          <AddVenueModal
+            isVisible={isNewVenueModalVisible}
+            onClose={handleNewVenueModalClose}
+            coords={newVenueCoords}
+            address={newVenueAddress}
+          />
         </>
       )}
     </View>

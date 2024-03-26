@@ -41,7 +41,14 @@ export async function reverseGeocodeAddress(coords) {
     );
 
     if (response.data.status === "OK" && response.data.results.length > 0) {
-      return response.data.results[0].formatted_address;
+      const addressComponents = response.data.results[0].address_components;
+      const neighborhood = addressComponents.find((component) =>
+        component.types.includes("sublocality")
+      );
+      return {
+        address: response.data.results[0].formatted_address,
+        neighborhood: neighborhood.short_name,
+      };
     }
   } catch (error) {
     console.error("Error fetching address:", error);
