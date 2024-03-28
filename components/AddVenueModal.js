@@ -17,6 +17,8 @@ import useApi from "../hooks/useApi";
 import categoriesApi from "../api/categories";
 import AppTextInput from "./AppTextInput";
 import DropdownList from "./DropdownList";
+import OpeningHoursModal from "./OpeningHoursModal";
+import AppButton from "./AppButton";
 
 function AddVenueModal({
   coords = null,
@@ -28,6 +30,9 @@ function AddVenueModal({
   const [isLoading, setIsLoading] = useState(false);
   const [imageUris, setImageUris] = useState([]);
   const [submissionOutcome, setSubmissionOutcome] = useState(null);
+  const [isOpeningHoursModalVisible, setIsOpeningHoursModalVisible] =
+    useState(false);
+
   const categories = useApi(categoriesApi.getCategories);
 
   useEffect(() => {
@@ -45,6 +50,7 @@ function AddVenueModal({
   const handleCloseModal = () => {
     onClose();
   };
+
   return (
     <Modal
       visible={isVisible}
@@ -75,8 +81,8 @@ function AddVenueModal({
                   address: address.address || "",
                   neighborhood: address.neighborhood || "",
                   name: "",
-                  openingHours: [],
-                  contactInfo: [],
+                  openingHours: null,
+                  contactInfo: null,
                   category: null,
                   coords: coords,
                   type: "",
@@ -113,6 +119,10 @@ function AddVenueModal({
                       items={categories.data}
                       fieldName="categories"
                       placeholder={"Select venue category (required)"}
+                      value={values.category}
+                      updateValue={(category) =>
+                        setFieldValue("category", category)
+                      }
                     />
                     <AppText>Venue Type (required)</AppText>
                     <AppText style={{ fontSize: 12 }}>
@@ -123,6 +133,40 @@ function AddVenueModal({
                       accessibilityLabel="Field for the venue type (required)"
                       value={values.type}
                       onChangeText={(text) => setFieldValue("type", text)}
+                    />
+                    <AppText>Opening Hours (optional)</AppText>
+                    {values.openingHours &&
+                      values.openingHours.map((hours) => (
+                        <View
+                          style={{
+                            flexDirection: "row",
+                          }}
+                        >
+                          <AppText style={{ fontSize: 15 }}>
+                            {hours.days}:{" "}
+                          </AppText>
+                          <AppText style={{ fontSize: 15 }}>
+                            {hours.hours}
+                          </AppText>
+                        </View>
+                      ))}
+                    <AppButton
+                      title="🕒 Set Opening Hours"
+                      onPress={() => setIsOpeningHoursModalVisible(true)}
+                    />
+                    <AppText>Contact Info (optional)</AppText>
+                    <AppButton
+                      title="📞 Set Contact Info"
+                      onPress={() => setIsOpeningHoursModalVisible(true)}
+                    />
+                    <OpeningHoursModal
+                      isVisible={isOpeningHoursModalVisible}
+                      onClose={() => setIsOpeningHoursModalVisible(false)}
+                      onSubmit={(hours) => {
+                        setFieldValue("openingHours", hours);
+                        console.log(hours);
+                        setIsOpeningHoursModalVisible(false);
+                      }}
                     />
                   </View>
                 )}

@@ -1,31 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import { useFormikContext } from "formik";
 import colors from "../config/colors";
 
-function DropdownList({ items, fieldName, placeholder, style }) {
-  const { setFieldValue, values } = useFormikContext();
+function DropdownList({
+  items,
+  placeholder,
+  style,
+  value,
+  updateValue,
+  clear = null,
+}) {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState([]);
+  const [localValue, setLocalValue] = useState({ ...value });
 
   useEffect(() => {
-    setFieldValue(fieldName, value);
-  }, [value]);
+    updateValue(localValue);
+  }, [localValue]);
+
+  useEffect(() => {
+    setLocalValue("");
+  }, [clear]);
 
   return (
-    <View style={[style, { zIndex: 50 }]}>
+    <View style={[style, { zIndex: 50 }, styles.container]}>
       <DropDownPicker
         open={open}
-        value={values[fieldName]}
+        value={localValue}
         items={items.map((item) => ({
           label: item.name,
           value: item.name,
         }))}
         setOpen={setOpen}
-        setValue={(option) => {
-          setValue(option);
-        }}
+        setValue={setLocalValue}
         style={styles.container}
         textStyle={{ marginLeft: 5 }}
         placeholder={placeholder}
@@ -36,6 +43,7 @@ function DropdownList({ items, fieldName, placeholder, style }) {
         }}
         dropDownContainerStyle={{
           borderColor: colors.border,
+          zIndex: 500,
         }}
         placeholderStyle={{
           color: colors.border,
@@ -47,12 +55,9 @@ function DropdownList({ items, fieldName, placeholder, style }) {
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
     borderRadius: 25,
     borderColor: colors.border,
     marginBottom: 10,
-    width: "100%",
-    height: "100%",
   },
 });
 

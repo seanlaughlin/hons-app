@@ -241,7 +241,8 @@ function MapScreen({ route }) {
                 lineCap="round"
               />
             )}
-            {mapVenues.length > 0 &&
+            {mapVenues &&
+              mapVenues.length > 0 &&
               mapVenues.map((venue) => (
                 <MapMarker
                   venueName={venue.name}

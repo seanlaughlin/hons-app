@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Image, ScrollView, Modal } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 import colors from "../config/colors";
@@ -12,6 +11,7 @@ import useLocation from "../hooks/useLocation";
 import { getDistance } from "../utility/mapUtils";
 import { kmToMiles } from "../utility/mapUtils";
 import HeaderContainer from "./HeaderContainer";
+import CloseButton from "./CloseButton";
 
 function MapModal({
   venue,
@@ -50,15 +50,10 @@ function MapModal({
       <View style={styles.modalContainer}>
         <HeaderContainer
           button={
-            <MaterialCommunityIcons
-              name="close"
-              style={styles.closeIcon}
-              size={35}
+            <CloseButton
               color={colors.white}
-              onPress={handleCloseModal}
-              accessibilityLabel="Close Button"
-              accessibilityHint="Press here to close venue information modal."
-              accessibilityRole="button"
+              action={handleCloseModal}
+              size={30}
             />
           }
           title={venue.name}
@@ -89,14 +84,20 @@ function MapModal({
               >
                 Opening Hours
               </AppText>
-              {venue.openingHours.map((item) => (
-                <AppText key={item._id} style={{ fontSize: 14 }}>
-                  {item.time}: {item.hours}
+              {venue.openingHours.length > 0 ? (
+                venue.openingHours.map((item) => (
+                  <AppText key={item._id} style={{ fontSize: 14 }}>
+                    {item.days}: {item.hours}
+                  </AppText>
+                ))
+              ) : (
+                <AppText style={{ fontSize: 14 }}>None provided.</AppText>
+              )}
+              {venue.contact.phone && (
+                <AppText style={{ fontSize: 14 }}>
+                  Tel: {venue.contact.phone}
                 </AppText>
-              ))}
-              <AppText style={{ fontSize: 14 }}>
-                Tel: {venue.contact.phone}
-              </AppText>
+              )}
             </View>
             <View
               style={{
@@ -110,6 +111,13 @@ function MapModal({
                   maxHeight: 220,
                 }}
               >
+                {venue.accessibility.filter(
+                  (item) => item.reportedFor + item.reportedAgainst !== 0
+                ).length === 0 && (
+                  <AppText style={{ fontSize: 12 }}>
+                    No access information to display.
+                  </AppText>
+                )}
                 {venue.accessibility
                   .filter(
                     (item) => item.reportedFor > 0 && item.reportedAgainst === 0

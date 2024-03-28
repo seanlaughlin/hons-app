@@ -128,7 +128,10 @@ function SubmitReviewModal({
                   />
                   <DropdownList
                     items={accessCriteria.data}
-                    fieldName="accessCriteria"
+                    initValue={values.accessCriteria}
+                    updateValue={(criteria) => {
+                      setFieldValue("accessCriteria", criteria);
+                    }}
                     placeholder={"Select access criteria (required)"}
                   />
                   <View

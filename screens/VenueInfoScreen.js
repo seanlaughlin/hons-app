@@ -75,7 +75,7 @@ function VenueInfoScreen({ route }) {
                 style={{ marginBottom: 5, fontSize: 13 }}
                 key={item.hours}
               >
-                {item.time}: {item.hours}
+                {item.days}: {item.hours}
               </AppText>
             ))}
           </View>
