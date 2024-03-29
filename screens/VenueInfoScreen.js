@@ -53,7 +53,11 @@ function VenueInfoScreen({ route }) {
             miles away)
           </AppText>
           {venue.imageUris.length > 0 && (
-            <ImageCarousel imageUris={venue.imageUris} />
+            <ImageCarousel
+              imageUris={venue.imageUris.map(
+                (uri) => process.env.EXPO_PUBLIC_SERVER_URL + "/" + uri.full
+              )}
+            />
           )}
 
           <AppText style={{ fontSize: 18 }}>{venue.address}</AppText>

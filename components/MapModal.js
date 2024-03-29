@@ -75,7 +75,12 @@ function MapModal({
             >
               <Image
                 style={styles.image}
-                source={{ uri: venue.imageUris[0] }}
+                source={{
+                  uri:
+                    process.env.EXPO_PUBLIC_SERVER_URL +
+                    "/" +
+                    venue.imageUris[0].full,
+                }}
               />
               <AppText
                 style={{ fontWeight: 600 }}

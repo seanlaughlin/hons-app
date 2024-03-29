@@ -42,7 +42,12 @@ function VenueListItem({ venue, ...others }) {
         style={{ flexDirection: "row", alignItems: "center", columnGap: 5 }}
       >
         <Image
-          source={{ uri: venue.imageUris[0] }}
+          source={{
+            uri:
+              process.env.EXPO_PUBLIC_SERVER_URL +
+              "/" +
+              venue.imageUris[0].full,
+          }}
           style={styles.image}
           accessibilityElementsHidden={true}
         />

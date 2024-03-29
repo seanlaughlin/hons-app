@@ -67,6 +67,7 @@ function AddVenueModal({
   }, []);
 
   const handleSubmit = async (values, { resetForm }) => {
+    console.log(values);
     setIsLoading(true);
     setSubmissionOutcome(null);
     setIsLoadingModalVisible(true);

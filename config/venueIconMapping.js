@@ -13,7 +13,7 @@ export default {
   sportscentre: "tennis-ball",
   park: "tree-outline",
   swimmingpool: "swim",
-  trainstation: "train-variant",
+  railstation: "train-variant",
   busstation: "bus",
   other: "map-marker-question",
   phone: "cellphone-sound",

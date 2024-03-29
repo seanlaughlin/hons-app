@@ -9,6 +9,7 @@ function ImagePicker({ name }) {
 
   const handleAdd = (uri) => {
     setFieldValue(name, [...imageUris, uri]);
+    console.log(values[name]);
   };
 
   const handleRemove = (uri) => {
