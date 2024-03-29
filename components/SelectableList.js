@@ -10,7 +10,6 @@ import ActivityIndicator from "./ActivityIndicator";
 
 const SelectableList = ({ name, data, iconMapping, title }) => {
   const { setFieldValue, values } = useFormikContext();
-
   const handlePress = (item) => {
     const selectedItems = [...values[name]];
 
@@ -26,6 +25,7 @@ const SelectableList = ({ name, data, iconMapping, title }) => {
         (selectedItem) => selectedItem.name !== item.name
       );
     }
+    console.log(updatedItems);
     setFieldValue(name, updatedItems);
   };
 

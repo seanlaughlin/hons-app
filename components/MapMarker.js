@@ -6,7 +6,7 @@ import colors from "../config/colors";
 import venueIconMapping from "../config/venueIconMapping";
 
 function MapMarker({ type, coords, onPress, ...others }) {
-  const markerIcon = venueIconMapping[`${type}`];
+  const markerIcon = venueIconMapping[`${type.name}`];
   return (
     <Marker coordinate={coords} onPress={onPress} {...others}>
       <MaterialCommunityIcons

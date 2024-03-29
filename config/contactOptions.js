@@ -1,1 +1,1 @@
-export default ["🌐 Web", "📞 Tel", "📧 Email"];
+export default ["web", "phone", "email"];

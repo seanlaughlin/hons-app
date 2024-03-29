@@ -1,37 +1,41 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Modal } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 import AppButton from "./AppButton";
 import DropdownList from "./DropdownList";
 import colors from "../config/colors";
 import AppText from "./AppText";
 import HeaderContainer from "./HeaderContainer";
 import CloseButton from "./CloseButton";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import hourStrings from "../config/hourStrings";
 
-function OpeningHoursModal({ isVisible, onClose, onSubmit }) {
+function OpeningHoursModal({ isVisible, onClose, onSubmit, values }) {
   const [selectedStartDay, setSelectedStartDay] = useState("");
   const [selectedEndDay, setSelectedEndDay] = useState("");
   const [opensAt, setOpensAt] = useState("");
   const [closesAt, setClosesAt] = useState("");
-  const [openingHours, setOpeningHours] = useState([]);
-  const [clear, setClear] = useState(false);
+  const [openingHours, setOpeningHours] = useState(values);
+  const [clearList, setClearList] = useState(false);
 
   const handleAddOpeningHours = () => {
-    if (selectedStartDay && opensAt.trim() !== "" && closesAt.trim() !== "") {
+    if (selectedStartDay && opensAt.trim() !== "") {
       const newOpeningHours = {
         days:
           selectedEndDay && selectedStartDay !== selectedEndDay
             ? selectedStartDay + " - " + selectedEndDay
             : selectedStartDay,
-        hours: opensAt + " - " + closesAt,
+        hours:
+          opensAt === "Closed" || closesAt === "Closed"
+            ? "Closed"
+            : opensAt + " - " + closesAt,
       };
       setOpeningHours([...openingHours, newOpeningHours]);
       setSelectedStartDay("");
       setSelectedEndDay("");
       setOpensAt("");
       setClosesAt("");
-      setClear(!clear);
+      setClearList(!clearList);
     }
   };
 
@@ -63,10 +67,10 @@ function OpeningHoursModal({ isVisible, onClose, onSubmit }) {
                   { name: "Sun" },
                 ]}
                 placeholder="Start Day"
-                initValue={selectedStartDay}
+                value={selectedStartDay}
                 updateValue={(value) => setSelectedStartDay(value)}
                 style={{ flex: 2 }}
-                clear={clear}
+                clear={clearList}
               />
               <DropdownList
                 items={[
@@ -79,28 +83,28 @@ function OpeningHoursModal({ isVisible, onClose, onSubmit }) {
                   { name: "Sun" },
                 ]}
                 placeholder="End Day (Optional)"
-                initValue=""
+                value={selectedEndDay}
                 updateValue={(value) => setSelectedEndDay(value)}
                 style={{ flex: 2 }}
-                clear={clear}
+                clear={clearList}
               />
             </View>
             <View style={{ flexDirection: "row", columnGap: 5 }}>
               <DropdownList
                 placeholder="Opens (24H)"
-                initValue={opensAt}
+                value={opensAt}
                 updateValue={(text) => setOpensAt(text)}
                 items={hourStrings.map((hour) => ({ name: hour }))}
                 style={{ flex: 2 }}
-                clear={clear}
+                clear={clearList}
               />
               <DropdownList
                 placeholder="Closes (24H)"
-                initValue={closesAt}
+                value={closesAt}
                 updateValue={(text) => setClosesAt(text)}
                 items={hourStrings.map((hour) => ({ name: hour }))}
                 style={{ flex: 2 }}
-                clear={clear}
+                clear={clearList}
               />
             </View>
             <AppButton

@@ -50,7 +50,7 @@ function VenueListItem({ venue, ...others }) {
           <AppText style={styles.name} numberOfRows={1}>
             {venue.name}
           </AppText>
-          <AppText style={styles.otherText}>{capitalise(venue.type)}</AppText>
+          <AppText style={styles.otherText}>{venue.type.title}</AppText>
           <AppText style={styles.otherText}>
             {kmToMiles(venue.distanceToUser)} miles
           </AppText>

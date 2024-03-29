@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import colors from "../config/colors";
+import capitalise from "../utility/capitalise";
 
 function DropdownList({
   items,
@@ -10,6 +11,7 @@ function DropdownList({
   value,
   updateValue,
   clear = null,
+  ...others
 }) {
   const [open, setOpen] = useState(false);
   const [localValue, setLocalValue] = useState({ ...value });
@@ -28,7 +30,7 @@ function DropdownList({
         open={open}
         value={localValue}
         items={items.map((item) => ({
-          label: item.name,
+          label: capitalise(item.name),
           value: item.name,
         }))}
         setOpen={setOpen}
@@ -48,6 +50,7 @@ function DropdownList({
         placeholderStyle={{
           color: colors.border,
         }}
+        {...others}
       />
     </View>
   );

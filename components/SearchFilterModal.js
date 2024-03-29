@@ -14,6 +14,7 @@ import HeaderContainer from "./HeaderContainer";
 import Accordion from "./Accordion";
 import ListItemSeparator from "./ListItemSeparator";
 import AppText from "./AppText";
+import VenueTypesTab from "./VenueTypesTab";
 
 function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
   const {
@@ -21,6 +22,8 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
     setSelectedAccessibilities,
     selectedCategories,
     setSelectedCategories,
+    selectedTypes,
+    setSelectedTypes,
     transportMode,
     setTransportMode,
     selectedTravelDuration,
@@ -62,6 +65,7 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
             initialValues={{
               accessibilities: selectedAccessibilities || [],
               categories: selectedCategories || [],
+              types: selectedTypes || [],
               transportMode: transportMode || "walking",
               travelDuration: selectedTravelDuration || 10,
               showNoReviews: showNoReviews,
@@ -90,6 +94,9 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
                   </Accordion>
                   <Accordion title="Categories">
                     <CategoriesTab />
+                  </Accordion>
+                  <Accordion title="Types">
+                    <VenueTypesTab />
                   </Accordion>
                 </HeaderContainer>
                 <View

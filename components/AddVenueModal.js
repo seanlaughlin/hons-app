@@ -19,6 +19,13 @@ import AppTextInput from "./AppTextInput";
 import DropdownList from "./DropdownList";
 import OpeningHoursModal from "./OpeningHoursModal";
 import AppButton from "./AppButton";
+import ContactInfoModal from "./ContactInfoModal";
+import capitalise from "../utility/capitalise";
+import ImagePicker from "./ImagePicker";
+import venuesApi from "../api/venues";
+import { useVenueContext } from "../context/VenueContext";
+import LoadingModal from "./LoadingModal";
+import typesApi from "../api/types";
 
 function AddVenueModal({
   coords = null,
@@ -28,12 +35,17 @@ function AddVenueModal({
   ...others
 }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [imageUris, setImageUris] = useState([]);
   const [submissionOutcome, setSubmissionOutcome] = useState(null);
+  const [isLoadingModalVisible, setIsLoadingModalVisible] = useState(false);
   const [isOpeningHoursModalVisible, setIsOpeningHoursModalVisible] =
+    useState(false);
+  const [isContactInfoModalVisible, setIsContactInfoModalVisible] =
     useState(false);
 
   const categories = useApi(categoriesApi.getCategories);
+  const types = useApi(typesApi.getTypes);
+
+  const { fetchVenues } = useVenueContext();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -43,10 +55,36 @@ function AddVenueModal({
         console.error("Error fetching categories:", error);
       }
     };
+    const fetchTypes = async () => {
+      try {
+        await types.request();
+      } catch (error) {
+        console.error("Error fetching types:", error);
+      }
+    };
     fetchCategories();
+    fetchTypes();
   }, []);
 
-  const handleSubmit = () => {};
+  const handleSubmit = async (values, { resetForm }) => {
+    setIsLoading(true);
+    setSubmissionOutcome(null);
+    setIsLoadingModalVisible(true);
+    try {
+      const result = await venuesApi.saveVenue(values);
+      setIsLoading(true);
+      if (result.ok) {
+        setSubmissionOutcome("Saved!");
+        fetchVenues();
+        resetForm();
+      } else {
+        setSubmissionOutcome("Error");
+      }
+      setIsLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const handleCloseModal = () => {
     onClose();
   };
@@ -79,13 +117,14 @@ function AddVenueModal({
               <Formik
                 initialValues={{
                   address: address.address || "",
-                  neighborhood: address.neighborhood || "",
+                  neighbourhood: address.neighborhood || "",
                   name: "",
-                  openingHours: null,
-                  contactInfo: null,
+                  openingHours: [],
+                  contactInfo: [],
                   category: null,
                   coords: coords,
-                  type: "",
+                  type: null,
+                  imageUris: [],
                 }}
                 onSubmit={handleSubmit}
               >
@@ -107,73 +146,134 @@ function AddVenueModal({
                     />
                     <AppText>Neighborhood (required)</AppText>
                     <AppTextInput
-                      placeholder="Neighborhood (required)"
-                      accessibilityLabel="Field for the venue neighborhood (required)"
-                      value={values.neighborhood}
+                      placeholder="Neighbourhood (required)"
+                      accessibilityLabel="Field for the venue neighbourhood (required)"
+                      value={values.neighbourhood}
                       onChangeText={(text) =>
-                        setFieldValue("neighborhood", text)
+                        setFieldValue("neighbourhood", text)
                       }
                     />
                     <AppText>Category (required)</AppText>
                     <DropdownList
-                      items={categories.data}
+                      items={categories.data.map((category) => ({
+                        name: category.title,
+                      }))}
                       fieldName="categories"
                       placeholder={"Select venue category (required)"}
                       value={values.category}
                       updateValue={(category) =>
                         setFieldValue("category", category)
                       }
+                      style={{ zIndex: 500 }}
                     />
                     <AppText>Venue Type (required)</AppText>
-                    <AppText style={{ fontSize: 12 }}>
-                      Example: 'Pharmacy' or 'Newsagent.
-                    </AppText>
-                    <AppTextInput
-                      placeholder="Venue type (required)"
-                      accessibilityLabel="Field for the venue type (required)"
+                    <DropdownList
+                      items={types.data.map((type) => ({
+                        name: type.title,
+                      }))}
+                      fieldName="types"
+                      placeholder={"Select venue type (required)"}
                       value={values.type}
-                      onChangeText={(text) => setFieldValue("type", text)}
+                      updateValue={(type) => setFieldValue("type", type)}
                     />
                     <AppText>Opening Hours (optional)</AppText>
-                    {values.openingHours &&
-                      values.openingHours.map((hours) => (
-                        <View
-                          style={{
-                            flexDirection: "row",
-                          }}
-                        >
-                          <AppText style={{ fontSize: 15 }}>
-                            {hours.days}:{" "}
-                          </AppText>
-                          <AppText style={{ fontSize: 15 }}>
-                            {hours.hours}
-                          </AppText>
-                        </View>
-                      ))}
-                    <AppButton
-                      title="🕒 Set Opening Hours"
-                      onPress={() => setIsOpeningHoursModalVisible(true)}
-                    />
+                    <View style={{ marginVertical: 5 }}>
+                      {values.openingHours &&
+                        values.openingHours.map((hours) => (
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              alignSelf: "flex-start",
+                              margin: 5,
+                            }}
+                          >
+                            <AppText style={{ fontSize: 15 }}>
+                              {hours.days}:{" "}
+                            </AppText>
+                            <AppText style={{ fontSize: 15 }}>
+                              {hours.hours}
+                            </AppText>
+                          </View>
+                        ))}
+                      <AppButton
+                        title="🕒 Set Opening Hours"
+                        onPress={() => setIsOpeningHoursModalVisible(true)}
+                      />
+                    </View>
+
                     <AppText>Contact Info (optional)</AppText>
-                    <AppButton
-                      title="📞 Set Contact Info"
-                      onPress={() => setIsOpeningHoursModalVisible(true)}
-                    />
+                    <View>
+                      {values.contactInfo &&
+                        values.contactInfo.map((contact) => (
+                          <View key={contact.id}>
+                            {Object.entries(contact).map(([key, value]) => (
+                              <View
+                                key={key}
+                                style={{
+                                  flexDirection: "row",
+                                  alignSelf: "flex-start",
+                                  margin: 5,
+                                }}
+                              >
+                                <AppText style={{ fontSize: 15 }}>
+                                  {capitalise(key)}:{" "}
+                                </AppText>
+                                <AppText style={{ fontSize: 15 }}>
+                                  {value}
+                                </AppText>
+                              </View>
+                            ))}
+                          </View>
+                        ))}
+                      <AppButton
+                        title="📞 Set Contact Info"
+                        onPress={() => setIsContactInfoModalVisible(true)}
+                      />
+                    </View>
+
                     <OpeningHoursModal
                       isVisible={isOpeningHoursModalVisible}
                       onClose={() => setIsOpeningHoursModalVisible(false)}
                       onSubmit={(hours) => {
                         setFieldValue("openingHours", hours);
-                        console.log(hours);
                         setIsOpeningHoursModalVisible(false);
                       }}
+                      values={values.openingHours}
                     />
+                    <ContactInfoModal
+                      isVisible={isContactInfoModalVisible}
+                      onClose={() => setIsContactInfoModalVisible(false)}
+                      onSubmit={(info) => {
+                        setFieldValue("contactInfo", info);
+                        setIsContactInfoModalVisible(false);
+                      }}
+                      values={values.contactInfo}
+                    />
+                    <AppText>Upload Images (optional)</AppText>
+                    <AppText style={{ fontSize: 12 }}>
+                      💡 Tap the camera icon to add images.
+                    </AppText>
+                    <View
+                      style={{
+                        alignSelf: "center",
+                      }}
+                    >
+                      <ImagePicker name="imageUris" />
+                    </View>
+                    <AppButton title="✅ Submit" onPress={handleSubmit} />
                   </View>
                 )}
               </Formik>
             )}
           </HeaderContainer>
         </ScrollView>
+        <LoadingModal
+          isLoading={isLoading}
+          message={"Saving..."}
+          isVisible={isLoadingModalVisible}
+          setIsVisible={handleCloseModal}
+          outcome={submissionOutcome}
+        />
       </SafeAreaView>
     </Modal>
   );

@@ -39,9 +39,9 @@ function FindVenueScreen(props) {
   }, []);
 
   const gotoCategory = (category) => {
-    const catName = category.name;
+    const catName = category.title;
     navigation.navigate("VenueResultsScreen", {
-      title: catName,
+      title: catName.substring(2), // To remove emoji
       categoryId: category._id,
     });
   };
@@ -78,7 +78,9 @@ function FindVenueScreen(props) {
             </View>
           </HeaderContainer>
           {getCategoriesApi.loading ? (
-            <ActivityIndicator visible={true} />
+            <View style={{ alignSelf: "center" }}>
+              <ActivityIndicator visible={true} />
+            </View>
           ) : (
             <SectionList
               style={{ marginTop: 8 }}

@@ -128,7 +128,7 @@ function SubmitReviewModal({
                   />
                   <DropdownList
                     items={accessCriteria.data}
-                    initValue={values.accessCriteria}
+                    value={values.accessCriteria}
                     updateValue={(criteria) => {
                       setFieldValue("accessCriteria", criteria);
                     }}

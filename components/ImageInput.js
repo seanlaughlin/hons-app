@@ -73,9 +73,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.light,
     borderRadius: 15,
-    height: 150,
+    height: 100,
     justifyContent: "center",
-    width: 150,
+    width: 100,
     overflow: "hidden",
   },
   image: {

@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 
 import categoriesApi from "../api/categories";
+import typesApi from "../api/types";
 
 const FilterContext = createContext();
 
@@ -15,6 +16,7 @@ export const FilterContextProvider = ({ children }) => {
   const [showNoReviews, setShowNoReviews] = useState(false);
   const [showMixedReviews, setShowMixedReviews] = useState(true);
   const [filters, setFilters] = useState({});
+  const [selectedTypes, setSelectedTypes] = useState([]);
 
   const setTravelDistance = () => {
     const walkingSpeedKmph = 4.83 / 60;
@@ -37,10 +39,19 @@ export const FilterContextProvider = ({ children }) => {
         const categoriesResponse = await categoriesApi.getCategories();
         setSelectedCategories(categoriesResponse.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching categories data:", error);
+      }
+    };
+    const fetchTypes = async () => {
+      try {
+        const typesResponse = await typesApi.getTypes();
+        setSelectedTypes(typesResponse.data);
+      } catch (error) {
+        console.error("Error fetching types data:", error);
       }
     };
     fetchCategories();
+    fetchTypes();
   }, []);
 
   useEffect(() => {
@@ -49,6 +60,7 @@ export const FilterContextProvider = ({ children }) => {
         (accessibility) => accessibility.criteria
       ),
       categoryIds: selectedCategories.map((category) => category._id),
+      typeIds: selectedTypes.map((type) => type._id),
       selectedDistance,
       searchTerm,
       selectedDistance,
@@ -58,6 +70,7 @@ export const FilterContextProvider = ({ children }) => {
   }, [
     selectedAccessibilities,
     selectedCategories,
+    selectedTypes,
     searchTerm,
     location,
     selectedDistance,
@@ -91,6 +104,8 @@ export const FilterContextProvider = ({ children }) => {
         setShowNoReviews,
         showMixedReviews,
         setShowMixedReviews,
+        selectedTypes,
+        setSelectedTypes,
       }}
     >
       {children}

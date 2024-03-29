@@ -29,7 +29,7 @@ function VenueInfoScreen({ route }) {
   const [distance, setDistance] = useState(0);
   const { venue, fromSearch } = route.params;
   const [isModalVisible, setIsModalVisible] = useState(false);
-
+  console.log(venue);
   const location = useLocation();
   const navigation = useNavigation();
 
@@ -49,10 +49,13 @@ function VenueInfoScreen({ route }) {
           style={styles.contentContainers}
         >
           <AppText style={{ fontSize: 18, marginTop: 5 }}>
-            {capitalise(venue.type)} in {venue.neighbourhood} (
-            {kmToMiles(distance)} miles away)
+            {venue.type.title} in {venue.neighbourhood} ({kmToMiles(distance)}{" "}
+            miles away)
           </AppText>
-          <ImageCarousel imageUris={venue.imageUris} />
+          {venue.imageUris.length > 0 && (
+            <ImageCarousel imageUris={venue.imageUris} />
+          )}
+
           <AppText style={{ fontSize: 18 }}>{venue.address}</AppText>
           <View style={styles.buttonsContainer}>
             <AppButton
@@ -103,30 +106,32 @@ function VenueInfoScreen({ route }) {
           accessibilityLabel="Accessibility Information"
         >
           {/* show those with reportedFor and no mixed at top, then order by amount of reviews for */}
-          <FlatList
-            data={venue.accessibility.sort((a, b) => {
-              if (a.reportedFor !== 0 && b.reportedFor === 0) return -1;
-              if (a.reportedAgainst > 0 && b.reportedAgainst === 0) return 1;
-              if (a.reportedAgainst === 0 && b.reportedAgainst === 0) {
-                return b.reportedFor - a.reportedFor;
-              }
-              return a.reportedAgainst - b.reportedAgainst;
-            })}
-            ItemSeparatorComponent={ListItemSeparator}
-            renderItem={({ item }) => (
-              <VenueInfoAccessItem
-                item={item}
-                key={item.id}
-                onPress={() =>
-                  navigation.navigate("AccessibilityReviewsScreen", {
-                    venue: venue,
-                    accessibilityItem: item,
-                  })
+          {venue.accessibility && venue.accessibility.length > 0 && (
+            <FlatList
+              data={venue.accessibility.sort((a, b) => {
+                if (a.reportedFor !== 0 && b.reportedFor === 0) return -1;
+                if (a.reportedAgainst > 0 && b.reportedAgainst === 0) return 1;
+                if (a.reportedAgainst === 0 && b.reportedAgainst === 0) {
+                  return b.reportedFor - a.reportedFor;
                 }
-              />
-            )}
-            keyExtractor={(item) => item.criteria.toString()}
-          />
+                return a.reportedAgainst - b.reportedAgainst;
+              })}
+              ItemSeparatorComponent={ListItemSeparator}
+              renderItem={({ item }) => (
+                <VenueInfoAccessItem
+                  item={item}
+                  key={item.id}
+                  onPress={() =>
+                    navigation.navigate("AccessibilityReviewsScreen", {
+                      venue: venue,
+                      accessibilityItem: item,
+                    })
+                  }
+                />
+              )}
+              keyExtractor={(item) => item.criteria.toString()}
+            />
+          )}
         </ContentContainer>
         <ContentContainer style={{ paddingBottom: 15 }}>
           <AppText

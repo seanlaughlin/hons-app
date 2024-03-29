@@ -6,7 +6,6 @@ import colors from "../config/colors";
 import AppButton from "../components/AppButton";
 import AppText from "./AppText";
 import ModalAccessItem from "./ModalAccessItem";
-import capitalise from "../utility/capitalise";
 import useLocation from "../hooks/useLocation";
 import { getDistance } from "../utility/mapUtils";
 import { kmToMiles } from "../utility/mapUtils";
@@ -64,8 +63,8 @@ function MapModal({
           }}
         >
           <AppText style={styles.subtitle}>
-            {capitalise(venue.type)} in {venue.neighbourhood} (
-            {kmToMiles(distance)} miles away)
+            {venue.type.title} in {venue.neighbourhood} ({kmToMiles(distance)}{" "}
+            miles away)
           </AppText>
           <View style={styles.venueInfo}>
             <View
@@ -93,7 +92,7 @@ function MapModal({
               ) : (
                 <AppText style={{ fontSize: 14 }}>None provided.</AppText>
               )}
-              {venue.contact.phone && (
+              {venue.contact && venue.contact.phone && (
                 <AppText style={{ fontSize: 14 }}>
                   Tel: {venue.contact.phone}
                 </AppText>
