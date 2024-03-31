@@ -9,10 +9,11 @@ const getFilteredVenues = (filters) =>
 
 const saveVenue = (venue) => {
   const data = new FormData();
+  console.log("contact", venue.contactInfo);
   data.append("address", venue.address);
   data.append("category", venue.category);
   data.append("name", venue.name);
-  data.append("contact", JSON.stringify(venue.contactInfo[0]) || {});
+  data.append("contact", JSON.stringify(venue.contactInfo) || {});
   data.append("openingHours", JSON.stringify(venue.openingHours) || []);
   data.append("coords", JSON.stringify(venue.coords));
   data.append("neighbourhood", venue.neighbourhood);

@@ -42,15 +42,17 @@ function ContactInfoModal({ isVisible, onClose, onSubmit, values }) {
       const details = {
         [selectedContactMethod]: contactDetails,
       };
-      setContactInfo([...contactInfo, details]);
+      setContactInfo({ ...contactInfo, ...details });
       setContactDetails("");
       setSelectedContactMethod("");
       setClearList(!clearList);
     }
   };
 
-  const handleRemoveContactDetails = (indexToRemove) => {
-    setContactInfo(contactInfo.filter((_, index) => index !== indexToRemove));
+  const handleRemoveContactDetails = (keyToRemove) => {
+    const updatedContactInfo = { ...contactInfo };
+    delete updatedContactInfo[keyToRemove];
+    setContactInfo(updatedContactInfo);
   };
 
   return (
@@ -88,18 +90,16 @@ function ContactInfoModal({ isVisible, onClose, onSubmit, values }) {
             />
             <View style={styles.contactInfoList}>
               <AppText style={styles.title}>Contact Info</AppText>
-              {contactInfo.length > 0 ? (
-                contactInfo.map((contact, index) => (
-                  <View key={index} style={styles.row}>
-                    {Object.entries(contact).map(([key, value]) => (
-                      <React.Fragment key={key}>
-                        <AppText>{capitalise(key)}: </AppText>
-                        <AppText>{value}</AppText>
-                      </React.Fragment>
-                    ))}
+              {Object.keys(contactInfo).length !== 0 ? (
+                Object.entries(contactInfo).map(([key, value]) => (
+                  <View key={key} style={styles.row}>
+                    <React.Fragment key={key}>
+                      <AppText>{capitalise(key)}: </AppText>
+                      <AppText>{value}</AppText>
+                    </React.Fragment>
                     <MaterialCommunityIcons
                       name="close-circle"
-                      onPress={() => handleRemoveContactDetails(index)}
+                      onPress={() => handleRemoveContactDetails(key)}
                       size={22}
                       color={colors.danger}
                     />

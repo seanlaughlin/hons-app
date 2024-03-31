@@ -121,7 +121,7 @@ function AddVenueModal({
                   neighbourhood: address.neighborhood || "",
                   name: "",
                   openingHours: [],
-                  contactInfo: [],
+                  contactInfo: {},
                   category: null,
                   coords: coords,
                   type: null,
@@ -205,11 +205,10 @@ function AddVenueModal({
                     <AppText>Contact Info (optional)</AppText>
                     <View>
                       {values.contactInfo &&
-                        values.contactInfo.map((contact) => (
-                          <View key={contact.id}>
-                            {Object.entries(contact).map(([key, value]) => (
+                        Object.entries(values.contactInfo).map(
+                          ([key, value]) => (
+                            <View key={key}>
                               <View
-                                key={key}
                                 style={{
                                   flexDirection: "row",
                                   alignSelf: "flex-start",
@@ -223,9 +222,9 @@ function AddVenueModal({
                                   {value}
                                 </AppText>
                               </View>
-                            ))}
-                          </View>
-                        ))}
+                            </View>
+                          )
+                        )}
                       <AppButton
                         title="📞 Set Contact Info"
                         onPress={() => setIsContactInfoModalVisible(true)}

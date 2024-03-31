@@ -41,6 +41,7 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
   const handleSubmit = (values) => {
     setSelectedAccessibilities(values.accessibilities);
     setSelectedCategories(values.categories);
+    setSelectedTypes(values.types);
     setTransportMode(values.transportMode);
     setSelectedTravelDuration(values.travelDuration);
     setShowNoReviews(values.showNoReviews);

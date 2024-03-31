@@ -75,12 +75,16 @@ function MapModal({
             >
               <Image
                 style={styles.image}
-                source={{
-                  uri:
-                    process.env.EXPO_PUBLIC_SERVER_URL +
-                    "/" +
-                    venue.imageUris[0].full,
-                }}
+                source={
+                  venue.imageUris.length > 0
+                    ? {
+                        uri:
+                          process.env.EXPO_PUBLIC_SERVER_URL +
+                          "/" +
+                          venue.imageUris[0].full,
+                      }
+                    : require("../assets/placeholder-square.jpg")
+                }
               />
               <AppText
                 style={{ fontWeight: 600 }}

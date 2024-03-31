@@ -7,19 +7,28 @@ import typesApi from "../api/types";
 import SelectableList from "./SelectableList";
 
 function VenueTypesTab() {
-  const { values } = useFormikContext();
+  const { values, setFieldValue } = useFormikContext();
   const selectedCategories = values.categories;
-  let categoryIds = selectedCategories.map((category) => category._id);
+  const selectedTypes = values.types;
+
   const getTypesByCategories = useApi(typesApi.getTypesByCategories);
 
   useEffect(() => {
-    getTypesByCategories.request(categoryIds);
-  }, []);
-
-  useEffect(() => {
-    categoryIds = selectedCategories.map((category) => category._id);
+    const categoryIds = selectedCategories.map((category) => category._id);
     getTypesByCategories.request(categoryIds);
   }, [selectedCategories]);
+
+  const handlePress = (item) => {
+    const index = selectedTypes.findIndex((type) => type._id === item._id);
+    if (index === -1) {
+      setFieldValue("types", [...selectedTypes, item]);
+    } else {
+      const updatedTypes = selectedTypes.filter(
+        (type) => type._id !== item._id
+      );
+      setFieldValue("types", updatedTypes);
+    }
+  };
 
   return (
     <View>
@@ -27,6 +36,7 @@ function VenueTypesTab() {
         name="types"
         data={getTypesByCategories.data}
         title="types"
+        onPress={handlePress} // Pass the handlePress function to handle type selection
       />
     </View>
   );

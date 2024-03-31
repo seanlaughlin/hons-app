@@ -42,12 +42,16 @@ function VenueListItem({ venue, ...others }) {
         style={{ flexDirection: "row", alignItems: "center", columnGap: 5 }}
       >
         <Image
-          source={{
-            uri:
-              process.env.EXPO_PUBLIC_SERVER_URL +
-              "/" +
-              venue.imageUris[0].full,
-          }}
+          source={
+            venue.imageUris.length > 0
+              ? {
+                  uri:
+                    process.env.EXPO_PUBLIC_SERVER_URL +
+                    "/" +
+                    venue.imageUris[0].full,
+                }
+              : require("../assets/placeholder-square.jpg")
+          }
           style={styles.image}
           accessibilityElementsHidden={true}
         />
