@@ -83,20 +83,40 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
                       action={handleCloseModal}
                       color={colors.white}
                       style={{ flex: 1 }}
+                      testID="close-button"
+                      accessibilityRole="button"
+                      accessibilityLabel="Close Button"
                     />
                   }
                 >
                   <ListItemSeparator />
-                  <Accordion title="Distance" expanded={true}>
+                  <Accordion
+                    title="Distance"
+                    expanded={true}
+                    accessibilityRole="button"
+                    accessibilityLabel="Distance filters button"
+                  >
                     <DistanceTab />
                   </Accordion>
-                  <Accordion title="Access">
+                  <Accordion
+                    title="Access"
+                    accessibilityRole="button"
+                    accessibilityLabel="Accessibility filters button"
+                  >
                     <AccessTab />
                   </Accordion>
-                  <Accordion title="Categories">
+                  <Accordion
+                    title="Categories"
+                    accessibilityRole="button"
+                    accessibilityLabel="Venue category filters button"
+                  >
                     <CategoriesTab />
                   </Accordion>
-                  <Accordion title="Types">
+                  <Accordion
+                    title="Venue Types"
+                    accessibilityRole="button"
+                    accessibilityLabel="Venue type filters button"
+                  >
                     <VenueTypesTab />
                   </Accordion>
                 </HeaderContainer>
@@ -111,6 +131,8 @@ function SearchFilterModal({ isModalVisible, setIsModalVisible, ...others }) {
                     justifyContent: "center",
                     alignItems: "center",
                   }}
+                  accessibilityRole="button"
+                  accessibilityLabel="Apply button"
                 >
                   <MaterialCommunityIcons
                     name="check-circle"

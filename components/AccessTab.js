@@ -9,6 +9,7 @@ import accessibilityIconMapping from "../config/accessibilityIconMapping";
 import colors from "../config/colors";
 import AppText from "./AppText";
 import { useFormikContext } from "formik";
+import useApi from "../hooks/useApi";
 
 const AccessTab = () => {
   const accessCriteria = useApi(accessCriteriaApi.getAccessCriteria);
@@ -35,7 +36,6 @@ const AccessTab = () => {
         name="accessibilities"
         data={accessCriteria.data}
         iconMapping={accessibilityIconMapping}
-        title="accessibilities"
       />
       <View
         style={{
@@ -51,6 +51,8 @@ const AccessTab = () => {
             style={{ width: 25, height: 25, borderRadius: 20 }}
             value={values.showNoReviews}
             onValueChange={() => updateCheckBox("showNoReviews")}
+            accessibilityLabel="Checkbox to show no reviews in results"
+            testID="checkbox-show-no-reviews"
           />
           <AppText>Show no reviews</AppText>
         </View>
@@ -60,6 +62,8 @@ const AccessTab = () => {
             style={{ width: 25, height: 25, borderRadius: 20 }}
             value={values.showMixedReviews}
             onValueChange={() => updateCheckBox("showMixedReviews")}
+            accessibilityLabel="Checkbox to show mixed reviews in results"
+            testID="checkbox-show-mixed-reviews"
           />
           <AppText>Show mixed reviews</AppText>
         </View>

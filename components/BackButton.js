@@ -9,17 +9,11 @@ function BackButton({
   style,
   color = colors.primary,
   size = 30,
-  returnTo,
+  navigation,
   ...props
 }) {
-  const navigation = useNavigation();
-
   const goBack = () => {
-    if (returnTo) {
-      navigation.navigate(returnTo);
-    } else {
-      navigation.goBack();
-    }
+    navigation();
   };
 
   return (
@@ -29,6 +23,8 @@ function BackButton({
         style={styles.backButton}
         onPress={goBack}
         accessibilityRole="button"
+        accessibilityLabel="Back button"
+        testID="back-button"
       >
         <MaterialCommunityIcons name="chevron-left" size={size} color={color} />
       </TouchableOpacity>

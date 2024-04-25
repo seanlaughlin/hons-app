@@ -17,6 +17,7 @@ function FiltersButton({ style }) {
       <SearchFilterModal
         isModalVisible={isFilterModalVisible}
         setIsModalVisible={setIsFilterModalVisible}
+        testID="search-filter-modal"
       />
       <AppButton
         title="⚙ Filters"
@@ -26,6 +27,7 @@ function FiltersButton({ style }) {
         accessibilityLabel="Filters"
         accessibilityHint="Press here to open search filters modal."
         accessibilityRole="button"
+        testID="filters-button"
       />
     </>
   );

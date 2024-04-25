@@ -29,7 +29,11 @@ function ReviewModal({ review, isVisible, setIsVisible }) {
           <HeaderContainer
             title="Review"
             button={
-              <CloseButton action={handleCloseModal} color={colors.white} />
+              <CloseButton
+                action={handleCloseModal}
+                color={colors.white}
+                testId="close-button"
+              />
             }
             style={{
               paddingVertical: 15,
@@ -44,7 +48,11 @@ function ReviewModal({ review, isVisible, setIsVisible }) {
                 padding: 15,
               }}
             >
-              <ImageWithMagnification source={image} size={175} />
+              <ImageWithMagnification
+                source={image}
+                size={175}
+                testID="image-magnification"
+              />
               <View>
                 <View style={{ flexDirection: "row" }}>
                   <AppText>User: </AppText>

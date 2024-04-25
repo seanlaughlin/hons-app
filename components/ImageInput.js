@@ -53,7 +53,12 @@ function ImageInput({ imageUri, onChangeImage }) {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={handlePress}>
+    <TouchableWithoutFeedback
+      onPress={handlePress}
+      testID="image-input-container"
+      accessibilityRole="button"
+      accessibilityLabel="Tap to choose an image"
+    >
       <View style={styles.container}>
         {!imageUri && (
           <MaterialCommunityIcons

@@ -4,6 +4,7 @@ import ActivityIndicator from "./ActivityIndicator";
 import LottieView from "lottie-react-native";
 import colors from "../config/colors";
 import AppText from "./AppText";
+import AppButton from "./AppButton";
 
 function LoadingModal({
   isLoading,
@@ -22,7 +23,7 @@ function LoadingModal({
       animationType="fade"
       transparent={true}
     >
-      <View style={styles.modalBackground}>
+      <View style={styles.modalBackground} testID="modal-background">
         <View style={styles.modalContainer}>
           <View style={styles.loadingContainer}>
             {isLoading && (
@@ -31,7 +32,7 @@ function LoadingModal({
                 <AppText>{message}</AppText>
               </View>
             )}
-            {!isLoading && outcome && (
+            {!isLoading && outcome !== "Error" && (
               <View style={{ alignItems: "center" }}>
                 <LottieView
                   source={require("../assets/animations/done.json")}
@@ -43,6 +44,14 @@ function LoadingModal({
                 />
                 <AppText>{outcome}</AppText>
               </View>
+            )}
+            {outcome === "Error" && (
+              <>
+                <AppText style={{ marginHorizontal: 5 }}>
+                  An error occurred.
+                </AppText>
+                <AppButton title="Close" onPress={setIsVisible(false)} />
+              </>
             )}
           </View>
         </View>

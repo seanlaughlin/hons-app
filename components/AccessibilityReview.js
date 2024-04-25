@@ -14,7 +14,11 @@ function AccessibilityReview({ review, onPress }) {
   const icon = review.for ? "check-circle" : "close-circle";
 
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={onPress}
+      testID="accessibility-review-container"
+    >
       <Image
         source={image}
         style={styles.image}

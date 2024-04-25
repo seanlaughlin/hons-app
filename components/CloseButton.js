@@ -18,6 +18,7 @@ function CloseButton({
         style={styles.closeButton}
         onPress={action}
         accessibilityRole="button"
+        accessibilityLabel="Close"
       >
         <MaterialCommunityIcons name="close" size={size} color={color} />
       </TouchableOpacity>

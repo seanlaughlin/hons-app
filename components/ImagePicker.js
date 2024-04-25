@@ -1,7 +1,7 @@
 import React from "react";
 import ImageInputList from "./ImageInputList";
-import ErrorMessage from "./ErrorMessage";
 import { useFormikContext } from "formik";
+import { View } from "react-native";
 
 function ImagePicker({ name }) {
   const { errors, setFieldValue, touched, values } = useFormikContext();
@@ -19,14 +19,13 @@ function ImagePicker({ name }) {
     );
   };
   return (
-    <>
+    <View testID="image-input">
       <ImageInputList
         imageUris={imageUris}
         onAddImage={handleAdd}
         onRemoveImage={handleRemove}
       />
-      {/* <ErrorMessage error={errors[name]} visible={touched[name]} /> */}
-    </>
+    </View>
   );
 }
 

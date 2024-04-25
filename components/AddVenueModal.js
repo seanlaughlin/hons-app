@@ -3,11 +3,11 @@ import {
   View,
   StyleSheet,
   Modal,
-  Button,
   SafeAreaView,
   ScrollView,
 } from "react-native";
 import { Formik } from "formik";
+import * as Yup from "yup";
 
 import HeaderContainer from "./HeaderContainer";
 import CloseButton from "./CloseButton";
@@ -16,7 +16,6 @@ import AppText from "./AppText";
 import useApi from "../hooks/useApi";
 import categoriesApi from "../api/categories";
 import AppTextInput from "./AppTextInput";
-import DropdownList from "./DropdownList";
 import OpeningHoursModal from "./OpeningHoursModal";
 import AppButton from "./AppButton";
 import ContactInfoModal from "./ContactInfoModal";
@@ -26,6 +25,8 @@ import venuesApi from "../api/venues";
 import { useVenueContext } from "../context/VenueContext";
 import LoadingModal from "./LoadingModal";
 import typesApi from "../api/types";
+import FormField from "./FormField";
+import FormDropDown from "./FormDropDown";
 
 function AddVenueModal({
   coords = null,
@@ -47,6 +48,14 @@ function AddVenueModal({
 
   const { fetchVenues } = useVenueContext();
 
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required().min(3).max(40).label("Access Criteria"),
+    neighbourhood: Yup.string().required().label("Neighbourhood"),
+    address: Yup.string().required().label("Address"),
+    category: Yup.string().required().label("Category"),
+    type: Yup.string().required().label("Venue Type"),
+  });
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -67,7 +76,6 @@ function AddVenueModal({
   }, []);
 
   const handleSubmit = async (values, { resetForm }) => {
-    console.log(values);
     setIsLoading(true);
     setSubmissionOutcome(null);
     setIsLoadingModalVisible(true);
@@ -96,6 +104,7 @@ function AddVenueModal({
       onRequestClose={handleCloseModal}
       animationType="slide"
       {...others}
+      testID="modal"
     >
       <SafeAreaView style={styles.container}>
         <ScrollView
@@ -110,6 +119,7 @@ function AddVenueModal({
                 color={colors.white}
                 action={handleCloseModal}
                 size={30}
+                testID="close-button"
               />
             }
             style={{ paddingBottom: 15 }}
@@ -128,54 +138,47 @@ function AddVenueModal({
                   imageUris: [],
                 }}
                 onSubmit={handleSubmit}
+                validationSchema={validationSchema}
               >
                 {({ handleChange, handleSubmit, setFieldValue, values }) => (
                   <View style={styles.formContainer}>
                     <AppText>Venue Name (required)</AppText>
-                    <AppTextInput
+                    <FormField
                       placeholder="Venue name (required)"
                       accessibilityLabel="Field for the venue name (required)"
-                      value={values.name}
-                      onChangeText={(text) => setFieldValue("name", text)}
+                      name="name"
+                      testID="venue-name-field"
                     />
                     <AppText>Venue Address (required)</AppText>
                     <AppTextInput
                       placeholder="Venue address (required)"
-                      accessibilityLabel="Field for the venue name (required)"
+                      accessibilityLabel="Field for the venue address (required)"
                       value={values.address}
                       onChangeText={(text) => setFieldValue("address", text)}
                     />
                     <AppText>Neighborhood (required)</AppText>
-                    <AppTextInput
+                    <FormField
                       placeholder="Neighbourhood (required)"
                       accessibilityLabel="Field for the venue neighbourhood (required)"
-                      value={values.neighbourhood}
-                      onChangeText={(text) =>
-                        setFieldValue("neighbourhood", text)
-                      }
+                      name="neighbourhood"
                     />
                     <AppText>Category (required)</AppText>
-                    <DropdownList
-                      items={categories.data.map((category) => ({
+                    <FormDropDown
+                      data={categories.data.map((category) => ({
                         name: category.title,
                       }))}
-                      fieldName="categories"
+                      name="category"
                       placeholder={"Select venue category (required)"}
-                      value={values.category}
-                      updateValue={(category) =>
-                        setFieldValue("category", category)
-                      }
                       style={{ zIndex: 500 }}
+                      testID="category-drop-down"
                     />
                     <AppText>Venue Type (required)</AppText>
-                    <DropdownList
-                      items={types.data.map((type) => ({
+                    <FormDropDown
+                      data={types.data.map((type) => ({
                         name: type.title,
                       }))}
-                      fieldName="types"
+                      name="type"
                       placeholder={"Select venue type (required)"}
-                      value={values.type}
-                      updateValue={(type) => setFieldValue("type", type)}
                     />
                     <AppText>Opening Hours (optional)</AppText>
                     <View style={{ marginVertical: 5 }}>
@@ -199,6 +202,7 @@ function AddVenueModal({
                       <AppButton
                         title="🕒 Set Opening Hours"
                         onPress={() => setIsOpeningHoursModalVisible(true)}
+                        testID="opening-hours-button"
                       />
                     </View>
 
@@ -228,6 +232,7 @@ function AddVenueModal({
                       <AppButton
                         title="📞 Set Contact Info"
                         onPress={() => setIsContactInfoModalVisible(true)}
+                        testID="contact-info-button"
                       />
                     </View>
 

@@ -10,6 +10,7 @@ function ActivityIndicator({ visible = false, size = 200 }) {
       autoPlay
       loop
       style={{ width: size, height: size }}
+      testID="activity-indicator"
     />
   );
 }

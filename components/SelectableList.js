@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, StyleSheet, View, Button } from "react-native";
+import { ScrollView, StyleSheet, View, Button } from "react-native";
 import { useFormikContext } from "formik";
 import SelectableItem from "./SelectableItem";
 import colors from "../config/colors";
@@ -8,7 +8,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ListItemSeparator from "./ListItemSeparator";
 import ActivityIndicator from "./ActivityIndicator";
 
-const SelectableList = ({ name, data, iconMapping, title }) => {
+const SelectableList = ({ name, data, iconMapping }) => {
   const { setFieldValue, values } = useFormikContext();
   const handlePress = (item) => {
     const selectedItems = [...values[name]];
@@ -25,7 +25,6 @@ const SelectableList = ({ name, data, iconMapping, title }) => {
         (selectedItem) => selectedItem.name !== item.name
       );
     }
-    console.log(updatedItems);
     setFieldValue(name, updatedItems);
   };
 
@@ -38,7 +37,7 @@ const SelectableList = ({ name, data, iconMapping, title }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="selectable-list">
       {data.length === 0 || data === null ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator visible={true} size={100} />
@@ -58,33 +57,31 @@ const SelectableList = ({ name, data, iconMapping, title }) => {
               onPress={handleSelectNone}
             />
           </View>
-          <FlatList
-            data={data}
-            ItemSeparatorComponent={() => <ListItemSeparator />}
-            renderItem={({ item }) => (
-              <SelectableItem
-                onPress={() => handlePress(item)}
-                isSelected={
-                  values[name].findIndex(
-                    (selectedItem) => selectedItem.name === item.name
-                  ) !== -1
-                }
-              >
-                {iconMapping && (
-                  <MaterialCommunityIcons
-                    name={iconMapping[item.criteria]}
-                    size={30}
-                    color={colors.green}
-                    style={{ marginRight: 10 }}
-                  />
-                )}
-                <AppText style={{ fontSize: 18 }}>{item.title}</AppText>
-              </SelectableItem>
-            )}
-            keyExtractor={(item) => item.name.toString()}
-            contentContainerStyle={styles.flatListContent}
-            showsVerticalScrollIndicator={true}
-          />
+          <ScrollView style={styles.scrollView}>
+            {data.map((item) => (
+              <View key={item.name}>
+                <SelectableItem
+                  onPress={() => handlePress(item)}
+                  isSelected={
+                    values[name].findIndex(
+                      (selectedItem) => selectedItem.name === item.name
+                    ) !== -1
+                  }
+                >
+                  {iconMapping && (
+                    <MaterialCommunityIcons
+                      name={iconMapping[item.criteria]}
+                      size={30}
+                      color={colors.green}
+                      style={{ marginRight: 10 }}
+                    />
+                  )}
+                  <AppText style={{ fontSize: 18 }}>{item.title}</AppText>
+                </SelectableItem>
+                <ListItemSeparator />
+              </View>
+            ))}
+          </ScrollView>
         </>
       )}
     </View>
@@ -102,8 +99,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  flatListContent: {
-    flexGrow: 1,
+  scrollView: {
+    width: "100%",
   },
   buttonsContainer: {
     flexDirection: "row",

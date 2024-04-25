@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Modal, SafeAreaView, Button } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Modal,
+  SafeAreaView,
+  Button,
+  ScrollView,
+} from "react-native";
 import { Formik } from "formik";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import * as Yup from "yup";
 
 import HeaderContainer from "./HeaderContainer";
 import CloseButton from "./CloseButton";
 import colors from "../config/colors";
-import { ScrollView } from "react-native";
 import AppText from "./AppText";
-import AppTextInput from "./AppTextInput";
-import DropdownList from "./DropdownList";
 import useApi from "../hooks/useApi";
 import accessCriteriaApi from "../api/accessCriteria";
 import SelectableIcon from "./SelectableIcon";
@@ -18,6 +23,8 @@ import AppButton from "./AppButton";
 import reviewsApi from "../api/reviews";
 import LoadingModal from "./LoadingModal";
 import { useVenueContext } from "../context/VenueContext";
+import FormField from "./FormField";
+import FormDropDown from "./FormDropDown";
 
 function SubmitReviewModal({
   isModalVisible,
@@ -33,6 +40,11 @@ function SubmitReviewModal({
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const { fetchVenues } = useVenueContext();
+
+  const validationSchema = Yup.object().shape({
+    accessCriteria: Yup.string().required().label("Access Criteria"),
+    date: Yup.date().required().label("Date of Visit"),
+  });
 
   useEffect(() => {
     const fetchCriteria = async () => {
@@ -117,22 +129,19 @@ function SubmitReviewModal({
                 for: true,
               }}
               onSubmit={handleSubmit}
+              validationSchema={validationSchema}
             >
               {({ handleChange, handleSubmit, setFieldValue, values }) => (
                 <View style={styles.formContainer}>
-                  <AppTextInput
+                  <FormField
                     placeholder="Your name (optional)"
                     accessibilityLabel="Field for your name or alias (optional)"
-                    value={values.user}
-                    onChangeText={(text) => setFieldValue("user", text)}
+                    name="user"
                   />
-                  <DropdownList
-                    items={accessCriteria.data}
-                    value={values.accessCriteria}
-                    updateValue={(criteria) => {
-                      setFieldValue("accessCriteria", criteria);
-                    }}
+                  <FormDropDown
+                    name="accessCriteria"
                     placeholder={"Select access criteria (required)"}
+                    data={accessCriteria.data}
                   />
                   <View
                     style={{
@@ -190,13 +199,12 @@ function SubmitReviewModal({
                     Tell us why (optional):
                   </AppText>
                   <View>
-                    <AppTextInput
+                    <FormField
                       multiline
                       numberOfLines={4}
                       placeholder={"Your comments (optional)"}
                       style={{ height: 50, width: "100%" }}
-                      value={values.comment}
-                      onChangeText={(text) => setFieldValue("comment", text)}
+                      name="comment"
                     />
                   </View>
                   <AppText style={{ fontSize: 15 }}>

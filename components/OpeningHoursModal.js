@@ -47,7 +47,7 @@ function OpeningHoursModal({ isVisible, onClose, onSubmit, values }) {
     <Modal visible={isVisible} animationType="fade" transparent>
       <View style={styles.modalContainer}>
         <HeaderContainer
-          title="Add Opening Hours"
+          title="Add Venue Opening Hours"
           button={
             <CloseButton color={colors.white} action={onClose} size={30} />
           }

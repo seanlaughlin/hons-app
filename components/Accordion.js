@@ -6,8 +6,10 @@ import AppText from "./AppText";
 import colors from "../config/colors";
 import ListItemSeparator from "./ListItemSeparator";
 
-const Accordion = ({ title, children, expanded = false }, style) => {
+const Accordion = ({ title, children, expanded = false, ...others }, style) => {
   const [isExpanded, setIsExpanded] = useState(expanded);
+
+  console.log({ ...others });
 
   const toggleAccordion = () => {
     setIsExpanded((prevState) => !prevState);
@@ -17,18 +19,29 @@ const Accordion = ({ title, children, expanded = false }, style) => {
 
   return (
     <View style={[styles.container, style]}>
-      <TouchableOpacity style={styles.header} onPress={toggleAccordion}>
+      <TouchableOpacity
+        style={styles.header}
+        onPress={toggleAccordion}
+        testID="accordion-header"
+        {...others}
+      >
         <View style={styles.headerContent}>
           <AppText style={styles.headerText}>{title}</AppText>
         </View>
-        <MaterialCommunityIcons
-          name={iconName}
-          color={colors.white}
-          size={30}
-        />
+        <View testID="chevron-icon">
+          <MaterialCommunityIcons
+            name={iconName}
+            color={colors.white}
+            size={30}
+          />
+        </View>
       </TouchableOpacity>
       <ListItemSeparator />
-      {isExpanded && <View style={styles.content}>{children}</View>}
+      {isExpanded && (
+        <View style={styles.content} testID="accordion-content">
+          {children}
+        </View>
+      )}
     </View>
   );
 };

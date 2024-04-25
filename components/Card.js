@@ -13,7 +13,17 @@ function Card({ title, imageUrl, onPress, ...others }) {
   return (
     <TouchableWithoutFeedback onPress={onPress} {...others}>
       <View style={styles.card}>
-        <Image style={styles.image} source={{ uri: imageUrl }} />
+        <Image
+          style={styles.image}
+          source={
+            imageUrl
+              ? {
+                  uri: imageUrl,
+                }
+              : require("../assets/placeholder-square.jpg")
+          }
+          testID="card-image"
+        />
         <View style={styles.detailsContainer}>
           <Text style={styles.title} numberOfLines={1}>
             {title}

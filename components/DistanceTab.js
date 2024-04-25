@@ -45,6 +45,7 @@ const DistanceTab = () => {
           onValueChange={handleSliderChange}
           value={sliderValue}
           tapToSeek={true}
+          testID="slider"
         />
         <AppText>60 min</AppText>
       </View>
@@ -54,20 +55,26 @@ const DistanceTab = () => {
           ...and my method of travel is...
         </AppText>
         <View style={{ flexDirection: "row", columnGap: 40 }}>
-          <SelectableIcon
-            iconName="walk"
-            title="Walking"
-            selected={values["transportMode"] === "walking"}
-            onPress={() => handlePress("walking")}
-            size={35}
-          />
-          <SelectableIcon
-            iconName="wheelchair-accessibility"
-            title="Wheeling"
-            selected={values["transportMode"] === "wheeling"}
-            onPress={() => handlePress("wheeling")}
-            size={35}
-          />
+          <View testID="walking-icon" accessibilityRole="button">
+            <SelectableIcon
+              iconName="walk"
+              title="Walking"
+              selected={values["transportMode"] === "walking"}
+              onPress={() => handlePress("walking")}
+              size={35}
+              accessibilityRole="button"
+            />
+          </View>
+          <View testID="wheeling-icon" accessibilityRole="button">
+            <SelectableIcon
+              iconName="wheelchair-accessibility"
+              title="Wheeling"
+              selected={values["transportMode"] === "wheeling"}
+              onPress={() => handlePress("wheeling")}
+              size={35}
+              accessibilityRole="button"
+            />
+          </View>
         </View>
       </View>
     </View>

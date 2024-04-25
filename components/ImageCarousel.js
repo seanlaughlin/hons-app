@@ -5,8 +5,8 @@ import ImageWithMagnification from "./ImageWithMagnification";
 
 function ImageCarousel({ imageUris, ...others }) {
   return (
-    <ScrollView horizontal>
-      <View style={styles.container} {...others}>
+    <ScrollView horizontal testID="horizontal-scroll-view">
+      <View style={styles.container} {...others} testID="image-container">
         {imageUris.map((uri, index) => (
           <ImageWithMagnification
             uri={uri}

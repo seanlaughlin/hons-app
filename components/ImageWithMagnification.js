@@ -34,6 +34,7 @@ function ImageWithMagnification({
       <TouchableOpacity
         onPress={() => handleImagePress(imageSource)}
         {...others}
+        testID="image-with-magnification"
       >
         <ImageBackground
           source={imageSource}
@@ -48,7 +49,7 @@ function ImageWithMagnification({
           </View>
         </ImageBackground>
       </TouchableOpacity>
-      <Modal visible={!!selectedImage} transparent={true}>
+      <Modal visible={!!selectedImage} transparent={true} testID="modal">
         <View style={styles.modalContainer}>
           <MaterialCommunityIcons
             style={styles.closeButton}
@@ -56,6 +57,7 @@ function ImageWithMagnification({
             size={40}
             onPress={handleCloseModal}
             color={colors.light}
+            testID="close-button"
           />
           <View style={styles.fullScreenImageContainer}>
             <Image source={selectedImage} style={styles.fullScreenImage} />

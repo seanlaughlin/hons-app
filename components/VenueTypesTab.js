@@ -36,7 +36,7 @@ function VenueTypesTab() {
         name="types"
         data={getTypesByCategories.data}
         title="types"
-        onPress={handlePress} // Pass the handlePress function to handle type selection
+        onPress={handlePress}
       />
     </View>
   );

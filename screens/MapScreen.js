@@ -353,11 +353,16 @@ function MapScreen({ route }) {
           )}
           {newVenueAddress && newVenueAddress.address && isMarkerPlaceMode && (
             <View style={[styles.opaqueBox, { bottom: 100 }]}>
-              <AppText accessibilityLabel={newVenueAddress}>
+              <AppText
+                accessibilityLabel={newVenueAddress.address.split(",")[0]}
+              >
                 {newVenueAddress.address.split(",")[0]}
               </AppText>
               <AppText style={{ fontSize: 15 }}>
                 Is this the venue address?
+              </AppText>
+              <AppText style={{ fontSize: 13 }}>
+                (You can edit this later)
               </AppText>
             </View>
           )}

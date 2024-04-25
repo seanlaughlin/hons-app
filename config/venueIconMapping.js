@@ -9,7 +9,7 @@ export default {
   newsagent: "newspaper-variant",
   supermarket: "basket",
   butchers: "food-drumstick",
-  bakers: "bread-slice",
+  bakery: "bread-slice",
   sportscentre: "tennis-ball",
   park: "tree-outline",
   swimmingpool: "swim",

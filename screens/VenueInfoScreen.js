@@ -29,7 +29,6 @@ function VenueInfoScreen({ route }) {
   const [distance, setDistance] = useState(0);
   const { venue, fromSearch } = route.params;
   const [isModalVisible, setIsModalVisible] = useState(false);
-  console.log(venue);
   const location = useLocation();
   const navigation = useNavigation();
 
@@ -45,7 +44,13 @@ function VenueInfoScreen({ route }) {
       <ScrollView contentContainerStyle={styles.container}>
         <HeaderContainer
           title={venue.name}
-          button={<BackButton color={colors.white} size={40} />}
+          button={
+            <BackButton
+              color={colors.white}
+              navigation={() => navigation.goBack()}
+              size={40}
+            />
+          }
           style={styles.contentContainers}
         >
           <AppText style={{ fontSize: 18, marginTop: 5 }}>
@@ -70,33 +75,29 @@ function VenueInfoScreen({ route }) {
                   fromSearch: fromSearch,
                 })
               }
+              accessibilityLabel="Get directions"
             />
-            <AppButton title="⭐ Add to Favorites" />
+            <AppButton
+              title="⭐ Add to Favorites"
+              accessibilityLabel="Add to favorites"
+            />
           </View>
         </HeaderContainer>
         <ContentContainer style={[styles.venueInfo, styles.contentContainers]}>
-          <View style={{ flex: 2 }}>
+          <View>
             <AppText style={styles.infoHeading}>Opening Hours</AppText>
-            {venue.openingHours.map((item) => (
-              <AppText
-                style={{ marginBottom: 5, fontSize: 13 }}
-                key={item.hours}
-              >
+            {venue.openingHours.map((item, index) => (
+              <AppText style={{ marginBottom: 5, fontSize: 13 }} key={index}>
                 {item.days}: {item.hours}
               </AppText>
             ))}
           </View>
-          <View style={{ flex: 3 }}>
+          <View>
             <AppText style={styles.infoHeading}>Contact Details</AppText>
             {Object.entries(venue.contact).map(
               ([key, value]) =>
                 key !== "_id" && (
                   <View style={{ flexDirection: "row" }} key={key}>
-                    <MaterialCommunityIcons
-                      name={venueIconMapping[key]}
-                      style={{ marginRight: 10 }}
-                      accessibilityElementsHidden={true}
-                    />
                     <AppText style={{ marginBottom: 5, fontSize: 13 }}>
                       {capitalise(key)} : {value}
                     </AppText>
@@ -110,21 +111,19 @@ function VenueInfoScreen({ route }) {
           accessibilityLabel="Accessibility Information"
         >
           {/* show those with reportedFor and no mixed at top, then order by amount of reviews for */}
-          {venue.accessibility && venue.accessibility.length > 0 && (
-            <FlatList
-              data={venue.accessibility.sort((a, b) => {
-                if (a.reportedFor !== 0 && b.reportedFor === 0) return -1;
-                if (a.reportedAgainst > 0 && b.reportedAgainst === 0) return 1;
-                if (a.reportedAgainst === 0 && b.reportedAgainst === 0) {
-                  return b.reportedFor - a.reportedFor;
-                }
-                return a.reportedAgainst - b.reportedAgainst;
-              })}
-              ItemSeparatorComponent={ListItemSeparator}
-              renderItem={({ item }) => (
+          {venue.accessibility
+            .sort((a, b) => {
+              if (a.reportedFor !== 0 && b.reportedFor === 0) return -1;
+              if (a.reportedAgainst > 0 && b.reportedAgainst === 0) return 1;
+              if (a.reportedAgainst === 0 && b.reportedAgainst === 0) {
+                return b.reportedFor - a.reportedFor;
+              }
+              return a.reportedAgainst - b.reportedAgainst;
+            })
+            .map((item) => (
+              <View key={item._id}>
                 <VenueInfoAccessItem
                   item={item}
-                  key={item.id}
                   onPress={() =>
                     navigation.navigate("AccessibilityReviewsScreen", {
                       venue: venue,
@@ -132,10 +131,9 @@ function VenueInfoScreen({ route }) {
                     })
                   }
                 />
-              )}
-              keyExtractor={(item) => item.criteria.toString()}
-            />
-          )}
+                <ListItemSeparator />
+              </View>
+            ))}
         </ContentContainer>
         <ContentContainer style={{ paddingBottom: 15 }}>
           <AppText
@@ -153,6 +151,7 @@ function VenueInfoScreen({ route }) {
             title="📖 Leave a Review"
             style={{ marginTop: 10 }}
             onPress={() => setIsModalVisible(true)}
+            accessibilityLabel="Leave a Review"
           />
         </ContentContainer>
       </ScrollView>
@@ -183,7 +182,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 600,
     marginBottom: 8,
-    alignSelf: "center",
     overflow: "hidden",
   },
   header: {
@@ -212,6 +210,8 @@ const styles = StyleSheet.create({
   venueInfo: {
     flexDirection: "row",
     alignItems: "flex-start",
+    justifyContent: "space-evenly",
+    columnGap: 10,
   },
 });
 

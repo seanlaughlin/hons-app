@@ -13,18 +13,22 @@ function ModalAccessItem({ item, ...others }) {
       : colors.warning;
   return (
     <View style={styles.container} {...others}>
-      <MaterialCommunityIcons
-        name={accessibilityIconMapping[item.criteria]}
-        size={30}
-        color={iconColor}
-        accessibilityElementsHidden={true}
-      />
-      <MaterialCommunityIcons
-        name={iconColor === colors.green ? "check-circle" : "alert"}
-        size={15}
-        color={iconColor}
-        accessibilityElementsHidden={true}
-      />
+      <View testID="accessibility-icon">
+        <MaterialCommunityIcons
+          name={accessibilityIconMapping[item.criteria]}
+          size={30}
+          color={iconColor}
+          accessibilityElementsHidden={true}
+        />
+      </View>
+      <View testID="status-icon">
+        <MaterialCommunityIcons
+          name={iconColor === colors.green ? "check-circle" : "alert"}
+          size={15}
+          color={iconColor}
+          accessibilityElementsHidden={true}
+        />
+      </View>
       <AppText style={{ fontSize: 15 }}> {item.name}</AppText>
     </View>
   );

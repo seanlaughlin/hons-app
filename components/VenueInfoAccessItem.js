@@ -77,6 +77,7 @@ function VenueInfoAccessItem({ item, onPress, ...others }) {
         <View
           style={styles.fullInfoContainer}
           accessibilityLabel={`Tap to view full accessibility feedback related to ${item.name}`}
+          accessibilityRole="button"
           accessible={true}
         >
           <TouchableOpacity
@@ -90,7 +91,7 @@ function VenueInfoAccessItem({ item, onPress, ...others }) {
               style={{ fontSize: 12 }}
               accessibilityElementsHidden={true}
             >
-              View reviews{" "}
+              View reviews
             </AppText>
 
             <MaterialCommunityIcons

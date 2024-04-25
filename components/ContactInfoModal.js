@@ -28,7 +28,7 @@ function ContactInfoModal({ isVisible, onClose, onSubmit, values }) {
       case "phone":
         return "numeric";
       default:
-        return "";
+        return "text";
     }
   };
 
@@ -73,6 +73,7 @@ function ContactInfoModal({ isVisible, onClose, onSubmit, values }) {
               value={selectedContactMethod}
               updateValue={(value) => setSelectedContactMethod(value)}
               clear={clearList}
+              testID="contact-method-dropdown"
             />
             <AppTextInput
               placeholder="Contact info (phone number, web address, etc)"
@@ -82,11 +83,13 @@ function ContactInfoModal({ isVisible, onClose, onSubmit, values }) {
               autoComplete="off"
               inputMode={detailsInputMode}
               editable={selectedContactMethod !== ""}
+              testID="contact-details-input"
             />
             <AppButton
               title="Add Contact Info"
               onPress={handleAddContactDetails}
               style={{ marginTop: 5 }}
+              testID="add-contact-info-button"
             />
             <View style={styles.contactInfoList}>
               <AppText style={styles.title}>Contact Info</AppText>
@@ -113,6 +116,7 @@ function ContactInfoModal({ isVisible, onClose, onSubmit, values }) {
               <AppButton
                 title="✅ Confirm"
                 onPress={() => onSubmit(contactInfo)}
+                testID="submit-contact-info-button"
               />
               <AppButton title="❌ Cancel" onPress={onClose} />
             </View>

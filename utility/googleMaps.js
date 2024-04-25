@@ -45,9 +45,10 @@ export async function reverseGeocodeAddress(coords) {
       const neighborhood = addressComponents.find((component) =>
         component.types.includes("sublocality")
       );
+      console.log(response.data.results);
       return {
         address: response.data.results[0].formatted_address,
-        neighborhood: neighborhood.short_name,
+        neighborhood: neighborhood ? neighborhood.short_name : "",
       };
     }
   } catch (error) {

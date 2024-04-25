@@ -9,7 +9,6 @@ const getFilteredVenues = (filters) =>
 
 const saveVenue = (venue) => {
   const data = new FormData();
-  console.log("contact", venue.contactInfo);
   data.append("address", venue.address);
   data.append("category", venue.category);
   data.append("name", venue.name);

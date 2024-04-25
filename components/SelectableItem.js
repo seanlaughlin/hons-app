@@ -5,7 +5,11 @@ import colors from "../config/colors";
 
 const SelectableItem = ({ children, onPress, isSelected }) => {
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
+    <TouchableWithoutFeedback
+      onPress={onPress}
+      testID="selectable-item"
+      accessibilityRole="button"
+    >
       <View style={styles.container}>
         <View style={styles.requirementContainer}>
           {children}
@@ -15,6 +19,7 @@ const SelectableItem = ({ children, onPress, isSelected }) => {
               value={isSelected}
               onValueChange={onPress}
               style={{ width: 25, height: 25, borderRadius: 20 }}
+              testID="checkbox"
             />
           </View>
         </View>

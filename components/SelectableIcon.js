@@ -11,9 +11,14 @@ const SelectableIcon = ({
   title,
   size,
   selectedColor = colors.primary,
+  ...others
 }) => {
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
+    <TouchableWithoutFeedback
+      onPress={onPress}
+      testID="selectable-icon"
+      {...others}
+    >
       <View style={{ alignItems: "center" }}>
         <MaterialCommunityIcons
           name={iconName}

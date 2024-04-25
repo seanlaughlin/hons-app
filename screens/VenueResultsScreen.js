@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView, FlatList } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import colors from "../config/colors";
 import VenueListItem from "../components/VenueListItem";
@@ -15,7 +16,7 @@ import { useVenueContext } from "../context/VenueContext";
 function VenueCategoryScreen(props) {
   const { title, categoryId = null } = props.route.params;
   let { venues } = useVenueContext();
-
+  const navigation = useNavigation();
   if (categoryId !== null)
     venues = venues.filter((venue) => venue.category === categoryId);
 
@@ -31,7 +32,13 @@ function VenueCategoryScreen(props) {
       >
         <HeaderContainer
           title={capitalise(title)}
-          button={<BackButton color={colors.white} size={40} />}
+          button={
+            <BackButton
+              color={colors.white}
+              navigation={() => navigation.goBack()}
+              size={40}
+            />
+          }
         >
           <View style={styles.header}>
             <AppText

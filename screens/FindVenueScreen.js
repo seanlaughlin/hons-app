@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  SafeAreaView,
-  Text,
-  SectionList,
-  View,
-  ScrollView,
-  Image,
-} from "react-native";
+import { StyleSheet, SafeAreaView, Text, View, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import colors from "../config/colors";
@@ -47,24 +39,17 @@ function FindVenueScreen(props) {
   };
 
   const gotoSearchResults = () => {
-    console.log(filters);
     navigation.navigate("VenueResultsScreen", {
       title: "Search Results",
       filters,
     });
   };
 
-  const sections =
-    getCategoriesApi.data?.map((category) => ({
-      title: category.title,
-      data: [category],
-    })) ?? [];
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.light }}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
-          <HeaderContainer title="Find a Venue">
+          <HeaderContainer title="Find a Venue" style={{ marginBottom: 10 }}>
             <View style={{ paddingHorizontal: 40, paddingVertical: 10 }}>
               <Text style={{ fontSize: 16 }}>
                 Search for a service or venue you're looking for in the box
@@ -82,22 +67,20 @@ function FindVenueScreen(props) {
               <ActivityIndicator visible={true} />
             </View>
           ) : (
-            <SectionList
-              style={{ marginTop: 8 }}
-              sections={sections}
-              keyExtractor={(item) => item._id}
-              numColumns={2}
-              renderItem={({ item }) => (
+            <View style={styles.cardContainer}>
+              {getCategoriesApi.data.map((category) => (
                 <Card
-                  title={item.title}
-                  imageUrl={item.imageUri}
-                  onPress={() => gotoCategory(item)}
-                  accessibilityLabel={`${item.title} category`}
+                  key={category._id}
+                  title={category.title}
+                  imageUrl={category.imageUri}
+                  onPress={() => gotoCategory(category)}
+                  accessibilityLabel={`${category.title} category`}
                   accessibilityHint="Press to load venues in this category."
+                  style={styles.card}
+                  accessibilityRole="button"
                 />
-              )}
-              ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-            />
+              ))}
+            </View>
           )}
         </View>
       </ScrollView>
@@ -112,6 +95,13 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     flexGrow: 1,
+  },
+  cardContainer: {
+    flexDirection: "column",
+    alignItems: "stretch",
+  },
+  card: {
+    marginBottom: 10,
   },
 });
 

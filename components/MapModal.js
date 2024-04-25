@@ -69,7 +69,6 @@ function MapModal({
           <View style={styles.venueInfo}>
             <View
               style={{
-                // flex: 3,
                 rowGap: 2,
               }}
             >
@@ -141,9 +140,9 @@ function MapModal({
                   .filter(
                     (item) => item.reportedFor > 0 && item.reportedAgainst > 0
                   )
-                  .map((item) => (
+                  .map((item, index) => (
                     <ModalAccessItem
-                      key={item.criteria}
+                      key={index}
                       item={item}
                       accessibilityLabel={item.name}
                     />

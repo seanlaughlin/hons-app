@@ -75,7 +75,6 @@ function VenueListItem({ venue, ...others }) {
       >
         {/* Show max of 3 then text indicating additional criteria exist (+3 etc)*/}
         <View style={styles.accessIcons}>
-          {/* Render icons from selectedAccessibilities */}
           {filteredAccessibilities &&
             filteredAccessibilities.slice(0, 3).map((access, index) => {
               return (
@@ -95,7 +94,6 @@ function VenueListItem({ venue, ...others }) {
               );
             })}
 
-          {/* Render additional icons from venue.accessibility */}
           {notFilteredAccessibilities &&
             notFilteredAccessibilities
               .slice(0, additionalIconsNeeded)
@@ -115,7 +113,6 @@ function VenueListItem({ venue, ...others }) {
                 />
               ))}
 
-          {/* Render text for additional icons if needed */}
           {venue.accessibility.filter(
             (access) => access.reportedFor > 0 || access.reportedAgainst > 0
           ).length > 3 && <AppText>+{venue.accessibility.length - 3}</AppText>}
@@ -161,9 +158,9 @@ const styles = StyleSheet.create({
   otherText: {
     fontSize: 12,
   },
-  textContainer: {
-    paddingVertical: 10,
-  },
+  // textContainer: {
+  //   paddingVertical: 10,
+  // },
 });
 
 export default VenueListItem;
